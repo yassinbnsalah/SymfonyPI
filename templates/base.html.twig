@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+       
         <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+{% block stylesheets %}
 
 <!-- Favicon icon-->
 <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon/favicon.ico">
@@ -25,13 +26,16 @@
 
 <!-- Theme CSS -->
 <link rel="stylesheet" href="./assets/css/theme.min.css">
-  <title>Geeks Academy Admin Template</title>
+
+{% endblock %}
+
+  <title>Fit-Health</title>
     </head>
     <body>
         {% block body %}{% endblock %}
 
 
-        
+        {% block javascripts %}
     <!-- Scripts -->
     <!-- Libs JS -->
 <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
@@ -63,5 +67,7 @@
 
 <!-- Theme JS -->
 <script src="./assets/js/theme.min.js"></script>
+
+{% endblock %}
     </body>
 </html>
