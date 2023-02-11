@@ -6,15 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AuthentificationController extends AbstractController
+class SubController extends AbstractController
 {
-    #[Route('/authentification', name: 'app_authentification')]
+    #[Route('/subbscribers', name: 'all_sub')]
     public function index(): Response
     {
-        return $this->render('authentification/index.html.twig', [
-            'controller_name' => 'AuthentificationController',
+        return $this->render('sub/index.html.twig', [
+            'controller_name' => 'SubController',
         ]);
     }
-
-
 }
