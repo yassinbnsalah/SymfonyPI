@@ -16,6 +16,13 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/', name: 'homepageVisitor')]
+    public function homepageVisitor(): Response
+    { 
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
     #[Route('/zaza', name: 'app_admin')]
     public function admin(): Response
     {

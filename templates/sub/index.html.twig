@@ -70,7 +70,7 @@
                         </th>
                         <th scope="col" class="border-0">SUB-REFERENCE</th>
                         <th scope="col" class="border-0">TYPE</th>
-                        <th scope="col" class="border-0">CATEGORY</th>
+                        <th scope="col" class="border-0">PAIEMENT METHOD</th>
                         <th scope="col" class="border-0">DATE PAIED</th>
                         <th scope="col" class="border-0">DUE DATE</th>
                         <th scope="col" class="border-0">Client</th>
@@ -79,6 +79,7 @@
                       </tr>
                     </thead>
                     <tbody>
+                     {% for sub in Subscriptions %}
                       <!-- Table body -->
                       <tr>
                         <td class="align-middle border-top-0">
@@ -90,28 +91,39 @@
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                             SUB20230210
+                              {{ sub.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                          <i class="fe fe-image text-primary font-size-md"></i>
+                          {% if sub.type == 1 %}
+                     <h5 class="mb-0">
+                     1 Month
+                   </h5>
+                  {% endif %}
+                  {% if sub.type ==2 %}
+                  <h5 class="mb-0">
+                  3 Months
+                </h5>
+               {% endif %}
+               {% if sub.type == 3 %}
+               <h5 class="mb-0">
+             6 Months
+             </h5>
+            {% endif %}
                         </td>
                         <td class="align-middle border-top-0">
-                          <a href="#!" class="text-inherit">starter</a>
+                          {{ sub.paiementType }}
                         </td>
                         <td class="align-middle border-top-0">
-                          7 July, 2021 1:42pm
+                          {{ sub.dateSub|date('d-m-Y') }}
                         </td>
                         <td class="align-middle border-top-0">
-                            7 July, 2021 1:42pm
+                          {{ sub.dateExpire|date('d-m-Y') }}
                           </td>
                         <td class="align-middle border-top-0">
-                          <div class="d-flex align-items-center">
-                            <img src="../assets/images/avatar/avatar-7.jpg" alt=""
-                              class="rounded-circle avatar-xs mr-2" />
-                            <h5 class="mb-0">Reva Yokk</h5>
-                          </div>
+                          <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
+                          {{ sub.getUser().getName() }}</a>
                         </td>
                         <td class="align-middle border-top-0">
                           <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Draft
@@ -141,7 +153,7 @@
                           </span>
                         </td>
                       </tr>
-                    
+                    {% endfor %}
                     </tbody>
                   </table>
                 </div>

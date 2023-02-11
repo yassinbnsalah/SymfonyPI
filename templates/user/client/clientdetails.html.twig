@@ -1,0 +1,254 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+<div class="container-fluid p-4">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Page header -->
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">{{ client.Name}}</h1>
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+               
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ client.Email}}
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">New Sub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Total Subs</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">2,000</h2>
+                <span>100Last 30Days</span>
+              </div>
+              <div>
+                <span class="bg-light-primary icon-shape icon-xl rounded-lg text-dark-primary"><i
+                    class="mdi mdi-text-box-multiple mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Phone number</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">367</h2>
+                <span>300+ Media Object</span>
+              </div>
+              <div>
+                <span class="bg-light-warning icon-shape icon-xl rounded-lg text-dark-warning"><i
+                    class="mdi mdi-folder-multiple-image mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Total amount</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">13,234</h2>
+                <span>1.5k in 30Days</span>
+              </div>
+              <div>
+                <span class="bg-light-success icon-shape icon-xl rounded-lg text-dark-success"><i
+                    class="mdi mdi-account-multiple mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Current state</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">120</h2>
+                <span>20+ Comments</span>
+              </div>
+              <div>
+                <span class="bg-light-info icon-shape icon-xl rounded-lg text-dark-info"><i
+                    class="mdi mdi-comment-text mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card header -->
+          <div
+            class="card-header d-flex justify-content-between align-items-center border-bottom-0 card-header-height">
+            <h4 class="mb-0">Recent Subs</h4>
+           
+          </div>
+          <!-- Table -->
+          <div class="table-responsive border-0 overflow-y-hidden">
+            <table class="table mb-0 text-nowrap">
+              <thead>
+                <tr>
+                  <th scope="col" class="border-0">Sub-reference</th>
+                  <th scope="col" class="border-0">date sub</th>
+                  <th scope="col" class="border-0">date expired</th>
+                  <th scope="col" class="border-0">type</th>
+                  <th scope="col" class="border-0">state</th>
+                  <th scope="col" class="border-0">paiement method</th>
+                  <th scope="col" class="border-0"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sub in client.getSubscriptions() %}
+                <tr>
+                  <td class="align-middle border-top-0">
+                    <h5 class="mb-0">
+                       {{ sub.id }}
+                    </h5>
+                  </td>
+                  <td class="align-middle border-top-0">
+                    {{ sub.dateSub|date('d-m-Y') }}
+                  </td>
+                  <td class="align-middle border-top-0">
+                    <a href="#!" class="text-inherit">  {{ sub.dateExpire|date('d-m-Y') }}</a>
+                  </td>
+                  <td class="align-middle border-top-0">
+                     {% if sub.type == 1 %}
+                     <h5 class="mb-0">
+                     1 Month
+                   </h5>
+                  {% endif %}
+                  {% if sub.type ==2 %}
+                  <h5 class="mb-0">
+                  3 Months
+                </h5>
+               {% endif %}
+               {% if sub.type == 3 %}
+               <h5 class="mb-0">
+             6 Months
+             </h5>
+            {% endif %}
+                  </td>
+                  <td class="align-middle border-top-0">
+                    <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>confirmed
+                  </td>
+                  <td class="align-middle border-top-0">
+                    {{ sub.paiementType }}
+                  </td>
+                  <td class="text-muted align-middle border-top-0 text-right">
+                    <span class="dropdown dropleft">
+                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <span class="dropdown-menu" aria-labelledby="courseDropdown2">
+                        <span class="dropdown-header">Settings</span>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon  "></i>Edit</a>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-move dropdown-item-icon "></i>Move</a>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-copy dropdown-item-icon"></i>Copy</a>
+                        <a class="dropdown-item" href="#!"><i
+                            class="fe fe-toggle-left dropdown-item-icon"></i>Publish</a>
+                        <a class="dropdown-item" href="#!"><i
+                            class="fe fe-toggle-right dropdown-item-icon"></i>Unpublish</a>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+           {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mb-0" id="newCatgoryLabel">
+          Add New Sub for Si {{ client.Name }}
+        </h4>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+      </button>
+      </div>
+      <div class="modal-body">
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">User<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" value={{ client.Name }} id="title" disabled>
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
+            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'DateToday'}})}}
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Type<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.type , {'attr' : {'class' : 'form-control' , 'placeholder':'DateToday'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Paiement methode<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control' , 'placeholder':'Paiement method'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Amount<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control' , 'placeholder':'Total amount'}})}}
+
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Confirmed</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+              <label class="custom-control-label" for="customSwitch1"></label>
+            </div>
+          </div>
+          <div>
+
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+         
+            <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+          {{ form_end(form)}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

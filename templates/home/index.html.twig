@@ -1,1 +1,504 @@
-<h1>hello client</h1>
+{% extends 'basevisitor.html.twig' %}
+
+{% block title %}Hello RegistrationController!{% endblock %}
+
+{% block body %}
+<!-- Page Content -->
+<div class="py-md-20 py-12 bg-dark ">
+    <div class="container">
+      <!-- Hero Section -->
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+          <div class="mb-4 mb-xl-0 text-center text-md-left">
+             <!-- Caption -->
+            <h1 class="display-2 font-weight-bold mb-3 text-white ls-sm ">Lorem Ipsum is simply dummy  </h1>
+            <p class="mb-4 lead text-white-50">
+                Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took
+            </p>
+             <!-- List -->
+            <div class="mb-6 mb-0">
+              <ul class="list-unstyled font-size-md ">
+                <li class="mb-2 text-white-50"><span class="mr-2 "><i class="fe fe-clock text-warning "></i></span><span
+                    class="align-top">Weekly planning</span></li>
+                <li class="mb-2 text-white-50"><span class="mr-2 "><i class="fe fe-video text-warning "></i></span><span
+                    class="align-top">weekly diet</span></li>
+                <li class="mb-2 text-white-50"><span class="mr-2 "><i class="fe fe-users text-warning "></i></span><span
+                    class="align-top">20+ doctors</span></li>
+              </ul>
+            </div>
+            <a href="https://www.youtube.com/watch?v=JRzWRZahOVU" class="popup-youtube btn btn-white btn-lg font-size-md">Watch Preview</a>
+          </div>
+        </div>
+        <div class="offset-xl-1 col-xl-5 col-lg-6 col-md-12">
+           <!-- Card -->
+          <div class="card" style="z-index: 1;">
+            <!-- Card body -->
+            <div class="card-body p-6">
+              <div class="mb-4">
+                <h1 class="mb-4 lh-1 font-weight-bold h2">Create Free Account</h1>
+                <div class="mt-3 mb-5 d-grid d-md-block">
+                   <!-- btn group -->
+                  <div class="btn-group mb-2 mb-md-0" role="group" aria-label="socialButton">
+                    <button type="button" class="btn btn-outline-white shadow-sm"><i
+                        class="mdi mdi-google mr-2 text-danger"></i>Google</button>
+                  </div>
+                   <!-- btn group -->
+                  <div class="btn-group mb-2 mb-md-0" role="group" aria-label="socialButton">
+                    <button type="button" class="btn btn-outline-white shadow-sm"><i
+                        class="mdi mdi-twitter text-info mr-2"></i>Twitter</button>
+                  </div>
+                   <!-- btn group -->
+                  <div class="btn-group" role="group" aria-label="socialButton">
+                    <button type="button" class="btn btn-outline-white shadow-sm"><i
+                        class="mdi mdi-facebook text-primary mr-2"></i>Facebook</button>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="border-bottom"></div>
+                <div class="text-center mt-n2  lh-1">
+                  <span class="bg-white px-2 font-size-xs">OR</span>
+                </div>
+              </div>
+              <!-- Form -->
+              <form>
+                <!-- Username -->
+                <div class="form-group">
+                  <label for="email" class="form-label sr-only">Email</label>
+                  <input type="email" id="email" class="form-control" name="email" placeholder="Email"
+                    required="">
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                  <label for="password" class="form-label sr-only">Password</label>
+                  <input type="password" id="password" class="form-control" name="password" placeholder="Password"
+                    required="">
+                </div>
+                <!-- Button -->
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+              </form>
+            </div>
+             <!-- Card Footer -->
+            <div class="card-footer bg-white px-6 py-4">
+              <p class="mb-0">By continuing you accept the <a href="#" class="text-inherit font-weight-semi-bold">Terms of Use</a>,<a href="#" class="text-inherit font-weight-semi-bold"> Privacy
+                  Policy</a>, and <a href="#" class="text-inherit font-weight-semi-bold">Data Policy</a>
+              </p>
+            </div>
+          </div>
+           <!-- Pattern -->
+          <div
+            class="position-absolute bottom-0 right-0 mr-md-n3 mb-md-n6 mr-lg-n4 mb-lg-n4 mr-xl-n5 mb-xl-n8 d-none d-md-block ">
+            <img src="../../assets/images/pattern/dots-pattern.svg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- Feature section -->
+  <div class="py-4 shadow-sm position-relative bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-6 col-12">
+           <!-- Feature -->
+          <div class="text-dark font-weight-semi-bold lh-1 font-size-md mb-3 mb-lg-0"><span
+              class="icon-shape icon-xs rounded-circle bg-light-warning text-center mr-2"><i
+                class="mdi mdi-check text-dark-warning "></i></span><span class="align-middle">Shareable
+              Certificate</span></div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <!-- Feature -->
+          <div class="text-dark font-weight-semi-bold lh-1 font-size-md mb-3 mb-lg-0"><span
+              class="icon-shape icon-xs rounded-circle bg-light-warning text-center mr-2"><i
+                class="mdi mdi-check text-dark-warning "></i></span><span class="align-middle">Flexible
+              Deadlines</span></div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <!-- Feature -->
+          <div class="text-dark font-weight-semi-bold lh-1 font-size-md mb-3 mb-md-0"><span
+              class="icon-shape icon-xs rounded-circle bg-light-warning text-center mr-2"><i
+                class="mdi mdi-check text-dark-warning "></i></span><span class="align-middle">100%
+              Online Courses</span></div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <!-- Feature -->
+          <div class="text-dark font-weight-semi-bold lh-1 font-size-md"><span
+              class="icon-shape icon-xs rounded-circle bg-light-warning text-center mr-2"><i
+                class="mdi mdi-check text-dark-warning "></i></span><span class="align-middle">Approx.24
+              hours</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Section -->
+  <div class="py-8 py-lg-18 bg-light">
+    <div class="container">
+      <div class="row mb-8 justify-content-center">
+        <div class="col-lg-8 col-md-12 col-12 text-center">
+          <!-- caption -->
+          <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl">Course Description</span>
+          <h2 class="mb-2 display-4 font-weight-bold">What will you learn?</h2>
+          <p class="lead">Vanilla JS is a fast, lightweight, cross-platformframework for building incredible, powerful
+            JavaScript applications.</p>
+        </div>
+      </div>
+      <!-- row -->
+      <div class="row">
+        <div class="col-lg-6 col-md-12 col-12">
+          <!-- Features -->
+          <div class="card mb-4">
+              <!-- Card body -->
+            <div class="card-body p-6">
+              <div class="d-md-flex mb-4">
+                <div class="mb-3 mb-md-0">
+                    <!-- Img -->
+                  <img src="../../assets/images/svg/feature-icon-1.svg" alt=""
+                    class=" bg-primary icon-shape icon-xxl rounded-circle">
+                </div>
+               <!-- Content -->
+                <div class="ml-md-4">
+                  <h2 class="font-weight-bold mb-1">Introduction to JavaScript <span
+                      class="badge badge-warning ml-2">Free</span></h2>
+                  <p class="text-uppercase font-size-xs font-weight-semi-bold mb-0"><span class="text-dark">Courses -
+                      1</span> <span class="ml-3">6 Lessons</span> <span class="ml-3">1 Hour 12 Min</span></p>
+                </div>
+              </div>
+              <p class="mb-4 font-size-md">In et tempus dui, in porta dolor. Donec molestie a purus ut interdum. Donec
+                quis felis dignissim, luctus libero ornare.</p>
+              <a href="#" class="btn-link" data-toggle="modal" data-target="#courseModal">View Chapter Details <i
+                  class="fe fe-plus"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-12">
+          <!-- features -->
+          <div class="card mb-4">
+            <div class="card-body p-6">
+              <div class="d-md-flex mb-4">
+                <div class="mb-3 mb-md-0">
+                  <img src="../../assets/images/svg/feature-icon-2.svg" alt=""
+                    class=" bg-primary icon-shape icon-xxl rounded-circle">
+                </div>
+                <div class="ml-md-4">
+                  <h2 class="font-weight-bold mb-1">JavaScript Beginning</h2>
+                  <p class="text-uppercase font-size-xs font-weight-semi-bold mb-0"><span class="text-dark">Courses -
+                      2</span> <span class="ml-3">4 Lessons</span> <span class="ml-3">32 Min</span></p>
+                </div>
+              </div>
+              <p class="mb-4 font-size-md">Malesuada fames ac turpis egesta mpor tempus tincidunt. Aliquam congue lacus
+                ac tellus consectetur malesuada.</p>
+              <a href="#" class="btn-link" data-toggle="modal" data-target="#courseModal">View Chapter Details <i
+                  class="fe fe-plus"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-12">
+          <!-- features -->
+          <div class="card mb-4">
+            <div class="card-body p-6">
+              <div class="d-md-flex mb-4">
+                <div class="mb-3 mb-md-0">
+                  <img src="../../assets/images/svg/feature-icon-3.svg" alt=""
+                    class=" bg-primary icon-shape icon-xxl rounded-circle">
+                </div>
+                <div class="ml-md-4">
+                  <h2 class="font-weight-bold mb-1">Variables and Constants</h2>
+                  <p class="text-uppercase font-size-xs font-weight-semi-bold mb-0"><span class="text-dark">Courses -
+                      3</span> <span class="ml-3">8 Lessons</span> <span class="ml-3">10 Min</span></p>
+                </div>
+              </div>
+              <p class="mb-4 font-size-md">Aliquam pulvinar eros a dictur vitae diam imperdiet, ornare turpis vequet
+                elit nec, imperdiet lectuna liquam qs.</p>
+              <a href="#" class="btn-link" data-toggle="modal" data-target="#courseModal">View Chapter Details <i
+                  class="fe fe-plus"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-12">
+          <!-- features -->
+          <div class="card mb-4">
+            <div class="card-body p-6">
+              <div class="d-md-flex mb-4">
+                <div class="mb-3 mb-md-0">
+                  <img src="../../assets/images/svg/feature-icon-4.svg" alt=""
+                    class=" bg-primary icon-shape icon-xxl rounded-circle">
+                </div>
+                <div class="ml-md-4">
+                  <h2 class="font-weight-bold mb-1">Types and Operators</h2>
+                  <p class="text-uppercase font-size-xs font-weight-semi-bold mb-0"><span class="text-dark">Courses -
+                      4</span> <span class="ml-3">10 Lessons</span> <span class="ml-3">32 Min</span></p>
+                </div>
+              </div>
+              <p class="mb-4 font-size-md">In lobortis quam eu augue spendisse imperdiet nec orci ipsum, tempus pharetra
+                posuere imperdiet, lacinia a nisl.</p>
+              <a href="#" class="btn-link" data-toggle="modal" data-target="#courseModal">View Chapter Details <i
+                  class="fe fe-plus"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Section -->
+  <div class="py-8 py-lg-18">
+    <div class="container">
+      <div class="row mb-6 align-items-center justify-content-center">
+        <div class="col-md-10">
+          <div class="row align-items-center ">
+            <div class="col-xl-6 col-lg-7 col-md-12 col-12 order-1 text-center text-lg-left ">
+              <!-- caption -->
+              <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl">YOUR INSTRUCTOR</span>
+              <h2 class="mb-2 display-4 font-weight-bold mb-3">Hi, I’m <span class="text-primary">James Davies</span>,
+                <br>I will be taking you through lessons.</h2>
+              <p class="font-size-lg pr-6">Create beautiful website with this Geeks UI template. Get started building a
+                site today.</p>
+
+              <hr class="my-5">
+                <!-- Counter -->
+              <div class="row">
+                <div class="col-sm mb-3 mb-lg-0">
+                  <h2 class="h1 font-weight-bold mb-0 ls-xs">45</h2>
+                  <p class="mb-0">Lessons</p>
+                </div>
+                <div class="col-lg-5 col-sm mb-3 mb-lg-0">
+                  <h2 class="h1 font-weight-bold mb-0 ls-xs">10,500+</h2>
+                  <p class="mb-0">Students</p>
+                </div>
+                <div class="col-sm mb-3 mb-lg-0">
+                  <h2 class="h1 font-weight-bold mb-0 ls-xs">12+</h2>
+                  <p class="mb-0">Learning Hours</p>
+                </div>
+              </div>
+            </div>
+              <!-- Img -->
+            <div class="offset-xl-1 col-xl-5 col-lg-5 col-12 mb-6 mb-lg-0 order-lg-2 text-center ">
+              <img src="../../assets/images/instructor/instructor-img.png" alt="" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Section -->
+  <div class="pb-8 pb-lg-18">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-12">
+            <!-- Brand logo -->
+          <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl text-center">Trusted by
+            top-tier product companies</span>
+          <div class="row mt-8">
+              <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-stripe.svg" alt="">
+            </div>
+              <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-airbnb.svg" alt="">
+            </div>
+              <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-discord.svg" alt="">
+            </div>
+              <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-intercom.svg" alt="">
+            </div>
+             <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-pinterest.svg" alt="">
+            </div>
+              <!-- logo -->
+            <div class="col-xl-2 col-lg-4 col-md-4 col-6 text-center mb-4 mb-xl-0">
+              <img src="../../assets/images/brand/gray-logo-netflix.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Section -->
+  <div class="py-8 py-lg-18 bg-light">
+    <div class="container">
+      <div class="row mb-8 justify-content-center">
+        <div class="col-lg-6 col-md-12 col-12 text-center">
+          <!-- caption -->
+          <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl">Testimonials</span>
+          <h2 class="mb-2 display-4 font-weight-bold ">What our learners are saying </h2>
+          <p class="lead">12+ million people are already learning on Geeks</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-12 mb-4 mb-lg-0">
+            <!-- Card -->
+          <div class="card shadow-lg">
+              <!-- Card body -->
+            <div class="card-body p-4 p-md-8 text-center">
+              <i class="mdi mdi-48px mdi-format-quote-open text-light-primary lh-1"></i>
+              <p class="lead text-dark mt-3">The generated lorem Ipsum is therefore always free from repetition,
+                injected
+                humour, or words etc generate lorem Ipsum which looks racteristic reasonable.</p>
+            </div>
+              <!-- Card Footer -->
+            <div class="card-footer bg-primary text-center border-top-0">
+              <div class="mt-n8"><img src="../../assets/images/avatar/avatar-1.jpg" alt=""
+                  class="rounded-circle border-primary avatar-xl border-width-4"></div>
+              <div class="mt-2 text-white">
+                <h3 class="text-white mb-0">Gladys Colbert</h3>
+                <p class="text-white-50 mb-1">Software Engineer at Palansite</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <!-- Card -->
+          <div class="card shadow-lg">
+            <div class="card-body p-4 p-md-8 text-center">
+              <i class="mdi mdi-48px mdi-format-quote-open text-light-info lh-1"></i>
+              <p class="lead text-dark mt-3">Lorem ipsum dolor sit amet, consectetur adipi scing elit. Sed vel felis
+                imperdiet, lacinia metus malesuada diamamus rutrum turpis leo, id tincidunt magna sodales.</p>
+            </div>
+              <!-- Card Footer -->
+            <div class="card-footer bg-info text-center border-top-0">
+              <div class="mt-n8"><img src="../../assets/images/avatar/avatar-2.jpg" alt=""
+                  class="rounded-circle border-info avatar-xl border-width-4"></div>
+              <div class="mt-2 text-white">
+                <h3 class="text-white mb-0">Ella Jones</h3>
+                <p class="text-white-50 mb-1">Software Engineer at Classroom</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-8 py-lg-18">
+    <div class="container">
+      <div class="row mb-8 justify-content-center">
+        <div class="col-lg-6 col-md-12 col-12 text-center">
+          <!-- caption -->
+          <span class="text-primary mb-3 d-block text-uppercase font-weight-semi-bold ls-xl">Need to Know</span>
+          <h2 class="mb-2 display-4 font-weight-bold ">Frequently Asked Questions.</h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis non accumsan in, tempor
+            dictum neque.</p>
+        </div>
+      </div>
+      <!-- row -->
+      <div class="row justify-content-center ">
+        <div class="col-lg-6 col-md-8 col-12">
+          <div class="accordion accordion-flush" id="accordionExample">
+            <div class="border-bottom py-3" id="headingOne">
+              <h3 class="mb-0 font-weight-bold">
+                <a href="#!" class="d-flex align-items-center text-inherit text-decoration-none active"
+                  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                  <span class="mr-auto">
+                    What is the cost of an online course
+                  </span>
+                  <span class="collapse-toggle ml-4">
+                    <i class="fe fe-plus text-primary"></i>
+                  </span>
+                </a>
+              </h3>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="py-3 font-size-md">
+                Create beautiful website with this Geeks UI template. Get started building a site today.
+              </div>
+            </div>
+            <!-- Card  -->
+            <!-- Card header  -->
+            <div class="border-bottom py-3" id="headingTwo">
+              <h3 class="mb-0 font-weight-bold">
+                <a href="#!" class="d-flex align-items-center text-inherit text-decoration-none" data-toggle="collapse"
+                  data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <span class="mr-auto">
+                    What do I need to take a course?
+                  </span>
+                  <span class="collapse-toggle ml-4">
+                    <i class="fe fe-plus text-primary"></i>
+                  </span>
+                </a>
+              </h3>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="py-3 font-size-md">
+                Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth
+                nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+            <!-- Card  -->
+            <!-- Card header  -->
+            <div class="border-bottom py-3 " id="headingThree">
+              <h3 class="mb-0 font-weight-bold">
+                <a href="#!" class="d-flex align-items-center text-inherit text-decoration-none active"
+                  data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  <span class="mr-auto">
+                    What do I receive for taking this course?
+                  </span>
+                  <span class="collapse-toggle ml-4">
+                    <i class="fe fe-plus text-primary"></i>
+                  </span>
+                </a>
+              </h3>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div class="py-3 font-size-md">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
+                quinoa nesciunt laborum eiusmod.
+              </div>
+            </div>
+            <!-- Card  -->
+            <!-- Card header  -->
+            <div class="pt-3 " id="headingFour">
+              <h3 class="mb-0 font-weight-bold">
+                <a href="#!" class="d-flex align-items-center text-inherit text-decoration-none active"
+                  data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  <span class="mr-auto">
+                    What willI get if I subscribe to this Certificate?
+                  </span>
+                  <span class="collapse-toggle ml-4">
+                    <i class="fe fe-plus text-primary"></i>
+                  </span>
+                </a>
+              </h3>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+              <div class="py-3 font-size-md">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
+                quinoa nesciunt laborum eiusmod.
+              </div>
+            </div>
+          </div>
+          <div class="mt-10 text-center">
+            <a href="#" class="btn btn-outline-white">More questions? Visit the <span class="text-primary">Learner Help
+                Center.</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- call to action -->
+  <div class="py-lg-16 py-10 bg-dark"
+    style="background: url(../../assets/images/background/course-graphics.svg)no-repeat; background-size: cover; background-position: top center">
+    <div class="container">
+      <!-- row -->
+      <div class="row justify-content-center text-center">
+        <div class="col-md-9 col-12">
+          <!-- heading -->
+          <h2 class="display-4 text-white">Join more than 1 million learners worldwide</h2>
+          <p class="lead text-white px-lg-12 mb-6">Effective learning starts with assessment. Learning a new skill is
+            hard work—Signal makes it easier.</p>
+          <!-- button -->
+          <div class="d-grid d-md-block">
+            <a href="#" class="btn btn-primary mb-2 mb-md-0">Start Learning for Free</a>
+            <a href="#" class="btn btn-info">Geeks for Business</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

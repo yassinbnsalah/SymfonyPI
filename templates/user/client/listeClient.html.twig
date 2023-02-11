@@ -112,7 +112,7 @@
                           <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Draft
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" href="#!"><i
+                          <a class="btn btn-white" href="#!" data-target="#newCatgory"><i
                             class="fe fe-edit dropdown-item-icon"></i></a>
                         
                         </td>
@@ -153,5 +153,81 @@
     </div>
   </div>
 
+  <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mb-0" id="newCatgoryLabel">
+          Create New Category
+        </h4>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+      </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Title<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Write a Category" id="title" required>
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label">Slug</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="slug">https://example.com</span>
+              </div>
+              <input type="text" class="form-control" id="basic-url" aria-describedby="slug"
+                placeholder="designcourses" required>
+            </div>
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label">Parent</label>
+            <select class="selectpicker" data-width="100%">
+              <option value="">Select</option>
+              <option value="Course">Course</option>
+              <option value="Tutorial">Tutorial</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Company">Company</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label">Description</label>
+            <div id="editor">
+              <br>
+              <h4>One Ring to Rule Them All</h4>
+              <br>
+              <p>
+                Three Rings for the
+                <i> Elven-kingsunder</i> the sky,
+                <br> Seven for the
+                <u>Dwarf-lords</u> in halls of stone, Nine for Mortal Men,
+                <br> doomed to die, One for the Dark Lord on his dark throne.
+                <br> In the Land of Mordor where the Shadows lie.
+                <br>
+                <br>
+              </p>
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Enabled</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+              <label class="custom-control-label" for="customSwitch1"></label>
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Add New Category</button>
+            <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
