@@ -30,6 +30,7 @@ class Subscription
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    
     private ?User $user = null;
 
     #[ORM\Column(length: 125)]

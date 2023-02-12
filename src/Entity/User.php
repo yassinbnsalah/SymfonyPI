@@ -101,6 +101,7 @@ class User implements UserInterface
     private $Image;
 
      #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
+     
      private Collection $subscriptions;
 
      #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Disponibility::class)]
