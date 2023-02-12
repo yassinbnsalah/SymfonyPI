@@ -105,10 +105,11 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
+                        
                         <h3 class="mb-0">Disponibility Liste</h3>
                         <span> Disponibility liste Dashboard is a quick overview of all current
                             Disponibility liste to be in Duty.</span>
-                            <a href="#" class="btn btn-primary btn-sm"> Add Disponibility</a>
+                            <a href="#" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#newCatgory"> Add Disponibility</a>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
@@ -124,24 +125,60 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {% for dispo in user.getDisponibilities() %}
                                 <tr>
                                     <td class="align-middle border-top-0">
                                         <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #IDDISPO
+                                            <a href="#!" class="text-inherit" >
+                                             # {{ dispo.id }}
                                             </a>
                                         </h5>
                                     </td>
-                                    <td class="align-middle border-top-0">12/12/12</td>
-                                    <td class="align-middle border-top-0">8:00</td>
-                                    <td class="align-middle border-top-0">12:00</td>
+                                    <td class="align-middle border-top-0">{{ dispo.dateDispo|date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0">{{ dispo.heureStart|date('h:i') }}</td>
+                                    <td class="align-middle border-top-0">{{ dispo.heureEnd|date('h:i') }}</td>
                                     <td class="align-middle border-top-0">
-                                        <a class="btn btn-white btn-sm" href="#">edit</a>
+                                        <a class="btn btn-success btn-sm" href="{{ path('UpdateDisponibility', {'id' : dispo.id  }) }}">edit</a>
+                                        <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>
                                     </td>
-                                  
+                                    <div class="modal fade" id="DeleteDISPO" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title mb-0" id="DeleteDISPOLabel">
+                                            Delete Disponibility Slote ? 
+                                          </h4>
+                                          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                         
+                                           
+                                            <div class="form-group mb-2">
+                                              <label class="form-label" for="title">are you sure do you want to delete Disponibility Slot? <span class="text-danger">*</span></label>
+                                              
+                                           
+                                            </div>
+                                       
+                                          
+                                            <div>
+                                    
+                                                
+                                             <a class="btn btn-danger btn-sm" href="{{ path('DeleteDisponibility', {'id' : dispo.id  }) }}">DELETE</a>
+                                              <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                                Close
+                                              </button>
+                                            </div>
+                                         
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
                                 </tr>
-                            
+                              
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -150,5 +187,53 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0" id="newCatgoryLabel">
+         Add New Disponibility Slot for {{ user.name }}
+      </h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+    </button>
+    </div>
+    <div class="modal-body">
+      {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+       
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
+          {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
+          <small>Field must contain a unique value</small>
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">HeureStart<span class="text-danger">*</span></label><br>
+          {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker' , 'placeholder':'HeureStart'}})}}
 
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">HeureEnd<span class="text-danger">*</span></label><br>
+          {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control' , 'placeholder':'HeureEnd'}})}}
+
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">Note<span class="text-danger">*</span></label><br>
+          {{ form_widget(form.Note , {'attr' : {'class' : 'form-control' , 'placeholder':'Note'}})}}
+
+        </div>
+      
+        <div>
+
+          {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+       
+          <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}

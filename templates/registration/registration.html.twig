@@ -6,7 +6,7 @@
 
 
 <!-- Page content -->
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column mt-5 mb-5">
     <div class="row align-items-center justify-content-center no-gutters min-vh-100">
         <div class="col-lg-5 col-md-8 py-8 py-xl-0">
             <!-- Card -->
@@ -37,8 +37,9 @@
                              <!-- CIN -->
                         <div class="form-group">
                             <label for="image" class="form-label">image</label>
-                     
-                           {{ form_row(form.image, {'attr':{'placeholder': 'Your photo '}}) }}
+                          
+                           {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
+                           
                         </div>
                             <!-- Adresse -->
                         <div class="form-group">
@@ -107,6 +108,8 @@
                             </a>
                         </div>
                    {{ form_end(form)}}
+
+                 
                 </div>
             </div>
         </div>

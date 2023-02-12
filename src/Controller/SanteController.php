@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Disponibility;
+use App\Form\DisponibilityType;
+use App\Repository\DisponibilityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -44,13 +49,61 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/dashboard/doctor/disponibilityliste', name: 'ListeDisponibility')]
-    public function ListeDisponibility(): Response
+    public function ListeDisponibility(Request $req,ManagerRegistry $em): Response
     {
+        $dispo = new Disponibility() ; 
+        $form = $this->createForm(DisponibilityType::class, $dispo);
+        $form->handleRequest($req) ; 
 
         $user = $this->getUser();
+
+        if($form->isSubmitted()){
+            $dispo->setDoctor($user);
+            $em = $em->getManager(); 
+            $em->persist($dispo);
+            $em->flush() ; 
+        }
         return $this->render('user/doctor/DisponibilityListe.html.twig', [
             'controller_name' => 'HomeController',
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
+    }
+
+
+    #[Route('/dashboard/doctor/disponibility/update/{id}', name: 'UpdateDisponibility')]
+    public function UpdateDisponibility($id , Request $req,ManagerRegistry $em, DisponibilityRepository $repo): Response
+    {
+        $dispo = $repo->find($id) ; 
+        $form = $this->createForm(DisponibilityType::class, $dispo);
+        $form->handleRequest($req) ; 
+
+        $user = $this->getUser();
+
+        if($form->isSubmitted()){
+            $dispo->setDoctor($user);
+            $em = $em->getManager(); 
+            $em->persist($dispo);
+            $em->flush() ; 
+            return $this->redirectToRoute('ListeDisponibility'); 
+        }
+        return $this->render('user/doctor/updateDisponibility.html.twig', [
+            'controller_name' => 'HomeController',
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+
+
+    #[Route('/dashboard/doctor/disponibility/delete/{id}', name: 'DeleteDisponibility')]
+    public function DeleteDisponibility($id , Request $req,ManagerRegistry $em, DisponibilityRepository $repo): Response
+    {
+        $dispo = $repo->find($id) ; 
+         
+            $em = $em->getManager(); 
+            $em->remove($dispo);
+            $em->flush() ; 
+            return $this->redirectToRoute('ListeDisponibility'); 
+       
     }
 }

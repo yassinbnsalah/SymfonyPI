@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
@@ -30,7 +31,9 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
             /** @var UploadedFile $imageFile */
+           
             $imageFile = $form->get('image')->getData();
 
            // if($imageFile){
@@ -47,9 +50,7 @@ class RegistrationController extends AbstractController
                 $user->setImage($newFilename);
 
                 $user->setRoles(['ROLE_CLIENT']);
-              
-                $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
-
+               
                 $user->setActivationToken(md5(uniqid()));
 
                 $manager->persist($user);
