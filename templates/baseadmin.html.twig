@@ -39,7 +39,9 @@
         <nav class="navbar-vertical navbar">
           <div class="nav-scroller">
             <!-- Brand logo -->
-            <a class="navbar-brand" href=""><img src="{{asset('assets/images/brand/logo/logo-inverse.svg')}}" width="200px" height="150px" alt=""/></a>
+            <a class="navbar-brand" href="{{ path('homepageVisitor') }}"
+                  ><img src="{{asset('assets/images/brand/logo/logo-inverse.svg')}}" alt=""
+                  /></a>
             <!-- Navbar nav -->
             <ul class="navbar-nav flex-column" id="sideNavbar">
               <!-- Nav item -->
@@ -133,7 +135,14 @@
                     </li>
                   </ul>
                 </div>
+               
+              <li class="nav-item">
+                <a class="nav-link "  href="{{ path('listeSubClient') }}">
+                  <i class="nav-icon fe fe-user mr-2"></i>Go To ClientDASH
+                </a>
               </li>
+              </li>
+            
             </ul>
            
           </div>
@@ -201,78 +210,7 @@
                               </div>
                             </div>
                           </li>
-                          <!-- list group item -->
-                          <li class="list-group-item">
-                            <div class="row">
-                              <div class="col">
-                                <div class="d-flex">
-                                  <img src="../assets/images/avatar/avatar-2.jpg" alt="" class="avatar-md rounded-circle">
-                                  <div class="ml-3">
-                                    <h5 class="font-weight-bold mb-1">Brooklyn Simmons</h5>
-                                    <p class="mb-3">Just launched a new Courses React for Beginner.</p>
-                                    <span class=" font-size-xs text-muted">
-                                      <span><span class="fe fe-thumbs-up text-success mr-1"></span>Oct 9,</span>
-                                      <span class="ml-1">1:20 PM</span>
-                                    </span>
-                                  </div>
-                                </div>
-                                <a class="stretched-link" href="#!"></a>
-                              </div>
-                              <div class="col-auto text-center">
-                                <a href="#!" class="badge-dot badge-secondary" data-toggle="tooltip" data-placement="top"
-                                  title="" data-original-title="Mark as unread">
-                                </a>
-                              </div>
-                            </div>
-                          </li>
-                          <!-- list group item -->
-                          <li class="list-group-item">
-                            <div class="row">
-                              <div class="col">
-                                <div class="d-flex">
-                                  <img src="../assets/images/avatar/avatar-3.jpg" alt="" class="avatar-md rounded-circle">
-                                  <div class="ml-3">
-                                    <h5 class="font-weight-bold mb-1">Jenny Wilson</h5>
-                                    <p class="mb-3">Krisitn Watsan like your comment on course Javascript Introduction!</p>
-                                    <span class=" font-size-xs text-muted">
-                                      <span><span class="fe fe-thumbs-up text-info mr-1"></span>Oct 9,</span>
-                                      <span class="ml-1">1:56 PM</span>
-                                    </span>
-                                  </div>
-                                </div>
-                                <a class="stretched-link" href="#!"></a>
-                              </div>
-                              <div class="col-auto text-center">
-                                <a href="#!" class="badge-dot badge-secondary" data-toggle="tooltip" data-placement="top"
-                                  title="" data-original-title="Mark as unread">
-                                </a>
-                              </div>
-                            </div>
-                          </li>
-                          <!-- list group item -->
-                          <li class="list-group-item">
-                            <div class="row">
-                              <div class="col">
-                                <div class="d-flex">
-                                  <img src="../assets/images/avatar/avatar-4.jpg" alt="" class="avatar-md rounded-circle">
-                                  <div class="ml-3">
-                                    <h5 class="font-weight-bold mb-1">Sina Ray</h5>
-                                    <p class="mb-3">You earn new certificate for complete the Javascript Beginner course.</p>
-                                    <span class=" font-size-xs text-muted">
-                                      <span><span class="fe fe-award text-warning mr-1"></span>Oct 9,</span>
-                                      <span class="ml-1">1:56 PM</span>
-                                    </span>
-                                  </div>
-                                </div>
-                                <a class="stretched-link" href="#!"></a>
-                              </div>
-                              <div class="col-auto text-center">
-                                <a href="#!" class="badge-dot badge-secondary" data-toggle="tooltip" data-placement="top"
-                                  title="" data-original-title="Mark as unread">
-                                </a>
-                              </div>
-                            </div>
-                          </li>
+                        
                         </ul>
                         <div class="border-top px-3 pt-3 pb-0">
                           <a href="../pages/notification-history.html" class="text-muted">See all
@@ -329,10 +267,12 @@
                           </ul>
                         </li>
                         <li>
-                          <a class="dropdown-item" href="../pages/profile-edit.html">
+                          <a class="dropdown-item" href="{{ path('listeSubClient') }}">
                             <i class="fe fe-user mr-2"></i>Profile
                           </a>
                         </li>
+                       
+                    
                         <li>
                           <a class="dropdown-item" href="../pages/student-subscriptions.html">
                             <i class="fe fe-star mr-2"></i>Subscription
@@ -347,7 +287,7 @@
                       <div class="dropdown-divider"></div>
                       <ul class="list-unstyled">
                         <li>
-                          <a class="dropdown-item" href="../index.html">
+                          <a class="dropdown-item"  href="{{ path('app_logout') }}">
                             <i class="fe fe-power mr-2"></i>Sign Out
                           </a>
                         </li>

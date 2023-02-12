@@ -34,7 +34,7 @@
             <span class="font-size-xs text-uppercase font-weight-semi-bold">Total Subs</span>
             <div class="mt-2 d-flex justify-content-between align-items-center">
               <div class="lh-1">
-                <h2 class="h1 font-weight-bold mb-1">2,000</h2>
+                <h2 class="h1 font-weight-bold mb-1">1520 </h2>
                 <span>100Last 30Days</span>
               </div>
               <div>
@@ -159,29 +159,29 @@
             {% endif %}
                   </td>
                   <td class="align-middle border-top-0">
-                    <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>confirmed
+                    {% if sub.state == "Confirmed" %}
+                                        <span class="badge badge-success ml-2">
+                                            Confirmed</span>
+                                        {% elseif  sub.state == "Canceled" %}
+                                        <span class="badge badge-danger ml-2">
+                                          Canceled</span>
+                                          {%else%}
+                                        <span class="badge badge-warning ml-2">
+                                            Suspanded</span>
+                                            {% endif %}
                   </td>
                   <td class="align-middle border-top-0">
                     {{ sub.paiementType }}
                   </td>
-                  <td class="text-muted align-middle border-top-0 text-right">
-                    <span class="dropdown dropleft">
-                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fe fe-more-vertical"></i>
-                      </a>
-                      <span class="dropdown-menu" aria-labelledby="courseDropdown2">
-                        <span class="dropdown-header">Settings</span>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon  "></i>Edit</a>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-move dropdown-item-icon "></i>Move</a>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-copy dropdown-item-icon"></i>Copy</a>
-                        <a class="dropdown-item" href="#!"><i
-                            class="fe fe-toggle-left dropdown-item-icon"></i>Publish</a>
-                        <a class="dropdown-item" href="#!"><i
-                            class="fe fe-toggle-right dropdown-item-icon"></i>Unpublish</a>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
-                      </span>
-                    </span>
+                  <td class="align-middle border-top-0">
+                   
+                     
+                     
+                        
+                        <a class="btn btn-white" href="{{ path('suspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Suspend</a>
+                        <a class="btn btn-white" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Cancel</a>
+                        <a class="btn btn-white" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                    
                   </td>
                 </tr>
            {% endfor %}
