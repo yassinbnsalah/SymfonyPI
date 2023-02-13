@@ -75,6 +75,28 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    #[Route('/client/update', name: 'UpdateClientData')]
+    public function UpdateClientData(): Response
+    {
+        $user= $this->getUser(); 
+       
+        return $this->render('user/client/clientUpdateProfile.html.twig', [
+            'controller_name' => 'UserController',
+           'user' =>$user
+        ]);
+    }
+
+    #[Route('/dashboard/client/update/{id}', name: 'UpdateClientDashboard')]
+    public function UpdateClientDashboard($id, ManagerRegistry $em): Response
+    {
+        $user = $em->getRepository(User::class)->find($id) ;
+        
+        return $this->render('user/client/clientUpdateDash.html.twig', [
+            'controller_name' => 'UserController',
+           'user' =>$user
+        ]);
+    }
     #[Route('/client/{id}', name: 'clientDetails')]
     public function clientDetails(Request $req , $id , ManagerRegistry $em): Response
     {
@@ -114,6 +136,7 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+   
     #[Route('/doctor/liste', name: 'listeDoctor')]
     public function listeDoctor(UserRepository $userRepository ,Request $request, EntityManagerInterface $manager)
     {   $User_medcin = $userRepository->findByRole('["ROLE_MEDCIN"]');
