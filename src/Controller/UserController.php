@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Disponibility;
 use DateInterval;
 use App\Entity\User;
 use App\Form\addType;
 use App\Entity\Subscription;
+use App\Form\DisponibilityType;
 use App\Form\SubscriptionType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,6 +139,27 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/doctor/{id}', name: 'DoctorDetails')]
+    public function DoctorDetails($id , UserRepository $userRepository , Request $req , ManagerRegistry $em)
+    {   $Doctor = $userRepository->find($id);
+        $dispo = new Disponibility() ; 
+        $form = $this->createForm(DisponibilityType::class, $dispo);
+        $form->handleRequest($req) ; 
+
+        $user = $this->getUser();
+
+        if($form->isSubmitted()){
+            $dispo->setDoctor($Doctor);
+            $em = $em->getManager(); 
+            $em->persist($dispo);
+            $em->flush() ; 
+        }
+        return $this->render('user/doctor/DoctorDetailsDashboard.html.twig', [
+            'controller_name' => 'UserController',
+            'doctor' => $Doctor,
+            'form' => $form->createView()
+        ]);
+    }
 
     #[Route('/pharmacien/liste', name: 'listePharmaciens')]
     public function listePharmaciens(UserRepository $userRepository ,Request $request, EntityManagerInterface $manager)

@@ -50,11 +50,13 @@ class SubController extends AbstractController
     {
         $subtosuspend = $repo->find($id); 
         $subtosuspend->setState("Suspended");
+        $subtosuspend->setDateExpire(new \DateTime()); 
         $em = $em->getManager();  
         $em->persist($subtosuspend); 
         $em->flush() ;
         return $this->redirectToRoute('clientDetails', array('id' => $subtosuspend->getUser()->getId())); 
     }
+
     #[Route('/subscription/cancel/{id}', name: 'cancelSub')]
     public function CancelSubscription($id , SubscriptionRepository $repo, ManagerRegistry $em): Response
     {
