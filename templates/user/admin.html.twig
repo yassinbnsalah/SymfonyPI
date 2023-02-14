@@ -1,0 +1,299 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Hello AuthentificationController!{% endblock %}
+
+{% block body %}
+<div class="container-fluid p-4">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="mb-0 h2 font-weight-bold">Dashboard</h1>
+          </div>
+          <div class="d-flex">
+            <div class="input-group mr-3">
+              <input class="form-control flatpickr" type="text" placeholder="Select Date"
+                aria-describedby="basic-addon2">
+              <div class="input-group-append input-button">
+                <span class="input-group-text text-muted" id="basic-addon2"><i class="fe fe-calendar"></i></span>
+              </div>
+            </div>
+            <a href="#!" class="btn btn-primary">Setting</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
+              <div>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Sales</span>
+              </div>
+              <div>
+                <span class="fe fe-shopping-bag font-size-lg text-primary"></span>
+              </div>
+            </div>
+            <h2 class="font-weight-bold mb-1">
+              $10,800
+            </h2>
+            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+20.9$</span>
+            <span class="ml-1 font-weight-medium">Number of sales</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
+              <div>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Subscribers</span>
+              </div>
+              <div>
+                <span class=" fe fe-book-open font-size-lg text-primary"></span>
+              </div>
+            </div>
+            <h2 class="font-weight-bold mb-1">
+              2,456
+            </h2>
+            <span class="text-danger font-weight-semi-bold">120+</span>
+            <span class="ml-1 font-weight-medium">this Month</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
+              <div>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Client</span>
+              </div>
+              <div>
+                <span class=" fe fe-users font-size-lg text-primary"></span>
+              </div>
+            </div>
+            <h2 class="font-weight-bold mb-1">
+              1,22,456
+            </h2>
+            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+1200</span>
+            <span class="ml-1 font-weight-medium">Doctors</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
+              <div>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Coach</span>
+              </div>
+              <div>
+                <span class=" fe fe-user-check font-size-lg text-primary"></span>
+              </div>
+            </div>
+            <h2 class="font-weight-bold mb-1">
+              22,786
+            </h2>
+            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+200</span>
+            <span class="ml-1 font-weight-medium">Pharmacien</span>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <div class="row">
+      <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
+        <!-- Card -->
+        <div class="card h-100">
+          <!-- Card header -->
+          <div class="card-header d-flex align-items-center
+                        justify-content-between card-header-height">
+            <h4 class="mb-0">Last Five Client</h4>
+            <a href="#!" class="btn btn-outline-white btn-sm">View all</a>
+          </div>
+          <!-- Card body -->
+          <div class="card-body">
+            <!-- List group -->
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item px-0 pt-0 ">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="avatar avatar-md avatar-indicators avatar-offline">
+                      <img alt="avatar" src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="col ml-n3">
+                    <h4 class="mb-0 h5">Rob Percival</h4>
+                    <span class="mr-2 font-size-xs">
+                      <span class="text-dark  mr-1 font-weight-semi-bold">42</span>Courses</span>
+                    <span class="mr-2 font-size-xs">
+                      <span class="text-dark  mr-1 font-weight-semi-bold">1,10,124</span>Students</span>
+                    <span class="font-size-xs">
+                      <span class="text-dark  mr-1 font-weight-semi-bold">32,000</span>
+                      Reviews
+                    </span>
+                  </div>
+                  <div class="col-auto">
+                    <span class="dropdown dropleft">
+                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown7"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <span class="dropdown-menu" aria-labelledby="courseDropdown7">
+                        <span class="dropdown-header">Settings</span>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon "></i>Edit</a>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-trash dropdown-item-icon "></i>Remove</a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
+        <!-- Card -->
+        <div class="card h-100">
+          <!-- Card header -->
+          <div class="card-header d-flex align-items-center
+                        justify-content-between card-header-height">
+            <h4 class="mb-0">Last Subscribers</h4>
+            <a href="#!" class="btn btn-outline-white btn-sm">View all</a>
+          </div>
+          <!-- Card body -->
+          <div class="card-body">
+            <!-- List group flush -->
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item px-0 pt-0">
+                <div class="row">
+                  <!-- Col -->
+                  <div class="col-auto">
+                    <a href="#!">
+                      <img src="../assets/images/course/course-laravel.jpg" alt=""
+                        class="img-fluid rounded img-4by3-lg" /></a>
+                  </div>
+                  <!-- Col -->
+                  <div class="col pl-0">
+                    <a href="#!">
+                      <h5 class="text-primary-hover">
+                        Revolutionize how you build the web...
+                      </h5>
+                    </a>
+                    <div class="d-flex align-items-center">
+                      <img src="../assets/images/avatar/avatar-7.jpg" alt="" class="rounded-circle avatar-xs mr-2" />
+                      <span class="font-size-xs">Brooklyn Simmons</span>
+                    </div>
+                  </div>
+                  <!-- Col auto -->
+                  <div class="col-auto">
+                    <span class="dropdown dropleft">
+                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown3"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <span class="dropdown-menu" aria-labelledby="courseDropdown3">
+                        <span class="dropdown-header">Settings</span>
+                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon "></i>Edit</a>
+                        <a class="dropdown-item" href="#!"><i
+                            class="fe fe-trash dropdown-item-icon "></i>Remove</a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </li>
+           
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-4">
+        <!-- Card -->
+        <div class="card h-100">
+          <!-- Card header -->
+          <div class="card-header card-header-height d-flex align-items-center">
+            <h4 class="mb-0">Activity
+            </h4>
+          </div>
+          <!-- Card body -->
+          <div class="card-body">
+            <!-- List group -->
+            <ul class="list-group list-group-flush list-timeline-activity">
+              <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="avatar avatar-md avatar-indicators avatar-online">
+                      <img alt="avatar" src="../assets/images/avatar/avatar-6.jpg" class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="col ml-n3">
+                    <h4 class="mb-0 h5">Dianna Smiley</h4>
+                    <p class="mb-1">Just buy the courses”Build React Application Tutorial”</p>
+                    <span class="font-size-xs">2m ago</span>
+                  </div>
+                </div>
+              </li>
+              <!-- List group -->
+              <li class="list-group-item px-0 pt-0  border-0 mb-2">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="avatar avatar-md avatar-indicators avatar-offline">
+                      <img alt="avatar" src="../assets/images/avatar/avatar-7.jpg" class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="col ml-n3">
+                    <h4 class="mb-0 h5">
+                      Irene Hargrove
+                    </h4>
+                    <p class="mb-1">Comment on “Bootstrap Tutorial” Says “Hi,I m irene...</p>
+                    <span class="font-size-xs">1 hour ago</span>
+                  </div>
+                </div>
+              </li>
+              <!-- List group -->
+              <li class="list-group-item px-0 pt-0  border-0 mb-2">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="avatar avatar-md avatar-indicators avatar-busy">
+                      <img alt="avatar" src="../assets/images/avatar/avatar-4.jpg" class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="col ml-n3">
+                    <h4 class="mb-0 h5">Trevor Bradle</h4>
+                    <p class="mb-1">Just share your article on Social Media..</p>
+                    <span class="font-size-xs">2 month ago</span>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item px-0 pt-0 border-0">
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="avatar avatar-md avatar-indicators avatar-away">
+                      <img alt="avatar" src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="col ml-n3">
+                    <h4 class="mb-0 h5">John Deo</h4>
+                    <p class="mb-1">Just buy the courses”Build React Application Tutorial”</p>
+                    <span class="font-size-xs">2m ago</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

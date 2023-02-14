@@ -1,0 +1,233 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+
+<div class="container-fluid p-4">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">All Client</h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="admin-dashboard.html">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item"><a href="#!">Users</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    All Client
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <a href="#!" class="btn btn-primary">New Client</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card rounded-lg">
+          <!-- Card Header -->
+          <div class="card-header border-bottom-0 p-0">
+            <ul class="nav nav-lb-tab" id="tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="all-post-tab" data-toggle="pill" href="#all-post" role="tab"
+                  aria-controls="all-post" aria-selected="true">All</a>
+              </li>
+           
+            </ul>
+          </div>
+          <div class="p-4 row">
+            <!-- Form -->
+            <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
+               <span class="position-absolute pl-3 search-icon">
+                <i class="fe fe-search"></i>
+              </span>
+              <input type="search" class="form-control pl-6" placeholder="Search Client" />
+            </form>
+          </div>
+          <div>
+            <div class="tab-content" id="tabContent">
+              <!-- Tab -->
+              <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
+                <div class="table-responsive border-0">
+                  <!-- Table -->
+                  <table class="table mb-0 text-nowrap">
+                    <!-- Table Head -->
+                    <thead>
+                      <tr>
+                        <th scope="col" class="border-0">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="checkAll" />
+                            <label class="custom-control-label" for="checkAll"></label>
+                          </div>
+                        </th>
+                        <th scope="col" class="border-0">ID</th>
+                        <th scope="col" class="border-0">Full name</th>
+                        
+                        <th scope="col" class="border-0">Email</th>
+                        <th scope="col" class="border-0">Joined At</th>
+                     
+                        <th scope="col" class="border-0">STATUS</th>
+                        <th scope="col" class="border-0">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Table body -->
+                      <tr>
+                        <td class="align-middle border-top-0">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="postOne" />
+                            <label class="custom-control-label" for="postOne"></label>
+                          </div>
+                        </td>
+                        <td class="align-middle border-top-0">
+                          <h5 class="mb-0">
+                            <a href="#!" class="text-inherit">
+                           #1
+                            </a>
+                          </h5>
+                        </td>
+                        <td class="align-middle border-top-0">
+                          <div class="d-flex align-items-center">
+                            <img src="../assets/images/avatar/avatar-7.jpg" alt=""
+                              class="rounded-circle avatar-xs mr-2" />
+                            <h5 class="mb-0">Reva Yokk</h5>
+                          </div>
+                        </td>
+                       
+                        <td class="align-middle border-top-0">
+                         yacin@gmail.com
+                        </td>
+                        <td class="align-middle border-top-0">
+                            7 July, 2021 1:42pm
+                          </td>
+                       
+                        <td class="align-middle border-top-0">
+                          <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Draft
+                        </td>
+                        <td class="text-muted align-middle border-top-0">
+                          <a class="btn btn-white" href="#!" data-target="#newCatgory"><i
+                            class="fe fe-edit dropdown-item-icon"></i></a>
+                        
+                        </td>
+                      </tr>
+                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
+                      class="mdi mdi-chevron-left"></i></a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link mx-1 rounded" href="#!">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!">2</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!">3</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mb-0" id="newCatgoryLabel">
+          Create New Category
+        </h4>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+      </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Title<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Write a Category" id="title" required>
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label">Slug</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="slug">https://example.com</span>
+              </div>
+              <input type="text" class="form-control" id="basic-url" aria-describedby="slug"
+                placeholder="designcourses" required>
+            </div>
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label">Parent</label>
+            <select class="selectpicker" data-width="100%">
+              <option value="">Select</option>
+              <option value="Course">Course</option>
+              <option value="Tutorial">Tutorial</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Company">Company</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label">Description</label>
+            <div id="editor">
+              <br>
+              <h4>One Ring to Rule Them All</h4>
+              <br>
+              <p>
+                Three Rings for the
+                <i> Elven-kingsunder</i> the sky,
+                <br> Seven for the
+                <u>Dwarf-lords</u> in halls of stone, Nine for Mortal Men,
+                <br> doomed to die, One for the Dark Lord on his dark throne.
+                <br> In the Land of Mordor where the Shadows lie.
+                <br>
+                <br>
+              </p>
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Enabled</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+              <label class="custom-control-label" for="customSwitch1"></label>
+            </div>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">Add New Category</button>
+            <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
