@@ -110,6 +110,7 @@
                         <h3 class="mb-0">Activity Liste</h3>
                         <span> Activity liste Dashboard is a quick overview of all current
                             Activity liste.</span>
+                            <a href="#" class="badge badge-primary"  data-toggle="modal" data-target="#newCatgory">add activity</a>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
@@ -125,22 +126,51 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {% for activity in activites %}
                                 <tr>
                                     <td class="align-middle border-top-0">
                                         <h5 class="mb-0">
                                             <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #IDACTIVITY
+                                             #{{ activity.id }}
                                             </a>
                                         </h5>
                                     </td>
-                                    <td class="align-middle border-top-0">SQUAD</td>
-                                    <td class="align-middle border-top-0">description</td>
-                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm">edit</a></td>
-                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm">remove</a></td>
-                                  
+                                    <td class="align-middle border-top-0">{{ activity.nom }}</td>
+                                    <td class="align-middle border-top-0">{{ activity.description }}</td>
+                                    <td class="align-middle border-top-0"><a href="{{ path('Update_Activity', {'id' : activity.id  })}}" class="btn btn-white btn-sm">edit</a></td>
+                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm"  
+                                        data-toggle="modal" data-target="#DeleteACT{{activity.id}}">remove</a></td>
+                                    <div class="modal fade" id="DeleteACT{{activity.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title mb-0" id="DeleteDISPOLabel">
+                                            Delete Activity ? 
+                                          </h4>
+                                          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                         
+                                           
+                                            <div class="form-group mb-2">
+                                              <label class="form-label" for="title">are you sure do you want to delete Activity? <span class="text-danger">*</span></label>
+                                            </div>
+                                            <div> 
+                                             <a class="btn btn-danger btn-sm" href="{{ path('DeleteActivity', {'id' : activity.id  }) }}">DELETE</a>
+                                              <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                                Close
+                                              </button>
+                                            </div>
+                                         
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
                                 </tr>
-                            
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -149,5 +179,47 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0" id="newCatgoryLabel">
+        Activity
+      </h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+    </button>
+    </div>
+    <div class="modal-body">
+      {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+       
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">nom<span class="text-danger">*</span></label>
+          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control' , 'placeholder':'nom'}})}}
+          <small>Field must contain a unique value</small>
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">description<span class="text-danger">*</span></label><br>
+          {{ form_widget(form.description , {'attr' : {'class' : 'form-control' , 'placeholder':'description'}})}}
 
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">image<span class="text-danger">*</span></label><br>
+          {{ form_widget(form.image , {'attr' : {'class' : 'form-control' , 'placeholder':'image'}})}}
+
+        </div>
+        <div>
+
+          {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+       
+          <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}
