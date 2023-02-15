@@ -23,7 +23,7 @@
             </nav>
           </div>
           <div>
-            <a href="#!" class="btn btn-primary">New Client</a>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newClient">New Client</a>
           </div>
         </div>
       </div>
@@ -68,17 +68,18 @@
                           </div>
                         </th>
                         <th scope="col" class="border-0">ID</th>
+                        <th scope="col" class="border-0">Cin </th>
                         <th scope="col" class="border-0">Full name</th>
                         
                         <th scope="col" class="border-0">Email</th>
-                        <th scope="col" class="border-0">Joined At</th>
-                     
-                        <th scope="col" class="border-0">STATUS</th>
+                        <th scope="col" class="border-0">Adresse </th>
+                        <th scope="col" class="border-0">Age </th>
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <!-- Table body -->
+                      {%  for u in  User_client %}
                       <tr>
                         <td class="align-middle border-top-0">
                           <div class="custom-control custom-checkbox">
@@ -89,35 +90,74 @@
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                           #1
+                           {{ u.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                          <div class="d-flex align-items-center">
-                            <img src="../assets/images/avatar/avatar-7.jpg" alt=""
-                              class="rounded-circle avatar-xs mr-2" />
-                            <h5 class="mb-0">Reva Yokk</h5>
-                          </div>
+                          
+                            <h5 class="mb-0">{{ u.CIN }}</h5>
+                         
                         </td>
                        
                         <td class="align-middle border-top-0">
-                         yacin@gmail.com
+                        <div class="d-flex align-items-center">
+                          <a href="{{ path('UpdateClientDashboard' , {'id' : u.id }) }}" class="text-inherit">
+                            <img src="/uploads/{{ u.image }}" alt="" class="rounded-circle avatar-xs mr-2">
+                         {{ u.Name }}
+                          </a>
+                          </div>
                         </td>
                         <td class="align-middle border-top-0">
-                            7 July, 2021 1:42pm
+                           {{ u.Email }}
                           </td>
                        
                         <td class="align-middle border-top-0">
-                          <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Draft
+                         {{ u.Adresse }}
+                        </td>
+                         <td class="align-middle border-top-0">
+                         {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" href="#!" data-target="#newCatgory"><i
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteClient"><i
                             class="fe fe-edit dropdown-item-icon"></i></a>
                         
                         </td>
+                        <div class="modal fade" id="DeleteClient" tabindex="-1" role="dialog" aria-labelledby="DeleteClientLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title mb-0" id="DeleteClientLabel">
+                                            Delete Client Slote ? 
+                                          </h4>
+                                          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                <div class="form-group mb-2">
+                                              <label class="form-label" for="title">are you sure do you want to delete Client Slot? <span class="text-danger">*</span></label>
+
+
+                                            </div>
+
+
+                                            <div>
+
+
+                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteClient', {'id' : u.id  }) }}">DELETE</a>
+                                              <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                                Close
+                                              </button>
+                                            </div>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
                       </tr>
-                    
+                    {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -152,82 +192,78 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+ <div class="modal fade" id="newClient" tabindex="-1" role="dialog" aria-labelledby="newClientLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title mb-0" id="newCatgoryLabel">
-          Create New Category
+        <h4 class="modal-title mb-0" id="newClientLabel">
+          Add New Sub for Si 
         </h4>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
       </button>
       </div>
       <div class="modal-body">
-        <form>
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Title<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" placeholder="Write a Category" id="title" required>
+            <label class="form-label" for="title">Cin<span class="text-danger">*</span></label>
+             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control' , 'placeholder':'CIN'}})}}
             <small>Field must contain a unique value</small>
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Slug</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="slug">https://example.com</span>
-              </div>
-              <input type="text" class="form-control" id="basic-url" aria-describedby="slug"
-                placeholder="designcourses" required>
-            </div>
+            <label class="form-label" for="title">Name <span class="text-danger">*</span></label>
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control' , 'placeholder':'Name'}})}}
             <small>Field must contain a unique value</small>
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Parent</label>
-            <select class="selectpicker" data-width="100%">
-              <option value="">Select</option>
-              <option value="Course">Course</option>
-              <option value="Tutorial">Tutorial</option>
-              <option value="Workshop">Workshop</option>
-              <option value="Company">Company</option>
-            </select>
+            <label class="form-label" for="title">Adresse<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control' , 'placeholder':'Adresse'}})}}
+
           </div>
-          <div class="form-group mb-3">
-            <label class="form-label">Description</label>
-            <div id="editor">
-              <br>
-              <h4>One Ring to Rule Them All</h4>
-              <br>
-              <p>
-                Three Rings for the
-                <i> Elven-kingsunder</i> the sky,
-                <br> Seven for the
-                <u>Dwarf-lords</u> in halls of stone, Nine for Mortal Men,
-                <br> doomed to die, One for the Dark Lord on his dark throne.
-                <br> In the Land of Mordor where the Shadows lie.
-                <br>
-                <br>
-              </p>
-            </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Age<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control' , 'placeholder':'Age'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">NumeroTel<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control' , 'placeholder':'NumeroTel'}})}}
+
+          </div>
+           <div class="form-group mb-2">
+            <label class="form-label" for="title">Email<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control' , 'placeholder':'Email'}})}}
+
+          </div>
+           <div class="form-group mb-2">
+            <label class="form-label" for="title">Password<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Confirm Password<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
+
           </div>
           <div class="mb-2">
-            <label class="form-label">Enabled</label>
+            <label class="form-label">Confirmed</label>
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
               <label class="custom-control-label" for="customSwitch1"></label>
             </div>
           </div>
           <div>
-            <button type="submit" class="btn btn-primary">Add New Category</button>
+
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+         
             <button type="button" class="btn btn-outline-white" data-dismiss="modal">
               Close
             </button>
           </div>
-        </form>
+          {{ form_end(form)}}
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}

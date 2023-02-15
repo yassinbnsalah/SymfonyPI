@@ -17,12 +17,12 @@
                     class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
                     <div class="d-flex align-items-center">
                         <div class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5">
-                            <img src="../assets/images/avatar/avatar-3.jpg" class="avatar-xl rounded-circle border-width-4 border-white"
+                            <img src="/uploads/{{ app.user.image }}" class="avatar-xl rounded-circle border-width-4 border-white"
                                 alt="" />
                         </div>
                         <div class="lh-1">
                             <h2 class="mb-0">
-                                Stella Flores
+                                {{ user.name }}
                                 <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
@@ -31,7 +31,7 @@
                                     </svg>
                                 </a>
                             </h2>
-                            <p class="mb-0 d-block">@stellaflores</p>
+                            <p class="mb-0 d-block">{{ user.email }}</p>
                         </div>
                     </div>
                     
@@ -60,49 +60,64 @@
                             <ul class="list-unstyled ml-n2 mb-4">
                                     <!-- Nav item -->
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="student-subscriptions.html"><i class="fe fe-calendar nav-icon"></i>My
+                                    <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-calendar nav-icon"></i>My
                                         Subscriptions
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
                                     </a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-credit-card nav-icon"></i>Billing
-                                        Info</a>
+                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-credit-card nav-icon"></i>Planning list</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Payment</a>
+                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Invoice</a>
+                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
+                                </li>
+                                {% if is_granted('ROLE_MEDCIN') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('ListeRendezVous') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
+                                </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_COACH') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
+                                </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('admindash') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
+                                </li>
+                                {% endif %}
                             </ul>
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="profile-edit.html"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                    <a class="nav-link" href="{{ path('UpdateClientData') }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="security.html"><i class="fe fe-user nav-icon"></i>Security</a>
                                 </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="social-profile.html"><i class="fe fe-refresh-cw nav-icon"></i>Social
-                                        Profiles</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="notifications.html"><i class="fe fe-bell nav-icon"></i>Notifications</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="profile-privacy.html"><i class="fe fe-lock nav-icon"></i>Profile
-                                        Privacy</a>
-                                </li>
+                                
                                     <!-- Nav item -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="delete-profile.html"><i class="fe fe-trash nav-icon"></i>Delete
@@ -125,7 +140,7 @@
                         <div class="mb-3 mb-lg-0">
                             <h3 class="mb-0">My Subscriptions</h3>
                             <p class="mb-0">
-                                Here is list of package/product that you have subscribed.
+                                Here is list of package/product that you have subscribed. 
                             </p>
                         </div>
                         <div>
@@ -134,83 +149,63 @@
                     </div>
                     <!-- Card body -->
                     <div class="card-body">
+                        {% for sub in user.getSubscriptions() %}
+                        {% if sub.state == "Confirmed" %}
                         <div class="border-bottom pt-0 pb-5">
                             <div class="row mb-4">
                                 <div class="col-lg-6 col-md-8 col-7 mb-2 mb-lg-0">
                                     <span class="d-block">
                                         <span class="h4">Monthly</span>
+                                        {% if sub.state == "Confirmed" %}
                                         <span class="badge badge-success ml-2">
-                                            Active</span></span>
+                                            Confirmed</span>
+                                        {% else %}
+                                        <span class="badge badge-warning ml-2">
+                                            Suspanded</span>
+                                            {% endif %}
+                                        </span>
                                     <p class="mb-0 font-size-xs">
-                                        Subscription ID: #100010002
+                                        Subscription ID: #{{sub.id}}
                                     </p>
                                 </div>
-                                <div class="col-lg-3 col-md-4 col-5 mb-2 mb-lg-0">
-                                    <!-- Custom Switch -->
-                                    <span>Auto Renewal</span>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch1" checked />
-                                        <label class="custom-control-label" for="customSwitch1"></label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-12 col-12 d-lg-flex align-items-start justify-content-end">
-                                    <a href="#!" class="btn btn-outline-primary btn-sm">Change Plan</a>
-                                </div>
+                              
                             </div>
                             <!-- Pricing data -->
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
                                     <span class="font-size-xs">Started On</span>
-                                    <h6 class="mb-0">Oct 1, 2020</h6>
+                                    <h6 class="mb-0"> {{ sub.dateSub|date('d-m-Y') }}</h6>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Price</span>
-                                    <h6 class="mb-0">Monthly</h6>
+                                    <span class="font-size-xs">Paiement Type</span>
+                                    <h6 class="mb-0">{{ sub.paiementType }}</h6>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Access</span>
-                                    <h6 class="mb-0">Access All Courses</h6>
+                                    <span class="font-size-xs">Type Sub</span>
+                                    <h6 class="mb-0">    {% if sub.type == 1 %}
+                                        <h5 class="mb-0">
+                                        1 Month
+                                      </h5>
+                                     {% endif %}
+                                     {% if sub.type ==2 %}
+                                     <h5 class="mb-0">
+                                     3 Months
+                                   </h5>
+                                  {% endif %}
+                                  {% if sub.type == 3 %}
+                                  <h5 class="mb-0">
+                                6 Months
+                                </h5>
+                               {% endif %}</h6>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Billing Date</span>
-                                    <h6 class="mb-0">Next Billing on Nov 1, 2020</h6>
+                                    <span class="font-size-xs">Due Date</span>
+                                    <h6 class="mb-0">{{ sub.dateExpire|date('d-m-Y') }}</h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="pt-5">
-                            <div class="row mb-4">
-                                <div class="col mb-2 mb-lg-0">
-                                    <span class="d-block">
-                                        <span class="h4">Free Plan</span>
-                                        <span class="badge badge-danger ml-2">
-                                            Expired</span></span>
-                                    <p class="mb-0 font-size-xs">
-                                        Subscription ID: #100010001
-                                    </p>
-                                </div>
-                                <div class="col-auto">
-                                    <a href="#!" class="btn btn-light btn-sm disabled">Disabled</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Started On</span>
-                                    <h6 class="mb-0">Sept 1, 2020</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Price</span>
-                                    <h6 class="mb-0">Free - Trial a Month</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Access</span>
-                                    <h6 class="mb-0">Access All Courses</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Billing Date</span>
-                                    <h6 class="mb-0">Next Billing on Oct 1, 2020</h6>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

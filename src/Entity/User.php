@@ -95,17 +95,30 @@ class User implements UserInterface
     private $reset_token;
 
     
-     #[ORM\Column(type:"string", length:255, nullable:true)]
+     #[ORM\Column(type:"string", length:255, nullable:false)]
      #[Groups("post:read")]
      
     private $Image;
 
      #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
+     
      private Collection $subscriptions;
+
+     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Disponibility::class)]
+     private Collection $disponibilities;
+
+     #[ORM\OneToMany(mappedBy: 'fromuser', targetEntity: RendezVous::class)]
+     private Collection $rendezVouses;
+
+     #[ORM\OneToMany(mappedBy: 'todoctor', targetEntity: RendezVous::class)]
+     private Collection $rdvdoctor;
 
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
+         $this->disponibilities = new ArrayCollection();
+         $this->rendezVouses = new ArrayCollection();
+         $this->rdvdoctor = new ArrayCollection();
      }
 
     public function __toString()
@@ -320,6 +333,96 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($subscription->getUser() === $this) {
                 $subscription->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disponibility>
+     */
+    public function getDisponibilities(): Collection
+    {
+        return $this->disponibilities;
+    }
+
+    public function addDisponibility(Disponibility $disponibility): self
+    {
+        if (!$this->disponibilities->contains($disponibility)) {
+            $this->disponibilities->add($disponibility);
+            $disponibility->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibility(Disponibility $disponibility): self
+    {
+        if ($this->disponibilities->removeElement($disponibility)) {
+            // set the owning side to null (unless already changed)
+            if ($disponibility->getDoctor() === $this) {
+                $disponibility->setDoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RendezVous>
+     */
+    public function getRendezVouses(): Collection
+    {
+        return $this->rendezVouses;
+    }
+
+    public function addRendezVouse(RendezVous $rendezVouse): self
+    {
+        if (!$this->rendezVouses->contains($rendezVouse)) {
+            $this->rendezVouses->add($rendezVouse);
+            $rendezVouse->setFromuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendezVouse(RendezVous $rendezVouse): self
+    {
+        if ($this->rendezVouses->removeElement($rendezVouse)) {
+            // set the owning side to null (unless already changed)
+            if ($rendezVouse->getFromuser() === $this) {
+                $rendezVouse->setFromuser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RendezVous>
+     */
+    public function getRdvdoctor(): Collection
+    {
+        return $this->rdvdoctor;
+    }
+
+    public function addRdvdoctor(RendezVous $rdvdoctor): self
+    {
+        if (!$this->rdvdoctor->contains($rdvdoctor)) {
+            $this->rdvdoctor->add($rdvdoctor);
+            $rdvdoctor->setTodoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRdvdoctor(RendezVous $rdvdoctor): self
+    {
+        if ($this->rdvdoctor->removeElement($rdvdoctor)) {
+            // set the owning side to null (unless already changed)
+            if ($rdvdoctor->getTodoctor() === $this) {
+                $rdvdoctor->setTodoctor(null);
             }
         }
 

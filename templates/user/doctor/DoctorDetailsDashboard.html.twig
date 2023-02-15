@@ -1,0 +1,240 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+<div class="container-fluid p-4">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Page header -->
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">{{ doctor.Name}}</h1>
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ doctor.Email}}
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">Add New Disponibility</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Total Subs</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">1520 </h2>
+                <span>100Last 30Days</span>
+              </div>
+              <div>
+                <span class="bg-light-primary icon-shape icon-xl rounded-lg text-dark-primary"><i
+                    class="mdi mdi-text-box-multiple mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Phone number</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">367</h2>
+                <span>300+ Media Object</span>
+              </div>
+              <div>
+                <span class="bg-light-warning icon-shape icon-xl rounded-lg text-dark-warning"><i
+                    class="mdi mdi-folder-multiple-image mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Total amount</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">13,234</h2>
+                <span>1.5k in 30Days</span>
+              </div>
+              <div>
+                <span class="bg-light-success icon-shape icon-xl rounded-lg text-dark-success"><i
+                    class="mdi mdi-account-multiple mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card Body -->
+          <div class=" card-body">
+            <span class="font-size-xs text-uppercase font-weight-semi-bold">Current state</span>
+            <div class="mt-2 d-flex justify-content-between align-items-center">
+              <div class="lh-1">
+                <h2 class="h1 font-weight-bold mb-1">120</h2>
+                <span>20+ Comments</span>
+              </div>
+              <div>
+                <span class="bg-light-info icon-shape icon-xl rounded-lg text-dark-info"><i
+                    class="mdi mdi-comment-text mdi-24px"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card header -->
+          <div
+            class="card-header d-flex justify-content-between align-items-center border-bottom-0 card-header-height">
+            <h4 class="mb-0">His Disponibility shedule </h4>
+           
+          </div>
+          <!-- Table -->
+          <div class="table-responsive border-0 overflow-y-hidden">
+            <table class="table mb-0 text-nowrap">
+                <thead>
+                    <tr>
+                        <th scope="col" class="border-0">ID</th>
+                        <th scope="col" class="border-0">Date Disponibility</th>
+                        <th scope="col" class="border-0">Start From</th>
+                        <th scope="col" class="border-0">End From</th>
+                        <th scope="col" class="border-0">ACtion</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispo in doctor.getDisponibilities() %}
+                    <tr>
+                        <td class="align-middle border-top-0">
+                            <h5 class="mb-0">
+                                <a href="#!" class="text-inherit" >
+                                 # {{ dispo.id }}
+                                </a>
+                            </h5>
+                        </td>
+                        <td class="align-middle border-top-0">{{ dispo.dateDispo|date('d-m-Y') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureStart|date('h:i') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureEnd|date('h:i') }}</td>
+                        <td class="align-middle border-top-0">
+                         
+                            <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>
+                        </td>
+                        <div class="modal fade" id="DeleteDISPO" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title mb-0" id="DeleteDISPOLabel">
+                                Delete Disponibility Slote ? 
+                              </h4>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                             
+                               
+                                <div class="form-group mb-2">
+                                  <label class="form-label" for="title">are you sure do you want to delete Disponibility Slot? <span class="text-danger">*</span></label>
+                                  
+                               
+                                </div>
+                           
+                              
+                                <div>
+                        
+                                    
+                                 <a class="btn btn-danger btn-sm" href="{{ path('DeleteDisponibility', {'id' : dispo.id  }) }}">DELETE</a>
+                                  <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                    Close
+                                  </button>
+                                </div>
+                             
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                    </tr>
+                  
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mb-0" id="newCatgoryLabel">
+           Add New Disponibility Slot Doctor {{ doctor.name }}
+        </h4>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+      </button>
+      </div>
+      <div class="modal-body">
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+         
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
+            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">HeureStart<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker' , 'placeholder':'HeureStart'}})}}
+  
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">HeureEnd<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control' , 'placeholder':'HeureEnd'}})}}
+  
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Note<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Note , {'attr' : {'class' : 'form-control' , 'placeholder':'Note'}})}}
+  
+          </div>
+        
+          <div>
+  
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+         
+            <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+          {{ form_end(form)}}
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}

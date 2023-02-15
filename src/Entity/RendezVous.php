@@ -17,17 +17,23 @@ class RendezVous
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $DateRV = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $HourRV = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $DatePassageRV = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $HourPassageRV = null;
 
     #[ORM\Column(length: 255)]
     private ?string $State = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rendezVouses')]
+    private ?user $fromuser = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rdvdoctor')]
+    private ?user $todoctor = null;
 
     public function getId(): ?int
     {
@@ -90,6 +96,30 @@ class RendezVous
     public function setState(string $State): self
     {
         $this->State = $State;
+
+        return $this;
+    }
+
+    public function getFromuser(): ?user
+    {
+        return $this->fromuser;
+    }
+
+    public function setFromuser(?user $fromuser): self
+    {
+        $this->fromuser = $fromuser;
+
+        return $this;
+    }
+
+    public function getTodoctor(): ?user
+    {
+        return $this->todoctor;
+    }
+
+    public function setTodoctor(?user $todoctor): self
+    {
+        $this->todoctor = $todoctor;
 
         return $this;
     }

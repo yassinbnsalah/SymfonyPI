@@ -49,13 +49,13 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
         $user = $token->getUser();
 
         if (in_array('ROLE_ADMIN',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+            return new RedirectResponse($this->urlGenerator->generate('admindash'));
         }elseif(in_array('ROLE_CLIENT',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_client'));
+            return new RedirectResponse($this->urlGenerator->generate('listeSubClient'));
         }elseif(in_array('ROLE_MEDCIN',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_medcin'));
+            return new RedirectResponse($this->urlGenerator->generate('ListeRendezVous'));
         }elseif(in_array('ROLE_COACH',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_coach'));
+            return new RedirectResponse($this->urlGenerator->generate('activityListe'));
         }elseif(in_array('ROLE_PHARMACIEN',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('app_pharmacien'));
         }
