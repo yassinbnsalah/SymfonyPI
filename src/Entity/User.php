@@ -95,17 +95,22 @@ class User implements UserInterface
     private $reset_token;
 
     
-     #[ORM\Column(type:"string", length:255, nullable:true)]
+     #[ORM\Column(type:"string", length:255, nullable:false)]
      #[Groups("post:read")]
      
     private $Image;
 
      #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
+     
      private Collection $subscriptions;
+
+     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Disponibility::class)]
+     private Collection $disponibilities;
 
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
+         $this->disponibilities = new ArrayCollection();
      }
 
     public function __toString()
@@ -320,6 +325,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($subscription->getUser() === $this) {
                 $subscription->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disponibility>
+     */
+    public function getDisponibilities(): Collection
+    {
+        return $this->disponibilities;
+    }
+
+    public function addDisponibility(Disponibility $disponibility): self
+    {
+        if (!$this->disponibilities->contains($disponibility)) {
+            $this->disponibilities->add($disponibility);
+            $disponibility->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibility(Disponibility $disponibility): self
+    {
+        if ($this->disponibilities->removeElement($disponibility)) {
+            // set the owning side to null (unless already changed)
+            if ($disponibility->getDoctor() === $this) {
+                $disponibility->setDoctor(null);
             }
         }
 

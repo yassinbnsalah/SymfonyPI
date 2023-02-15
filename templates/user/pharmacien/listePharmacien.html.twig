@@ -1,6 +1,5 @@
 {% extends 'baseadmin.html.twig' %}
 
-{% block title %}Subscribers{% endblock %}
 
 {% block body %}
 
@@ -16,7 +15,7 @@
                 <li class="breadcrumb-item">
                   <a href="admin-dashboard.html">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">users</a></li>
+                <li class="breadcrumb-item"><a href="#!">Users</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     All Pharmaciens
                 </li>
@@ -24,7 +23,7 @@
             </nav>
           </div>
           <div>
-            <a href="#!" class="btn btn-primary">New Pharmacien</a>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newPharmaciens">New Pharmaciens</a>
           </div>
         </div>
       </div>
@@ -49,7 +48,7 @@
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
-              <input type="search" class="form-control pl-6" placeholder="Search Pharmacien" />
+              <input type="search" class="form-control pl-6" placeholder="Search Pharmaciens" />
             </form>
           </div>
           <div>
@@ -69,16 +68,18 @@
                           </div>
                         </th>
                         <th scope="col" class="border-0">ID</th>
-                        <th scope="col" class="border-0">Name</th>
-                        <th scope="col" class="border-0">Prename</th>
+                        <th scope="col" class="border-0">Cin </th>
+                        <th scope="col" class="border-0">Full name</th>
+                        
                         <th scope="col" class="border-0">Email</th>
-                        <th scope="col" class="border-0">Joined at</th>
-                       
+                        <th scope="col" class="border-0">Adresse </th>
+                        <th scope="col" class="border-0">Age </th>
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <!-- Table body -->
+                      {%  for u in  User_pharmacien %}
                       <tr>
                         <td class="align-middle border-top-0">
                           <div class="custom-control custom-checkbox">
@@ -89,31 +90,73 @@
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                             #12
+                           {{ u.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                         Yesine
+                          
+                            <h5 class="mb-0">{{ u.CIN }}</h5>
+                         
+                        </td>
+                       
+                        <td class="align-middle border-top-0">
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/images/avatar/avatar-7.jpg" alt=""
+                              class="rounded-circle avatar-xs mr-2" />
+                         {{ u.Name }}
+                          </div>
                         </td>
                         <td class="align-middle border-top-0">
-                         ben  salah
-                        </td>
-                        <td class="align-middle border-top-0">
-                         yacin@gmail.com
-                        </td>
-                        <td class="align-middle border-top-0">
-                            7 July, 2021 1:42pm
+                           {{ u.Email }}
                           </td>
                        
-                    
+                        <td class="align-middle border-top-0">
+                         {{ u.Adresse }}
+                        </td>
+                         <td class="align-middle border-top-0">
+                         {{ u.Age }}
+                        </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" href="#!"><i
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeletePharmaciens"><i
                             class="fe fe-edit dropdown-item-icon"></i></a>
                         
                         </td>
+                        <div class="modal fade" id="DeletePharmaciens" tabindex="-1" role="dialog" aria-labelledby="DeletePharmaciensLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title mb-0" id="DeletePharmaciensLabel">
+                                            Delete Pharmaciens? 
+                                          </h4>
+                                          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                <div class="form-group mb-2">
+                                              <label class="form-label" for="title">are you sure do you want to delete Pharmaciens ? <span class="text-danger">*</span></label>
+
+
+                                            </div>
+
+
+                                            <div>
+
+
+                                             <a class="btn btn-danger btn-sm" href="{{ path('deletePharmaciens', {'id' : u.id  }) }}">DELETE</a>
+                                              <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                                Close
+                                              </button>
+                                            </div>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </div>
                       </tr>
-                    
+                    {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -148,5 +191,78 @@
       </div>
     </div>
   </div>
+ <div class="modal fade" id="newPharmaciens" tabindex="-1" role="dialog" aria-labelledby="newPharmaciensLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title mb-0" id="newPharmaciensLabel">
+          Add New Sub for Si 
+        </h4>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+      </button>
+      </div>
+      <div class="modal-body">
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Cin<span class="text-danger">*</span></label>
+             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control' , 'placeholder':'CIN'}})}}
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Name <span class="text-danger">*</span></label>
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control' , 'placeholder':'Name'}})}}
+            <small>Field must contain a unique value</small>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Adresse<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control' , 'placeholder':'Adresse'}})}}
 
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Age<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control' , 'placeholder':'Age'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">NumeroTel<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control' , 'placeholder':'NumeroTel'}})}}
+
+          </div>
+           <div class="form-group mb-2">
+            <label class="form-label" for="title">Email<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control' , 'placeholder':'Email'}})}}
+
+          </div>
+           <div class="form-group mb-2">
+            <label class="form-label" for="title">Password<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Confirm Password<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
+
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Confirmed</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+              <label class="custom-control-label" for="customSwitch1"></label>
+            </div>
+          </div>
+          <div>
+
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+         
+            <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+          {{ form_end(form)}}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

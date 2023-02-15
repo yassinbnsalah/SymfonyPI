@@ -8,19 +8,19 @@
         <!-- Page header -->
         <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
           <div class="mb-2 mb-lg-0">
-            <h1 class="mb-1 h2 font-weight-bold">{{ client.Name}}</h1>
+            <h1 class="mb-1 h2 font-weight-bold">{{ doctor.Name}}</h1>
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ client.Email}}
+                    {{ doctor.Email}}
                 </li>
               </ol>
             </nav>
           </div>
           <div>
-            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">New Sub</a>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">Add New Disponibility</a>
           </div>
         </div>
       </div>
@@ -110,82 +110,78 @@
           <!-- Card header -->
           <div
             class="card-header d-flex justify-content-between align-items-center border-bottom-0 card-header-height">
-            <h4 class="mb-0">Recent Subs</h4>
+            <h4 class="mb-0">His Disponibility shedule </h4>
            
           </div>
           <!-- Table -->
           <div class="table-responsive border-0 overflow-y-hidden">
             <table class="table mb-0 text-nowrap">
-              <thead>
-                <tr>
-                  <th scope="col" class="border-0">Sub-reference</th>
-                  <th scope="col" class="border-0">date sub</th>
-                  <th scope="col" class="border-0">date expired</th>
-                  <th scope="col" class="border-0">type</th>
-                  <th scope="col" class="border-0">state</th>
-                  <th scope="col" class="border-0">paiement method</th>
-                  <th scope="col" class="border-0"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for sub in client.getSubscriptions() %}
-                <tr>
-                  <td class="align-middle border-top-0">
-                    <h5 class="mb-0">
-                       {{ sub.id }}
-                    </h5>
-                  </td>
-                  <td class="align-middle border-top-0">
-                    {{ sub.dateSub|date('d-m-Y') }}
-                  </td>
-                  <td class="align-middle border-top-0">
-                    <a href="#!" class="text-inherit">  {{ sub.dateExpire|date('d-m-Y') }}</a>
-                  </td>
-                  <td class="align-middle border-top-0">
-                     {% if sub.type == 1 %}
-                     <h5 class="mb-0">
-                     1 Month
-                   </h5>
-                  {% endif %}
-                  {% if sub.type ==2 %}
-                  <h5 class="mb-0">
-                  3 Months
-                </h5>
-               {% endif %}
-               {% if sub.type == 3 %}
-               <h5 class="mb-0">
-             6 Months
-             </h5>
-            {% endif %}
-                  </td>
-                  <td class="align-middle border-top-0">
-                    {% if sub.state == "Confirmed" %}
-                                        <span class="badge badge-success ml-2">
-                                            Confirmed</span>
-                                        {% elseif  sub.state == "Canceled" %}
-                                        <span class="badge badge-danger ml-2">
-                                          Canceled</span>
-                                          {%else%}
-                                        <span class="badge badge-warning ml-2">
-                                            Suspanded</span>
-                                            {% endif %}
-                  </td>
-                  <td class="align-middle border-top-0">
-                    {{ sub.paiementType }}
-                  </td>
-                  <td class="align-middle border-top-0">
-                   
-                     
-                     
+                <thead>
+                    <tr>
+                        <th scope="col" class="border-0">ID</th>
+                        <th scope="col" class="border-0">Date Disponibility</th>
+                        <th scope="col" class="border-0">Start From</th>
+                        <th scope="col" class="border-0">End From</th>
+                        <th scope="col" class="border-0">ACtion</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispo in doctor.getDisponibilities() %}
+                    <tr>
+                        <td class="align-middle border-top-0">
+                            <h5 class="mb-0">
+                                <a href="#!" class="text-inherit" >
+                                 # {{ dispo.id }}
+                                </a>
+                            </h5>
+                        </td>
+                        <td class="align-middle border-top-0">{{ dispo.dateDispo|date('d-m-Y') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureStart|date('h:i') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureEnd|date('h:i') }}</td>
+                        <td class="align-middle border-top-0">
+                         
+                            <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>
+                        </td>
+                        <div class="modal fade" id="DeleteDISPO" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title mb-0" id="DeleteDISPOLabel">
+                                Delete Disponibility Slote ? 
+                              </h4>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                             
+                               
+                                <div class="form-group mb-2">
+                                  <label class="form-label" for="title">are you sure do you want to delete Disponibility Slot? <span class="text-danger">*</span></label>
+                                  
+                               
+                                </div>
+                           
+                              
+                                <div>
                         
-                        <a class="btn btn-white" href="{{ path('suspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Suspend</a>
-                        <a class="btn btn-white" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Cancel</a>
-                        <a class="btn btn-white" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
-                    
-                  </td>
-                </tr>
-           {% endfor %}
-              </tbody>
+                                    
+                                 <a class="btn btn-danger btn-sm" href="{{ path('DeleteDisponibility', {'id' : dispo.id  }) }}">DELETE</a>
+                                  <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                    Close
+                                  </button>
+                                </div>
+                             
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                    </tr>
+                  
+                    {% endfor %}
+                </tbody>
             </table>
           </div>
         </div>
@@ -198,7 +194,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title mb-0" id="newCatgoryLabel">
-          Add New Sub for Si {{ client.Name }}
+           Add New Disponibility Slot Doctor {{ doctor.name }}
         </h4>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
@@ -206,40 +202,30 @@
       </div>
       <div class="modal-body">
         {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
-          <div class="form-group mb-2">
-            <label class="form-label" for="title">User<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" value={{ client.Name }} id="title" disabled>
-            <small>Field must contain a unique value</small>
-          </div>
+         
           <div class="form-group mb-2">
             <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
-            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'DateToday'}})}}
+            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
             <small>Field must contain a unique value</small>
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Type<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.type , {'attr' : {'class' : 'form-control' , 'placeholder':'DateToday'}})}}
-
+            <label class="form-label" for="title">HeureStart<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker' , 'placeholder':'HeureStart'}})}}
+  
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Paiement methode<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control' , 'placeholder':'Paiement method'}})}}
-
+            <label class="form-label" for="title">HeureEnd<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control' , 'placeholder':'HeureEnd'}})}}
+  
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Amount<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control' , 'placeholder':'Total amount'}})}}
-
+            <label class="form-label" for="title">Note<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.Note , {'attr' : {'class' : 'form-control' , 'placeholder':'Note'}})}}
+  
           </div>
-          <div class="mb-2">
-            <label class="form-label">Confirmed</label>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-              <label class="custom-control-label" for="customSwitch1"></label>
-            </div>
-          </div>
+        
           <div>
-
+  
             {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
          
             <button type="button" class="btn btn-outline-white" data-dismiss="modal">
@@ -250,5 +236,5 @@
       </div>
     </div>
   </div>
-</div>
+  </div>
 {% endblock %}

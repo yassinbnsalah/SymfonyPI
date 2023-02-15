@@ -1,0 +1,123 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+
+<div class="container-fluid p-4">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">All Client</h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="admin-dashboard.html">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item"><a href="#!">Users</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    All Client
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newClient">New Client</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+       <!-- Card -->
+       <div class="card ">
+        <!-- Card Header -->
+        <div class="card-header">
+          <h3 class="mb-0 ">Profile Details</h3>
+          <p class="mb-0 ">You have full control to manage your own account setting.</p>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="d-lg-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center mb-4 mb-lg-0">
+              <img src="../assets/images/avatar/avatar-3.jpg" id="img-uploaded"
+                class="avatar-xl rounded-circle " alt="">
+              <div class="ml-3">
+                <h4 class="mb-0">Your avatar</h4>
+                <p class=" mb-0">PNG or JPG no bigger than 800px wide and tall.</p>
+              </div>
+            </div>
+            <div>
+              <a href="#!" class="btn btn-outline-white btn-sm">Update</a>
+              <a href="#!" class="btn btn-outline-danger btn-sm ">Delete</a>
+            </div>
+          </div>
+          <hr class="my-5">
+          <div>
+            <h4 class="mb-0">Personal Details</h4>
+            <p class="mb-4 ">Edit your personal information and address.</p>
+            <!-- Form -->
+            <form class="form-row">
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="profilefname">First Name</label>
+                <input type="text" id="profilefname" class="form-control" placeholder="First Name"
+                  required>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="profilelname">Last Name</label>
+                <input type="text" id="profilelname" class="form-control" placeholder="Last Name"
+                  required>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="profilephone">Phone</label>
+                <input type="text" id="profilephone" class="form-control" placeholder="Phone"
+                  required>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="birth">Birthday</label>
+                <input class="form-control flatpickr" type="text" placeholder="Birth of Date"
+                  id="birth" name="birth">
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="profileaddress">Address Line 1</label>
+                <input type="text" id="profileaddress" class="form-control" placeholder="Address"
+                  required>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label" for="profileaddress2">Address Line
+                  2</label>
+                <input type="text" id="profileaddress2" class="form-control" placeholder="Address"
+                  required>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label">State</label>
+                <select class="selectpicker" data-width="100%">
+                  <option value="">Select State</option>
+                  <option value="1">Gujarat</option>
+                  <option value="2">Rajasthan</option>
+                  <option value="3">Maharashtra</option>
+                </select>
+              </div>
+              <div class="form-group col-12 col-md-6">
+                <label class="form-label">Country</label>
+                <select class="selectpicker" data-width="100%">
+                  <option value="">Select Country</option>
+                  <option value="1">India</option>
+                  <option value="2">UK</option>
+                  <option value="3">USA</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary" type="submit">Update Profile</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

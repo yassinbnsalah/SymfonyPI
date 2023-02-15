@@ -30,7 +30,11 @@ class Subscription
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    
     private ?User $user = null;
+
+    #[ORM\Column(length: 125)]
+    private ?string $state = null;
 
     public function getId(): ?int
     {
@@ -105,6 +109,18 @@ class Subscription
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

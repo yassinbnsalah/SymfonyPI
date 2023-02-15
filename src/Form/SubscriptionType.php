@@ -22,9 +22,9 @@ class SubscriptionType extends AbstractType
             //->add('dateExpire')
             ->add('type', ChoiceType::class, [
                 'choices'  => [
-                    'One month' => true,
-                    '3 months' => false,
-                    '6 months' => false,
+                    'One month' => "1",
+                    '3 months' => "2",
+                    '6 months' => "3",
                 ],
             ])
             ->add('paiementType')

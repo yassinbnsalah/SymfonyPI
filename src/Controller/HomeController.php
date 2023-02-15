@@ -8,17 +8,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/client', name: 'app_client')]
-    public function index(): Response
-    { 
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+  
+    
 
     #[Route('/', name: 'homepageVisitor')]
     public function homepageVisitor(): Response
-    { 
+    {   
+        if($this->getUser()){
+            return $this->render('home/home.html.twig', [
+                'controller_name' => 'HomeController',
+                'user' => $this->getUser()
+            ]);
+        }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -30,13 +31,7 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-    #[Route('/medcin', name: 'app_medcin')]
-    public function medcin(): Response
-    {
-        return $this->render('home/medcin.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
+   
     #[Route('/coach', name: 'app_coach')]
     public function coach(): Response
     {

@@ -1,4 +1,4 @@
-{% extends 'navbar.html.twig' %}
+{% extends 'mainbase.html.twig' %}
 
 
 {% block body %}
@@ -10,7 +10,7 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <!-- Bg -->
                 <div class="pt-16 rounded-top" style="
-                            background: url(../assets/images/background/profile-bg.jpg) no-repeat;
+                            background: url({{asset('assets/images/background/profile-bg.jpg')}}) no-repeat;
                             background-size: cover;
                         "></div>
                 <div
@@ -59,13 +59,13 @@
                             <span class="navbar-header">Subscription</span>
                             <ul class="list-unstyled ml-n2 mb-4">
                                     <!-- Nav item -->
-                                <li class="nav-item active">
+                                <li class="nav-item ">
                                     <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-calendar nav-icon"></i>My
                                         Subscriptions
                                     </a>
                                 </li>
-
-                                <li class="nav-item">
+ 
+                                <li class="nav-item active">
                                     <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
                                     </a>
                                 </li>
@@ -134,55 +134,41 @@
             </div>
             <div class="col-lg-9 col-md-8 col-12">
                 <!-- Card -->
-                <div class="card border-0">
+                <div class="card mb-4">
                     <!-- Card header -->
-                    <div class="card-header d-lg-flex justify-content-between align-items-center">
-                        <div class="mb-3 mb-lg-0">
-                            <h3 class="mb-0">My Subscriptions</h3>
-                            <p class="mb-0">
-                                Here is list of package/product that you have subscribed. 
-                            </p>
-                        </div>
-                        <div>
-                            <a href="pricing.html" class="btn btn-success btn-sm">Upgrade Now — Go Pro $39.00</a>
-                        </div>
+                    <div class="card-header border-bottom-0">
+                        <h3 class="mb-0">Sub History</h3>
+                        <span> Sub History Dashboard is a quick overview of all current
+                            Sub History.</span>
                     </div>
-                    <!-- Card body -->
-                    <div class="card-body">
-                        {% for sub in user.getSubscriptions() %}
-                        {% if sub.state == "Confirmed" %}
-                        <div class="border-bottom pt-0 pb-5">
-                            <div class="row mb-4">
-                                <div class="col-lg-6 col-md-8 col-7 mb-2 mb-lg-0">
-                                    <span class="d-block">
-                                        <span class="h4">Monthly</span>
-                                        {% if sub.state == "Confirmed" %}
-                                        <span class="badge badge-success ml-2">
-                                            Confirmed</span>
-                                        {% else %}
-                                        <span class="badge badge-warning ml-2">
-                                            Suspanded</span>
-                                            {% endif %}
-                                        </span>
-                                    <p class="mb-0 font-size-xs">
-                                        Subscription ID: #{{sub.id}}
-                                    </p>
-                                </div>
-                              
-                            </div>
-                            <!-- Pricing data -->
-                            <div class="row">
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Started On</span>
-                                    <h6 class="mb-0"> {{ sub.dateSub|date('d-m-Y') }}</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Paiement Type</span>
-                                    <h6 class="mb-0">{{ sub.paiementType }}</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Type Sub</span>
-                                    <h6 class="mb-0">    {% if sub.type == 1 %}
+                    <!-- Table -->
+                    <div class="table-responsive border-0">
+                        <table class="table mb-0 text-nowrap">
+                            <thead>
+                                <tr>
+                                    
+                                    <th scope="col" class="border-0">Ref</th>
+                                    <th scope="col" class="border-0">date sub</th>
+                                    <th scope="col" class="border-0">date expired</th>
+                                    <th scope="col" class="border-0">type</th>
+                                    <th scope="col" class="border-0">state</th>
+                                    <th scope="col" class="border-0">paiement method</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sub in user.getSubscriptions() %}
+                                <tr>
+                                    <td class="align-middle border-top-0">
+                                        <h5 class="mb-0">
+                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
+                                                {{ sub.id }}
+                                            </a>
+                                        </h5>
+                                    </td>
+                                    <td class="align-middle border-top-0">    {{ sub.dateSub|date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0">{{ sub.dateExpire|date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0">   {% if sub.type == 1 %}
                                         <h5 class="mb-0">
                                         1 Month
                                       </h5>
@@ -196,16 +182,23 @@
                                   <h5 class="mb-0">
                                 6 Months
                                 </h5>
-                               {% endif %}</h6>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-6 mb-2 mb-lg-0">
-                                    <span class="font-size-xs">Due Date</span>
-                                    <h6 class="mb-0">{{ sub.dateExpire|date('d-m-Y') }}</h6>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
+                               {% endif %}</td>
+                                    <td class="align-middle border-top-0"> {% if sub.state == "Confirmed" %}
+                                        <span class="badge badge-success ml-2">
+                                            Confirmed</span>
+                                        {% elseif  sub.state == "Canceled" %}
+                                        <span class="badge badge-danger ml-2">
+                                          Canceled</span>
+                                          {%else%}
+                                        <span class="badge badge-warning ml-2">
+                                            Suspanded</span>
+                                            {% endif %}</td>
+                                            <td class="align-middle border-top-0">
+                                                {{ sub.paiementType }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
