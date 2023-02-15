@@ -1,0 +1,191 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+
+<div class="container-fluid p-4">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">Product Category</h1>
+             <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="admin-dashboard.html">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="#!">Store</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Products Category
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div>
+            <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">Add New
+              Category</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card mb-4">
+          <!-- Card header -->
+          <div class="card-header border-bottom-0">
+            <!-- Form -->
+            <form class="d-flex align-items-center">
+               <span class="position-absolute pl-3 search-icon">
+                <i class="fe fe-search"></i>
+              </span>
+              <input type="search" class="form-control pl-6" placeholder="Search Course Category" />
+            </form>
+          </div>
+          <!-- Table -->
+          <div class="table-responsive border-0 overflow-y-hidden">
+            <table class="table mb-0 text-nowrap">
+              <thead>
+                <tr>
+                  <th class="border-0">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="checkAll" />
+                      <label class="custom-control-label" for="checkAll"></label>
+                    </div>
+                  </th>
+                  <th class="border-0">CATEGORY</th>
+                  <th class="border-0">SLUG</th>
+                  <th class="border-0">Product</th>
+                  <th class="border-0">DATE CREATED</th>
+             
+                  <th class="border-0">STATUS</th>
+                  <th class="border-0"></th>
+                </tr>
+              </thead>
+              <tbody>
+         
+                <tr>
+                  <td class="align-middle">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="categoryCheck3" />
+                      <label class="custom-control-label" for="categoryCheck3"></label>
+                    </div>
+                  </td>
+                  <td class="align-middle">
+                    <a href="#!" class="text-inherit">
+                      <h5 class="mb-0 text-primary-hover">Workshop</h5>
+                    </a>
+                  </td>
+                  <td class="align-middle">Workshop</td>
+                  <td class="align-middle">6</td>
+                  <td class="align-middle">16 Oct, 2020</td>
+                 
+                  <td class="align-middle">
+                    <span class="badge-dot badge-success"></span>
+                  </td>
+                  <td class="text-muted align-middle">
+                    <span class="dropdown dropleft">
+                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown3"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fe fe-more-vertical"></i>
+                      </a>
+                      <span class="dropdown-menu" aria-labelledby="courseDropdown3">
+                    
+                        <a class="dropdown-item" href="#!"><i
+                            class="fe fe-trash dropdown-item-icon"></i>Update</a>
+                        <a class="dropdown-item" href="#!"><i
+                            class="fe fe-trash dropdown-item-icon"></i>Delete</a>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+          
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- Modal -->
+   <div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h4 class="modal-title mb-0" id="newCatgoryLabel">
+           Create New Category
+         </h4>
+         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+       </button>
+       </div>
+       <div class="modal-body">
+         <form>
+           <div class="form-group mb-2">
+             <label class="form-label" for="title">Title<span class="text-danger">*</span></label>
+             <input type="text" class="form-control" placeholder="Write a Category" id="title" required>
+             <small>Field must contain a unique value</small>
+           </div>
+           <div class="form-group mb-2">
+             <label class="form-label">Slug</label>
+             <div class="input-group">
+               <div class="input-group-prepend">
+                 <span class="input-group-text" id="slug">https://example.com</span>
+               </div>
+               <input type="text" class="form-control" id="basic-url" aria-describedby="slug"
+                 placeholder="designcourses" required>
+             </div>
+             <small>Field must contain a unique value</small>
+           </div>
+           <div class="form-group mb-2">
+             <label class="form-label">Parent</label>
+             <select class="selectpicker" data-width="100%">
+               <option value="">Select</option>
+               <option value="Course">Course</option>
+               <option value="Tutorial">Tutorial</option>
+               <option value="Workshop">Workshop</option>
+               <option value="Company">Company</option>
+             </select>
+           </div>
+           <div class="form-group mb-3">
+             <label class="form-label">Description</label>
+             <div id="editor">
+               <br>
+               <h4>One Ring to Rule Them All</h4>
+               <br>
+               <p>
+                 Three Rings for the
+                 <i> Elven-kingsunder</i> the sky,
+                 <br> Seven for the
+                 <u>Dwarf-lords</u> in halls of stone, Nine for Mortal Men,
+                 <br> doomed to die, One for the Dark Lord on his dark throne.
+                 <br> In the Land of Mordor where the Shadows lie.
+                 <br>
+                 <br>
+               </p>
+             </div>
+           </div>
+           <div class="mb-2">
+             <label class="form-label">Enabled</label>
+             <div class="custom-control custom-switch">
+               <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+               <label class="custom-control-label" for="customSwitch1"></label>
+             </div>
+           </div>
+           <div>
+             <button type="submit" class="btn btn-primary">Add New Category</button>
+             <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+               Close
+             </button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
+{% endblock %}

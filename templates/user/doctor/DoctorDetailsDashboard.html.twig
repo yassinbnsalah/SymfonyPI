@@ -122,6 +122,7 @@
                         <th scope="col" class="border-0">Date Disponibility</th>
                         <th scope="col" class="border-0">Start From</th>
                         <th scope="col" class="border-0">End From</th>
+                        <th scope="col" class="border-0">Note</th>
                         <th scope="col" class="border-0">ACtion</th>
                       
                     </tr>
@@ -137,8 +138,9 @@
                             </h5>
                         </td>
                         <td class="align-middle border-top-0">{{ dispo.dateDispo|date('d-m-Y') }}</td>
-                        <td class="align-middle border-top-0">{{ dispo.heureStart|date('h:i') }}</td>
-                        <td class="align-middle border-top-0">{{ dispo.heureEnd|date('h:i') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureStart|date('H:i') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.heureEnd|date('H:i') }}</td>
+                        <td class="align-middle border-top-0">{{ dispo.Note }}</td>
                         <td class="align-middle border-top-0">
                          
                             <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>

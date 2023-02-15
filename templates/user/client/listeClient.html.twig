@@ -80,6 +80,31 @@
                     <tbody>
                       <!-- Table body -->
                       {%  for u in  User_client %}
+                      <div class="modal fade" id="DeleteClient{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteClientLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title mb-0" id="DeleteClientLabel">
+                                Delete Client Slote ? {{ u.name }}
+                              </h4>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                    <div class="form-group mb-2">
+                                  <label class="form-label" for="title">are you sure do you want to delete Client Slot? <span class="text-danger">*</span></label>
+                                </div>
+                                <div>
+                                 <a class="btn btn-danger btn-sm" href="{{ path('deleteClient', {'id' : u.id  }) }}">DELETE</a>
+                                  <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                    Close
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
                       <tr>
                         <td class="align-middle border-top-0">
                           <div class="custom-control custom-checkbox">
@@ -119,43 +144,11 @@
                          {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteClient"><i
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteClient{{u.id}}"><i
                             class="fe fe-edit dropdown-item-icon"></i></a>
                         
                         </td>
-                        <div class="modal fade" id="DeleteClient" tabindex="-1" role="dialog" aria-labelledby="DeleteClientLabel"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h4 class="modal-title mb-0" id="DeleteClientLabel">
-                                            Delete Client Slote ? 
-                                          </h4>
-                                          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                <div class="form-group mb-2">
-                                              <label class="form-label" for="title">are you sure do you want to delete Client Slot? <span class="text-danger">*</span></label>
-
-
-                                            </div>
-
-
-                                            <div>
-
-
-                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteClient', {'id' : u.id  }) }}">DELETE</a>
-                                              <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
-                                                Close
-                                              </button>
-                                            </div>
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                    </div>
+            
                       </tr>
                     {% endfor %}
                     </tbody>

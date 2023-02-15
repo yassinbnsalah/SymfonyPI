@@ -20,13 +20,22 @@ class SanteController extends AbstractController
             'controller_name' => 'SanteController',
         ]);
     }
-    #[Route('/RendezVous/liste', name: 'rendezVousListe')]
+    #[Route('/rendezvous/liste', name: 'rendezVousListe')]
     public function rendezVousListe(): Response
     {
         return $this->render('sante/RendezVous/listerendezvous.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
+
+    // HNEEE YE AMIRA AHAYAY
+    #[Route('/rendezvous/add/{id}', name: 'addRendezvous')]
+    public function addRendezvous(): Response
+    {
+        
+        return $this->render('sante/addrendezvous.html.twig', []);
+    }
+
 
     #[Route('/dashboard/doctor/rendez-vous', name: 'ListeRendezVous')]
     public function ListeRendezVous(): Response

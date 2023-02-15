@@ -43,9 +43,9 @@
            
             </ul>
           </div>
-          <div class="p-4 row">
+          <div class="card-header border-bottom-0">
             <!-- Form -->
-            <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
+            <form class="d-flex align-items-center">
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
@@ -69,13 +69,14 @@
                           </div>
                         </th>
                         <th scope="col" class="border-0">SUB-REFERENCE</th>
-                        <th scope="col" class="border-0">TYPE</th>
+                        <th scope="col" class="border-0">Client</th>
+                       
                         <th scope="col" class="border-0">PAIEMENT METHOD</th>
                         <th scope="col" class="border-0">DATE PAIED</th>
                         <th scope="col" class="border-0">DUE DATE</th>
-                        <th scope="col" class="border-0">Client</th>
+                        <th scope="col" class="border-0">TYPE</th>
                         <th scope="col" class="border-0">STATUS</th>
-                        <th scope="col" class="border-0"></th>
+                    
                       </tr>
                     </thead>
                     <tbody>
@@ -96,22 +97,10 @@
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                          {% if sub.type == 1 %}
-                     <h5 class="mb-0">
-                     1 Month
-                   </h5>
-                  {% endif %}
-                  {% if sub.type ==2 %}
-                  <h5 class="mb-0">
-                  3 Months
-                </h5>
-               {% endif %}
-               {% if sub.type == 3 %}
-               <h5 class="mb-0">
-             6 Months
-             </h5>
-            {% endif %}
+                          <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
+                          {{ sub.getUser().getName() }}</a>
                         </td>
+                      
                         <td class="align-middle border-top-0">
                           {{ sub.paiementType }}
                         </td>
@@ -121,37 +110,34 @@
                         <td class="align-middle border-top-0">
                           {{ sub.dateExpire|date('d-m-Y') }}
                           </td>
+                          <td class="align-middle border-top-0">
+                            {% if sub.type == 1 %}
+                              <h5 class="mb-0">
+                                1 Month
+                              </h5>
+                            {% endif %}
+                            {% if sub.type ==2 %}
+                              <h5 class="mb-0">
+                                3 Months
+                              </h5>
+                            {% endif %}
+                            {% if sub.type == 3 %}
+                              <h5 class="mb-0">
+                                6 Months
+                              </h5>
+                            {% endif %}
+                          </td>
                         <td class="align-middle border-top-0">
-                          <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
-                          {{ sub.getUser().getName() }}</a>
+                          {% if sub.state == "Confirmed" %}
+                          <span class="badge-dot bg-success mr-1 d-inline-block align-middle"></span>Confirmed
+                          {% elseif  sub.state == "Cancel" %}
+                          <span class="badge-dot bg-danger mr-1 d-inline-block align-middle"></span>Canceled
+                            {%else%}
+                            <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Suspended
+                              {% endif %}
+                        
                         </td>
-                        <td class="align-middle border-top-0">
-                          <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span>Draft
-                        </td>
-                        <td class="text-muted align-middle border-top-0 text-right">
-                          <span class="dropdown dropleft">
-                            <a class="text-muted text-decoration-none" href="#!" role="button"
-                              id="courseDropdown1" data-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false">
-                              <i class="fe fe-more-vertical"></i>
-                            </a>
-                            <span class="dropdown-menu" aria-labelledby="courseDropdown1">
-                              <span class="dropdown-header">Settings</span>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-edit dropdown-item-icon"></i>Edit</a>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-move dropdown-item-icon"></i>Move</a>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-copy dropdown-item-icon"></i>Copy</a>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-toggle-left dropdown-item-icon"></i>Publish</a>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-toggle-right dropdown-item-icon"></i>Unpublish</a>
-                              <a class="dropdown-item" href="#!"><i
-                                  class="fe fe-trash dropdown-item-icon"></i>Delete</a>
-                            </span>
-                          </span>
-                        </td>
+                 
                       </tr>
                     {% endfor %}
                     </tbody>

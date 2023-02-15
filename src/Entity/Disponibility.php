@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\DisponibilityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: DisponibilityRepository::class)]
 class Disponibility
 {
@@ -15,6 +15,8 @@ class Disponibility
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    
+    #[Assert\GreaterThanOrEqual("today")]     
     private ?\DateTimeInterface $dateDispo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]

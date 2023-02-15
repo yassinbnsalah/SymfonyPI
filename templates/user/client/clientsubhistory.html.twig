@@ -183,16 +183,19 @@
                                 6 Months
                                 </h5>
                                {% endif %}</td>
-                                    <td class="align-middle border-top-0"> {% if sub.state == "Confirmed" %}
+                                    <td class="align-middle border-top-0"> 
+                                        {% if sub.state == "Confirmed" %}
                                         <span class="badge badge-success ml-2">
                                             Confirmed</span>
-                                        {% elseif  sub.state == "Canceled" %}
+                                       
+                                        {% elseif sub.state == "Cancel"  %}
                                         <span class="badge badge-danger ml-2">
-                                          Canceled</span>
-                                          {%else%}
+                                            Cancel</span>
+                                            {% else %}
                                         <span class="badge badge-warning ml-2">
                                             Suspanded</span>
-                                            {% endif %}</td>
+                                            {% endif %}
+                                        </td>
                                             <td class="align-middle border-top-0">
                                                 {{ sub.paiementType }}</td>
                                 </tr>
