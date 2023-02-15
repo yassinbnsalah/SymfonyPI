@@ -144,7 +144,7 @@
                             </p>
                         </div>
                         <div>
-                            <a href="pricing.html" class="btn btn-success btn-sm">Upgrade Now — Go Pro $39.00</a>
+                            <a href="pricing.html" class="btn btn-success btn-sm" disabled >Pay enligne</a>
                         </div>
                     </div>
                     <!-- Card body -->
@@ -159,7 +159,12 @@
                                         {% if sub.state == "Confirmed" %}
                                         <span class="badge badge-success ml-2">
                                             Confirmed</span>
-                                        {% else %}
+                                            <a   href="{{ path('cancelSub' , {'id' : sub.id  }) }}" class="badge badge-danger ml-2"> cancel this sub </a>
+                            
+                                        {% elseif sub.state == "Cancel"  %}
+                                        <span class="badge badge-danger ml-2">
+                                            Cancel</span>
+                                            {% else %}
                                         <span class="badge badge-warning ml-2">
                                             Suspanded</span>
                                             {% endif %}
@@ -168,6 +173,9 @@
                                         Subscription ID: #{{sub.id}}
                                     </p>
                                 </div>
+
+                                
+                            
                               
                             </div>
                             <!-- Pricing data -->

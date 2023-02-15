@@ -10,7 +10,6 @@ use App\Entity\Subscription;
 use App\Form\DisponibilityType;
 use App\Form\SubscriptionType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;

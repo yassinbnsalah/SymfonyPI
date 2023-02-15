@@ -62,9 +62,16 @@ class SubController extends AbstractController
     {
         $subtosuspend = $repo->find($id); 
         $subtosuspend->setState("Cancel");
+        $subtosuspend->setDateExpire(new \DateTime()); 
         $em = $em->getManager();  
         $em->persist($subtosuspend); 
         $em->flush() ;
-        return $this->redirectToRoute('clientDetails', array('id' => $subtosuspend->getUser()->getId())); 
+        $user = $this->getUser(); 
+        if($user->getRoles()[0] == 'ROLE_ADMIN'){
+            return $this->redirectToRoute('clientDetails', array('id' => $subtosuspend->getUser()->getId())); 
+        }else{
+            return $this->redirectToRoute('listeSubClient'); 
+        }
+       
     }
 }

@@ -162,7 +162,7 @@
                     {% if sub.state == "Confirmed" %}
                                         <span class="badge badge-success ml-2">
                                             Confirmed</span>
-                                        {% elseif  sub.state == "Canceled" %}
+                                        {% elseif  sub.state == "Cancel" %}
                                         <span class="badge badge-danger ml-2">
                                           Canceled</span>
                                           {%else%}
@@ -178,9 +178,9 @@
                      
                      
                         
-                        <a class="btn btn-white" href="{{ path('suspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Suspend</a>
-                        <a class="btn btn-white" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-move dropdown-item-icon "></i>Cancel</a>
-                        <a class="btn btn-white" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                        <a class="btn btn-white btn-sm" href="{{ path('suspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-pause dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-x-circle dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
                     
                   </td>
                 </tr>

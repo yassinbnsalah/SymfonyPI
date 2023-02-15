@@ -15,4 +15,12 @@ class StoreController extends AbstractController
             'controller_name' => 'StoreController',
         ]);
     }
+
+    #[Route('/store/category', name: 'categoryListe')]
+    public function categoryListe(): Response
+    {
+        return $this->render('store/category/listeCategory.html.twig', [
+            'controller_name' => 'StoreController',
+        ]);
+    }
 }

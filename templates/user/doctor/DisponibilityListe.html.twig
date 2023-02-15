@@ -134,9 +134,9 @@
                                             </a>
                                         </h5>
                                     </td>
-                                    <td class="align-middle border-top-0">{{ dispo.dateDispo|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">{{ dispo.heureStart|date('h:i') }}</td>
-                                    <td class="align-middle border-top-0">{{ dispo.heureEnd|date('h:i') }}</td>
+                                    <td class="align-middle border-top-0">{{ dispo.dateDispo |date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0">{{ dispo.heureStart|date('H:i') }}</td>
+                                    <td class="align-middle border-top-0">{{ dispo.heureEnd  |date('H:i') }}</td>
                                     <td class="align-middle border-top-0">
                                         <a class="btn btn-success btn-sm" href="{{ path('UpdateDisponibility', {'id' : dispo.id  }) }}">edit</a>
                                         <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>

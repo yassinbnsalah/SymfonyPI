@@ -62,10 +62,7 @@
                       <a class="nav-link" href="{{ path('all_sub') }}">All Subscribers
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="admin-course-category.html">Add New Subscriber
-                      </a>
-                    </li>
+                   
                   </ul>
                 </div>
               </li>
@@ -128,7 +125,7 @@
                       </a>
                     </li>
                     <li class="nav-item ">
-                      <a class="nav-link" href="sign-up.html">Category</a>
+                      <a class="nav-link" href="{{ path('categoryListe') }}">Category</a>
                     </li>
                     <li class="nav-item ">
                       <a class="nav-link" href="forget-password.html"> Commandes</a>
@@ -312,7 +309,7 @@
     <h1 class="display-1 mb-3">Oops!</h1>
     <h3>Sorry, we couldn’t find the page you were looking for.</h3>
     <p class="mb-4 small">Error Code: 404 not found.</p>
-    <a href="../index.html" class="btn btn-primary mr-2">Back to Safety</a>
+    <a href="{{ path('homepageVisitor') }}" class="btn btn-primary mr-2">Back to Safety</a>
    </div>
    <!-- img -->
    <div class="offset-lg-1 col-lg-6 col-md-12 col-12">
