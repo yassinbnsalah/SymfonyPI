@@ -1,9 +1,6 @@
 {% extends 'baseadmin.html.twig' %}
 
-<<<<<<< HEAD
 {% block title %}Subscribers{% endblock %}
-=======
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
 
 {% block body %}
 
@@ -13,35 +10,21 @@
       <div class="col-lg-12 col-md-12 col-12">
         <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
           <div class="mb-2 mb-lg-0">
-<<<<<<< HEAD
             <h1 class="mb-1 h2 font-weight-bold">All Coachs</h1>
-=======
-            <h1 class="mb-1 h2 font-weight-bold">All Coach</h1>
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="admin-dashboard.html">Dashboard</a>
+                  <a href="{{ path('admindash') }}" >Dashboard</a>
                 </li>
-<<<<<<< HEAD
-                <li class="breadcrumb-item"><a href="#!">users</a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    All Coachs
-=======
                 <li class="breadcrumb-item"><a href="#!">Users</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     All Coach
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
                 </li>
               </ol>
             </nav>
           </div>
           <div>
-<<<<<<< HEAD
             <a href="#!" class="btn btn-primary">New Coach</a>
-=======
-            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCoach">New Coach</a>
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
           </div>
         </div>
       </div>
@@ -79,77 +62,30 @@
                     <!-- Table Head -->
                     <thead>
                       <tr>
-                        <th scope="col" class="border-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkAll" />
-                            <label class="custom-control-label" for="checkAll"></label>
-                          </div>
-                        </th>
-                        <th scope="col" class="border-0">ID</th>
-<<<<<<< HEAD
-                        <th scope="col" class="border-0">Name</th>
-                        <th scope="col" class="border-0">Prename</th>
-                        <th scope="col" class="border-0">Email</th>
-                        <th scope="col" class="border-0">Joined at</th>
                        
-=======
+                        <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">Cin </th>
                         <th scope="col" class="border-0">Full name</th>
                         
                         <th scope="col" class="border-0">Email</th>
                         <th scope="col" class="border-0">Adresse </th>
                         <th scope="col" class="border-0">Age </th>
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <!-- Table body -->
-<<<<<<< HEAD
-=======
                       {%  for u in  User_coach %}
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
                       <tr>
-                        <td class="align-middle border-top-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="postOne" />
-                            <label class="custom-control-label" for="postOne"></label>
-                          </div>
-                        </td>
+                   
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-<<<<<<< HEAD
-                             #12
-=======
                            {{ u.id }}
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-<<<<<<< HEAD
-                         Yesine
-                        </td>
-                        <td class="align-middle border-top-0">
-                         ben  salah
-                        </td>
-                        <td class="align-middle border-top-0">
-                         yacin@gmail.com
-                        </td>
-                        <td class="align-middle border-top-0">
-                            7 July, 2021 1:42pm
-                          </td>
-                       
-                    
-                        <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" href="#!"><i
-                            class="fe fe-edit dropdown-item-icon"></i></a>
-                        
-                        </td>
-                      </tr>
-                    
-=======
                           
                             <h5 class="mb-0">{{ u.CIN }}</h5>
                          
@@ -173,11 +109,11 @@
                          {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCoach"><i
-                            class="fe fe-edit dropdown-item-icon"></i></a>
+                         <a class="btn btn-white" href="{{ path('UpdateCoachDashboard',{'id':u.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCoach{{u.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
                         
                         </td>
-                        <div class="modal fade" id="DeleteCoach" tabindex="-1" role="dialog" aria-labelledby="DeleteCoachLabel"
+                        <div class="modal fade" id="DeleteCoach{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteCoachLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">
@@ -212,7 +148,6 @@
                                     </div>
                       </tr>
                     {% endfor %}
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1
                     </tbody>
                   </table>
                 </div>
@@ -247,10 +182,6 @@
       </div>
     </div>
   </div>
-<<<<<<< HEAD
-
-{% endblock %}
-=======
  <div class="modal fade" id="newCoach" tabindex="-1" role="dialog" aria-labelledby="newCoachLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -326,4 +257,3 @@
   </div>
 </div>
 {% endblock %}
->>>>>>> 72cf2b8d32b479eec33984e6a156ce81b5ee07a1

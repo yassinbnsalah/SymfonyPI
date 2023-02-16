@@ -22,7 +22,7 @@
                         </div>
                         <div class="lh-1">
                             <h2 class="mb-0">
-                                {{ user.name }}
+                                {{ user.Name }}
                                 <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
@@ -65,7 +65,7 @@
                                     </a>
                                 </li>
  
-                                <li class="nav-item active">
+                                <li class="nav-item ">
                                     <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
                                     </a>
                                 </li>
@@ -78,7 +78,7 @@
                                     <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
                                 </li>
                                     <!-- Nav item -->
-                                <li class="nav-item">
+                              <li class="nav-item">
                                     <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
                                 </li>
                                 <li class="nav-item">
@@ -110,8 +110,8 @@
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('UpdateClientData') }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
@@ -134,76 +134,62 @@
             </div>
             <div class="col-lg-9 col-md-8 col-12">
                 <!-- Card -->
-                <div class="card mb-4">
-                    <!-- Card header -->
-                    <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Sub History</h3>
-                        <span> Sub History Dashboard is a quick overview of all current
-                            Sub History.</span>
+               <!-- Card -->
+               <div class="card ">
+              
+                <!-- Card Body -->
+                <div class="card-body">
+                 
+                  <hr class="my-5">
+               
+                    <h4 class="mb-2">Liste des pharmacien</h4>
+                    <p class="mb-4 ">Edit your personal information and address.</p>
+                    <!-- Form -->
+                      <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+            <!-- Tab -->
+              <div class="tab-content">
+                <!-- Tab pane -->
+                <div class="tab-pane fade show active" id="tabPaneGrid" role="tabpanel" aria-labelledby="tabPaneGrid">
+                  <div class="mb-4">
+                    <input type="search" class="form-control" placeholder="Search Instructor" />
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+                      <!-- Card -->
+                       {%  for u in  User_pharmacien %}
+                      <div class="card mb-6">
+                    
+                        <!-- Card body -->
+                        <div class="card-body">
+                          <div class="text-center">
+                            <img src="/uploads/{{u.image}}" class="rounded-circle avatar-xl mb-3" alt="" />
+                            <h4 class="mb-0">Dr.{{u.Name}}</h4>
+                            <p class="mb-0">Age {{u.Age}}</p>
+                          </div>
+                          <div class="d-flex justify-content-between border-bottom py-3 mt-5">
+                            <span>{{u.Email}}</span></br>
+                            <span class="text-dark"></span>
+                          </div>
+                          <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>Number</span>
+                            <span class="text-warning">
+                              {{u.Numero}} 
+                            </span>
+                          </div>
+                          <div class="d-flex justify-content-between pt-2">
+                            <span>Adresse</span>
+                            <span class="text-dark"> {{u.Adresse}} </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <!-- Table -->
-                    <div class="table-responsive border-0">
-                        <table class="table mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    
-                                    <th scope="col" class="border-0">Ref</th>
-                                    <th scope="col" class="border-0">date sub</th>
-                                    <th scope="col" class="border-0">date expired</th>
-                                    <th scope="col" class="border-0">type</th>
-                                    <th scope="col" class="border-0">state</th>
-                                    <th scope="col" class="border-0">paiement method</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for sub in user.getSubscriptions() %}
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                                {{ sub.id }}
-                                            </a>
-                                        </h5>
-                                    </td>
-                                    <td class="align-middle border-top-0">    {{ sub.dateSub|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">{{ sub.dateExpire|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">   {% if sub.type == 1 %}
-                                        <h5 class="mb-0">
-                                        1 Month
-                                      </h5>
-                                     {% endif %}
-                                     {% if sub.type ==2 %}
-                                     <h5 class="mb-0">
-                                     3 Months
-                                   </h5>
-                                  {% endif %}
-                                  {% if sub.type == 3 %}
-                                  <h5 class="mb-0">
-                                6 Months
-                                </h5>
-                               {% endif %}</td>
-                                    <td class="align-middle border-top-0"> 
-                                        {% if sub.state == "Confirmed" %}
-                                        <span class="badge badge-success ml-2">
-                                            Confirmed</span>
-                                       
-                                        {% elseif sub.state == "Cancel"  %}
-                                        <span class="badge badge-danger ml-2">
-                                            Cancel</span>
-                                            {% else %}
-                                        <span class="badge badge-warning ml-2">
-                                            Suspanded</span>
-                                            {% endif %}
-                                        </td>
-                                            <td class="align-middle border-top-0">
-                                                {{ sub.paiementType }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    {% endfor %}
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
         </div>
     </div>

@@ -13,11 +13,10 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="admin-dashboard.html">Dashboard</a>
+                  <a href="{{ path('admindash') }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">Users</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    All Pharmaciens
+                  <a  href="{{ path('listePharmaciens') }}"> Pharmacien</a>
                 </li>
               </ol>
             </nav>
@@ -61,12 +60,7 @@
                     <!-- Table Head -->
                     <thead>
                       <tr>
-                        <th scope="col" class="border-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkAll" />
-                            <label class="custom-control-label" for="checkAll"></label>
-                          </div>
-                        </th>
+                    
                         <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">Cin </th>
                         <th scope="col" class="border-0">Full name</th>
@@ -81,12 +75,7 @@
                       <!-- Table body -->
                       {%  for u in  User_pharmacien %}
                       <tr>
-                        <td class="align-middle border-top-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="postOne" />
-                            <label class="custom-control-label" for="postOne"></label>
-                          </div>
-                        </td>
+                  
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
@@ -100,9 +89,9 @@
                          
                         </td>
                        
-                        <td class="align-middle border-top-0">
+                       <td class="align-middle border-top-0">
                         <div class="d-flex align-items-center">
-                            <img src="../assets/images/avatar/avatar-7.jpg" alt=""
+                            <img src="/uploads/{{ u.image }}"  alt=""
                               class="rounded-circle avatar-xs mr-2" />
                          {{ u.Name }}
                           </div>
@@ -118,11 +107,11 @@
                          {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeletePharmaciens"><i
-                            class="fe fe-edit dropdown-item-icon"></i></a>
-                        
+                        <a class="btn btn-white" href="{{ path('UpdatePharmacienDashboard',{'id':u.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeletePharmaciens{{u.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                         
                         </td>
-                        <div class="modal fade" id="DeletePharmaciens" tabindex="-1" role="dialog" aria-labelledby="DeletePharmaciensLabel"
+                        <div class="modal fade" id="DeletePharmaciens{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="DeletePharmaciensLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">

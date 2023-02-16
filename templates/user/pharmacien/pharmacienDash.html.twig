@@ -10,11 +10,10 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <!-- Bg -->
                 <div class="pt-16 rounded-top" style="
-                            background: url({{asset('assets/images/background/profile-bg.jpg')}}) no-repeat;
+                            background: url(../assets/images/background/profile-bg.jpg) ;
                             background-size: cover;
                         "></div>
-                <div
-                    class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
+                <div class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
                     <div class="d-flex align-items-center">
                         <div class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5">
                             <img src="/uploads/{{ app.user.image }}" class="avatar-xl rounded-circle border-width-4 border-white"
@@ -31,14 +30,13 @@
                                     </svg>
                                 </a>
                             </h2>
-                            <p class="mb-0 d-block">{{ user.email }}</p>
+                            <p class="mb-0 d-block">{{  app.user.email }}</p>
                         </div>
                     </div>
                     
                 </div>
             </div>
         </div>
-
 
 <!-- Content -->
 
@@ -57,33 +55,16 @@
                         <!-- Collapse navbar -->
                     <div class="collapse navbar-collapse" id="sidenav">
                         <div class="navbar-nav flex-column">
-                            <span class="navbar-header">Sport</span>
+                            <span class="navbar-header">Subscription</span>
                             <ul class="list-unstyled ml-n2 mb-4">
-                                <!-- Nav item -->
-                            <li class="nav-item  ">
-                                <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-calendar nav-icon"></i>Activity
-                                </a>
-                            </li>
-                                <!-- Nav item -->
-                            <li class="nav-item ">
-                                <a class="nav-link " href="{{ path('seanceListe') }}"><i class="fe fe-credit-card nav-icon"></i>Seance</a>
-                            </li>
-                                <!-- Nav item -->
-                            <li class="nav-item active ">
-                                <a class="nav-link" href="{{ path('planningListe') }}"><i class="fe fe-credit-card nav-icon"></i>Planning</a>
-                            </li>
-                                <!-- Nav item -->
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('CoachclientList') }}"><i class="fe fe-credit-card nav-icon"></i>Client Liste</a>
-                                </li>
-                        
-                        </ul>
+                   
+                            </ul>
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('UpdateCoachData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                    <a class="nav-link" href="{{ path('UpdatePharmacienData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
@@ -104,50 +85,7 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-9 col-md-8 col-12">
-                <!-- Card -->
-                <div class="card mb-4">
-                    <!-- Card header -->
-                    <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Planning Liste</h3>
-                        <span> Planning liste Dashboard is a quick overview of all current
-                            Planning liste.</span>
-                    </div>
-                    <!-- Table -->
-                    <div class="table-responsive border-0">
-                        <table class="table mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="border-0">Reference</th>
-                                    <th scope="col" class="border-0">Name</th>
-                                    <th scope="col" class="border-0">description</th>
-                                    <th scope="col" class="border-0">Type</th>
-                                    <th scope="col" class="border-0">Action</th>
-                                  
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #IDPLANNING
-                                            </a>
-                                        </h5>
-                                    </td>
-                                    <td class="align-middle border-top-0">PPL</td>
-                                    <td class="align-middle border-top-0">description</td>
-                                    <td class="align-middle border-top-0">Beginner</td>
-                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm">edit</a><a href="#" class="btn btn-white btn-sm">remove</a></td>
-                                  
-                                </tr>
-                            
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
 </div>

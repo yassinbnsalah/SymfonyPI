@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Activity;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class SportController extends AbstractController
 {
@@ -67,11 +69,13 @@ class SportController extends AbstractController
     }
 
     #[Route('/dashboard/coach/client', name: 'CoachclientList')]
-    public function CoachclientList(): Response
-    {
+    public function CoachclientList(UserRepository $userRepository): Response
+    {   
+        $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
         return $this->render('user/coach/listClient.html.twig', [
             'controller_name' => 'SportController',
+            'User_client' => $User_client,
             'user' => $user
         ]);
     }
