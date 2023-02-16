@@ -53,7 +53,7 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
         }elseif(in_array('ROLE_CLIENT',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('listeSubClient'));
         }elseif(in_array('ROLE_MEDCIN',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('ListeRendezVous'));
+            return new RedirectResponse($this->urlGenerator->generate('listeRendezVousForDoctor'));
         }elseif(in_array('ROLE_COACH',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('activityListe'));
         }elseif(in_array('ROLE_PHARMACIEN',$user->getRoles())) {

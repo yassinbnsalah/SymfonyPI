@@ -59,7 +59,7 @@
                             <ul class="list-unstyled ml-n2 mb-4">
                                     <!-- Nav item -->
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('ListeRendezVous') }}"><i class="fe fe-calendar nav-icon"></i>Rendez vous
+                                    <a class="nav-link" href="{{ path('listeRendezVousForDoctor') }}"><i class="fe fe-calendar nav-icon"></i>Rendez vous
                                     </a>
                                 </li>
                                     <!-- Nav item -->
@@ -114,31 +114,51 @@
                         <table class="table mb-0 text-nowrap">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="border-0">Reference</th>
-                                    <th scope="col" class="border-0">From</th>
-                                    <th scope="col" class="border-0">created at</th>
-                                    <th scope="col" class="border-0">Date</th>
-                                    <th scope="col" class="border-0">State</th>
-                                  
+                                    
+                                    <th scope="col" class="border-0">ID</th>
+                                    <th scope="col" class="border-0">from user</th>
+                                    <th scope="col" class="border-0">date rendez vous</th>
+                                    <th scope="col" class="border-0">date passage</th>
+                                    <th scope="col" class="border-0">state</th>
+                                    <th scope="col" class="border-0">Action</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {% for rdv in rendezvous %}
+                                    {% if rdv.getTodoctor() == user %}
                                 <tr>
                                     <td class="align-middle border-top-0">
                                         <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #AKARENDEZVOUS
+                                            <a href="#!" class="text-inherit">
+                                                {{ rdv.id }}
                                             </a>
                                         </h5>
                                     </td>
-                                    <td class="align-middle border-top-0">Yessine ben salah</td>
-                                    <td class="align-middle border-top-0">12/12/2302</td>
-                                    <td class="align-middle border-top-0">June 9, 2020</td>
-                                    <td class="align-middle border-top-0">Confirmed</td>
-                                  
+                                    <td class="align-middle border-top-0"> {{ rdv.getFromuser().getName()  }}</td>
+                                    <td class="align-middle border-top-0">{{ rdv.getDateRV|date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0"> {{ rdv.getDatePassageRV|date('d-m-Y') }}</td>
+                                    <td class="align-middle border-top-0">  
+                                        {% if   rdv.getState() == 'Cancel' %}
+                                        <span class="badge-dot bg-danger mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                                        {% endif %}
+                                        {% if   rdv.getState() ==  'confirm' %}
+                                        <span class="badge-dot bg-success mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                                        {% endif %}
+                                        {% if   rdv.getState()==   'inconfirmed' %}
+                                        <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                                        {% endif %}
+                                    
+                                        </td>
+                                            <td class="align-middle border-top-0"> 
+                                                <a href="{{ path('confirmerendezvous' ,{'id':rdv.id} ) }}" class="badge badge-success" > Confirme </a>    
+                                                {% if   rdv.getState() != 'Cancel' %}
+                                                <a href="{{ path('cancelrdv' ,{'id':rdv.id} ) }}" class="badge badge-danger " > cancel </a>
+                                                {% endif %}       
+                                            </td>
                                 </tr>
-                            
+                                    {% endif %}
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

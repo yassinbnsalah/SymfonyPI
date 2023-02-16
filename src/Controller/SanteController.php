@@ -3,10 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Disponibility;
+use App\Entity\RendezVous;
+use App\Entity\User;
 use App\Form\DisponibilityType;
+use App\Form\RendezVousType;
+use App\Repository\DisponibilityRepository;
+use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\DisponibilityRepository;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,32 +27,68 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/rendezvous/liste', name: 'rendezVousListe')]
-    public function rendezVousListe(): Response
+    public function rendezVousListe(RendezVousRepository $repo): Response
     {
-        return $this->render('sante/RendezVous/listerendezvous.html.twig', [
+        $usercurrent = $this->getUser();
+        $rendezvous = $repo->findAll() ; 
+        return $this->render('user/client/listerendezvousclient.html.twig', [
             'controller_name' => 'UserController',
+            'user' => $usercurrent ,
+            'rendezvous' => $rendezvous
         ]);
     }
 
     // HNEEE YE AMIRA AHAYAY
-    #[Route('/rendezvous/add/{id}', name: 'addRendezvous')]
-    public function addRendezvous(): Response
+    #[Route('/sante/rendezvous/add/{id}', name: 'addRendezVous')]
+    
+    public function addRendezVous(Request $request,$id,ManagerRegistry $em): Response
     {
-        
-        return $this->render('sante/addrendezvous.html.twig', []);
-    }
-
-
-    #[Route('/dashboard/doctor/rendez-vous', name: 'ListeRendezVous')]
-    public function ListeRendezVous(): Response
-    {
-
+        $DoctorByID = $em->getRepository(User::class)->find($id) ;
+        $rendezvous = new RendezVous();
         $user = $this->getUser();
-        return $this->render('user/doctor/Dashboarddoctor.html.twig', [
-            'controller_name' => 'HomeController',
-            'user' => $user
+        $form = $this->createForm(RendezVousType::class, $rendezvous);
+        $form->handleRequest($request);
+        $rendezvous->setFromuser($user);
+        if($form->isSubmitted() && $form->isValid()){
+            $rendezvous->setState('inconfirmed') ; 
+            $rendezvous->setDatePassageRV(new \DateTime()) ;
+            $rendezvous->setFromuser($user);
+            $rendezvous->setTodoctor($DoctorByID) ;
+            $em=$em->getManager(); 
+            $em->persist($rendezvous);
+            $em->flush() ; 
+            return $this->redirectToRoute('rendezVousListe');
+        }
+        return $this->render('sante/addrendezvous.html.twig', [
+            'form' => $form->createView(),
+            'doctor' => $DoctorByID,
         ]);
     }
+
+
+    #[Route('/dashboard/doctor/rendez-vous', name: 'listeRendezVousForDoctor')]
+    public function ListeRendezVous(RendezVousRepository $repo): Response
+    {
+
+        $usercurrent = $this->getUser();
+        $rendezvous = $repo->findAll() ; 
+        if($usercurrent->getRoles()[0] == 'ROLE_ADMIN'){
+            return $this->render('sante/rendezvous/listerendezvous.html.twig', [
+                'controller_name' => 'HomeController',
+                'user' => $usercurrent ,
+                'rendezvous' => $rendezvous
+            ]);
+        }else{
+            return $this->render('user/doctor/Dashboarddoctor.html.twig', [
+                'controller_name' => 'HomeController',
+                'user' => $usercurrent ,
+                'rendezvous' => $rendezvous
+            ]);
+        }
+    
+    }
+
+    
     #[Route('/dashboard/doctor/clientliste', name: 'ListeClientByDoctor')]
     public function ListeClientByDoctor(UserRepository $userRepository): Response
     {

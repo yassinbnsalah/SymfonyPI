@@ -56,7 +56,7 @@
             </div>
             <!-- Stepper content -->
             <div class="bs-stepper-content mt-5">
-              <form onSubmit="return false">
+              {{ form_start(form , {'attr':{ novalidate: 'novalidate'}} ) }}
                 <!-- Content one -->
                 <div id="test-l-1" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger1">
                   <!-- Card -->
@@ -68,26 +68,35 @@
                     <div class="card-body">
                       <div class="form-group">
                         <label for="courseTitle" class="form-label">Doctor name</label>
-                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" />
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" value={{ doctor.name}} disabled />
                      
                       </div>
                       <div class="form-group">
                         <label for="courseTitle" class="form-label">Doctor email</label>
-                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" />
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title"  value={{ doctor.email}} disabled />
                      
                       </div>
                       <div class="form-group">
                         <label for="courseTitle" class="form-label">Doctor phone</label>
-                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" />
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title"  value={{ doctor.Numero}} disabled />
                      
                       </div>
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Date rendezVous</label>
+                        {{ form_widget(form.DateRV , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
                      
+                      </div>
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Date rendezVous</label>
+                        {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control ' , 'placeholder':'Date Disponibility'}})}}
+                     
+                      </div>
                     </div>
                   </div>
                   <!-- Button -->
-                  <button class="btn btn-primary" onclick="courseForm.next()">
+                  <a class="btn btn-primary" onclick="courseForm.next()">
                     Next
-                  </button>
+                  </a>
                 </div>
                 <!-- Content two -->
                 <div id="test-l-2" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger2">
@@ -99,36 +108,35 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="courseTitle" class="form-label">Doctor phone</label>
+                            <label for="courseTitle" class="form-label">Disponibility</label>
                            <!-- basic table -->
                                 <table class="table">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                      <tr>
+                                        <th scope="col" class="border-0">ID</th>
+                                        <th scope="col" class="border-0">Date Disponibility</th>
+                                        <th scope="col" class="border-0">Start From</th>
+                                        <th scope="col" class="border-0">End From</th>
+                                        <th scope="col" class="border-0">Check</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
+                                      {% for dispo in doctor.getDisponibilities() %}
+                                      <tr>
+                                        <td class="align-middle border-top-0">
+                                            <h5 class="mb-0">
+                                                <a href="#!" class="text-inherit" >
+                                                 # {{ dispo.id }}
+                                                </a>
+                                            </h5>
+                                        </td>
+                                        <td class="align-middle border-top-0">{{ dispo.dateDispo |date('d-m-Y') }}</td>
+                                        <td class="align-middle border-top-0">{{ dispo.heureStart|date('H:i') }}</td>
+                                        <td class="align-middle border-top-0">{{ dispo.heureEnd  |date('H:i') }}</td>
+                                        <td class="align-middle border-top-0"><input type="radio" name="radio" value={{dispo.dateDispo |date('d-m-Y')}}> </td>
+                                  
                                     </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                                 <!-- basic table -->
@@ -138,12 +146,12 @@
                   </div>
                   <!-- Button -->
                   <div class="d-flex justify-content-between">
-                    <button class="btn btn-secondary" onclick="courseForm.previous()">
+                    <a class="btn btn-secondary" onclick="courseForm.previous()">
                       Previous
-                    </button>
-                    <button class="btn btn-primary" onclick="courseForm.next()">
+                    </a>
+                    <a class="btn btn-primary" onclick="courseForm.next()">
                       Next
-                    </button>
+                    </a>
                   </div>
                 </div>
                 <!-- Content three -->
@@ -165,17 +173,15 @@
                   </div>
                   <!-- Button -->
                   <div class="d-flex justify-content-between">
-                    <button class="btn btn-secondary" onclick="courseForm.previous()">
+                    <a class="btn btn-secondary" onclick="courseForm.previous()">
                       Previous
-                    </button>
-                    <button type="submit" class="btn btn-danger mt-5">
-                        Submit For Review
-                      </button>
+                    </a>
+                    {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
                   </div>
                 </div>
              
            
-              </form>
+                {{ form_end(form)}}
             </div>
           </div>
         </div>

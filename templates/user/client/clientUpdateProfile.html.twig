@@ -85,14 +85,14 @@
                                     <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
+                                    <a class="nav-link"  href="{{ path('rendezVousListe') }}"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
                                 </li>
                                 {% if is_granted('ROLE_MEDCIN') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('ListeRendezVous') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
+                                    <a class="nav-link" href="{{ path('listeRendezVousForDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
                                 </li>
                                 {% endif %}
                                 {% if is_granted('ROLE_COACH') %}
