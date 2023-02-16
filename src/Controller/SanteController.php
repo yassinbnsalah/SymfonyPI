@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Disponibility;
+use App\Entity\RendezVous;
+use App\Entity\User;
 use App\Form\DisponibilityType;
+use App\Form\RendezVousType;
 use App\Repository\DisponibilityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,17 +24,31 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/rendezvous/liste', name: 'rendezVousListe')]
-    public function rendezVousListe(): Response
-    {
+    public function rendezVousListe(): Response{
+
         return $this->render('sante/RendezVous/listerendezvous.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
 
     // HNEEE YE AMIRA AHAYAY
-    #[Route('/rendezvous/add/{id}', name: 'addRendezvous')]
-    public function addRendezvous(): Response
+    #[Route('/sante/add/{id}', name: 'addRendezvous')]
+    
+    public function addRendezVous(Request $request,$id,ManagerRegistry $em): Response
     {
+    $DoctorByID = $em->getRepository(User::class)->find($id) ;
+    $rendezvous = new RendezVous();
+    $user = $this->getUser();
+    $form = $this->createForm(RendezVousType::class, $rendezvous);
+    $form->handleRequest($request);
+    $rendezvous->setFromuser($user);
+    if($form->isSubmitted() && $form->isValid()){
+        $em=$em->getManager();
+        $em->persist($rendezvous);
+        $rendezvous->setFromuser($user);
+        $rendezvous->setTodoctor($DoctorByID) ;
+            return $this->redirectToRoute('listeRendezVous');
+      }
         
         return $this->render('sante/addrendezvous.html.twig', []);
     }

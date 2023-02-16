@@ -28,7 +28,7 @@ class RendezVousController extends AbstractController
         $DoctorByID = $em->getRepository(User::class)->find($id) ;
         $rendezvous = new RendezVous();
         $user = $this->getUser();
-        $form = $this->createForm(addRendezVouType::class, $rendezvous);
+        $form = $this->createForm(RendezVousType::class, $rendezvous);
         $form->handleRequest($request);
         $rendezvous->setFromuser($user);
         if($form->isSubmitted() && $form->isValid()){
@@ -38,12 +38,37 @@ class RendezVousController extends AbstractController
             $rendezvous->setTodoctor($DoctorByID) ;
                 return $this->redirectToRoute('listeRendezVous');
           }
-        return $this->render('rndezvous/add.html.twig', [
+        return $this->render('rendezvous/addrendezvous.html.twig', [
             'form' => $form->createView(),
             'rendezvous' => $DoctorByID,
         ]);
 
     }
-
-
+   
+    #[Route('/rendezvous/confirme/{id}', name: 'confirmerendezvous')]
+    public function confirmerendezvous($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    {   
+        $user = $this->getUser();
+        $rdvtoconfirm = $repo->find($id); 
+        $rdvtoconfirm->setState("confirm"); 
+        $em = $em->getManager();  
+        $em->persist($rdvtoconfirm); 
+        $em->flush() ;
+        return $this->redirectToRoute('rendevousListes', array('id' => $rdvtoconfirm->getFromuser()->getId())); 
+    }
+    #[Route('/rendezvous/cancel/{id}', name: 'cancelrdv')]
+    public function CancelRendezVous($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    {
+        $rdvtocancel = $repo->find($id); 
+        $rdvtocancel->setState("Cancel");
+        $em = $em->getManager();  
+        $em->persist($rdvtocancel); 
+        $em->flush() ;
+        $user = $this->getUser(); 
+        if($user->getRoles()[0] == 'ROLE_DOCTOR'){
+            return $this->redirectToRoute('rendevousListes', array('id' => $rdvtocancel->getTodoctor()->getId())); 
+        }
+       
+    }
 }
+
