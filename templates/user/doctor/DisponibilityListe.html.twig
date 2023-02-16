@@ -139,9 +139,9 @@
                                     <td class="align-middle border-top-0">{{ dispo.heureEnd  |date('H:i') }}</td>
                                     <td class="align-middle border-top-0">
                                         <a class="btn btn-success btn-sm" href="{{ path('UpdateDisponibility', {'id' : dispo.id  }) }}">edit</a>
-                                        <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>
+                                        <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO{{ dispo.id }}" >remove</a>
                                     </td>
-                                    <div class="modal fade" id="DeleteDISPO" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                                    <div class="modal fade" id="DeleteDISPO{{ dispo.id }}" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">

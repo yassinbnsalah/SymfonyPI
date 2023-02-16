@@ -43,14 +43,14 @@
            
             </ul>
           </div>
-          <div class="p-4 row">
+          <div class="card-header border-bottom-0">
             <!-- Form -->
-            <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
-               <span class="position-absolute pl-3 search-icon">
-                <i class="fe fe-search"></i>
-              </span>
-              <input type="search" class="form-control pl-6" placeholder="Search Pharmacien" />
-            </form>
+            <form class="d-flex align-items-center">
+              <span class="position-absolute pl-3 search-icon">
+               <i class="fe fe-search"></i>
+             </span>
+             <input type="search" class="form-control pl-6" placeholder="Search Rendez vous" />
+           </form>
           </div>
           <div>
             <div class="tab-content" id="tabContent">
@@ -62,16 +62,12 @@
                     <!-- Table Head -->
                     <thead>
                       <tr>
-                        <th scope="col" class="border-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkAll" />
-                            <label class="custom-control-label" for="checkAll"></label>
-                          </div>
-                        </th>
+                       
                         <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">From User</th>
                         <th scope="col" class="border-0">To User</th>
                         <th scope="col" class="border-0">Date Rendez</th>
+                        <th scope="col" class="border-0">Date Passage</th>
                         <th scope="col" class="border-0">State</th>
                        
                         <th scope="col" class="border-0">Action</th>
@@ -79,31 +75,38 @@
                     </thead>
                     <tbody>
                       <!-- Table body -->
+                      {% for rdv in rendezvous %}
                       <tr>
-                        <td class="align-middle border-top-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="postOne" />
-                            <label class="custom-control-label" for="postOne"></label>
-                          </div>
-                        </td>
+                       
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                             #12
+                             #  {{ rdv.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                         Yesine  ben  salah
+                          {{ rdv.getFromuser().getName()  }}
                         </td>
                         <td class="align-middle border-top-0">
-                            Yesine  ben  salah
+                          {{ rdv.getFromuser().getName()  }}
                         </td>
                         <td class="align-middle border-top-0">
-                            7 July, 2021 1:42pm
+                          {{ rdv.getDateRV|date('d-m-Y') }}
                         </td>
                         <td class="align-middle border-top-0">
-                            apporved
+                          {{ rdv.getDatePassageRV|date('d-m-Y') }}
+                        </td>
+                        <td class="align-middle border-top-0">
+                          {% if   rdv.getState() == 'Cancel' %}
+                          <span class="badge-dot bg-danger mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                          {% endif %}
+                          {% if   rdv.getState() ==  'confirm' %}
+                          <span class="badge-dot bg-success mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                          {% endif %}
+                          {% if   rdv.getState() ==  'inconfirmed' %}
+                          <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
+                          {% endif %}
                           </td>
                        
                     
@@ -113,7 +116,7 @@
                         
                         </td>
                       </tr>
-                    
+                    {% endfor %}
                     </tbody>
                   </table>
                 </div>

@@ -148,7 +148,7 @@ class SanteController extends AbstractController
 
 
     #[Route('/dashboard/doctor/disponibility/delete/{id}', name: 'DeleteDisponibility')]
-    public function DeleteDisponibility($id , Request $req,ManagerRegistry $em, DisponibilityRepository $repo): Response
+    public function DeleteDisponibility($id ,ManagerRegistry $em, DisponibilityRepository $repo): Response
     {
             $dispo = $repo->find($id) ; 
             $user = $dispo->getDoctor(); 

@@ -80,7 +80,7 @@
                   
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
-                            <a href="#!" class="text-inherit">
+                            <a href="{{ path('DoctorDetails',{'id':u.id}) }}" class="text-inherit">
                            {{ u.id }}
                             </a>
                           </h5>
@@ -93,9 +93,11 @@
                        
                          <td class="align-middle border-top-0">
                         <div class="d-flex align-items-center">
+                          <a href="{{ path('DoctorDetails',{'id':u.id}) }}" class="text-inherit">
                             <img src="/uploads/{{ u.image }}"  alt=""
                               class="rounded-circle avatar-xs mr-2" />
                          {{ u.Name }}
+                        </a>
                           </div>
                         </td>
                         <td class="align-middle border-top-0">
