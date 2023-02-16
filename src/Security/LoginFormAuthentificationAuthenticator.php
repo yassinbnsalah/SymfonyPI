@@ -45,7 +45,7 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+ 
         $user = $token->getUser();
 
         if (in_array('ROLE_ADMIN',$user->getRoles())) {
@@ -57,7 +57,7 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
         }elseif(in_array('ROLE_COACH',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('activityListe'));
         }elseif(in_array('ROLE_PHARMACIEN',$user->getRoles())) {
-            return new RedirectResponse($this->urlGenerator->generate('app_pharmacien'));
+            return new RedirectResponse($this->urlGenerator->generate('dashPharmacien'));
         }
 
         // For example:

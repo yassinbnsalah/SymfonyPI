@@ -2,21 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Disponibility;
 use DateInterval;
 use App\Entity\User;
 use App\Form\addType;
+use App\Form\UserType;
+use App\Form\ProfileType;
 use App\Entity\Subscription;
-use App\Form\DisponibilityType;
+use App\Entity\Disponibility;
 use App\Form\SubscriptionType;
-use App\Repository\UserRepository;
+use App\Form\DisponibilityType;
 use Doctrine\ORM\EntityManager;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -29,6 +33,52 @@ class UserController extends AbstractController
             'User_admin' => $User_admin
         ]);
     }
+    
+    #[Route('/client/showClient', name: 'showClient')]
+    public function showClient(UserRepository $userRepository)
+    {    
+        $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
+        $user = $this->getUser();
+        return $this->render('user/client/showClient.html.twig', [
+            'controller_name' => 'UserController',
+            'User_client' => $User_client,
+            'user' => $user
+        ]);
+    }
+    #[Route('/coach/showCoach', name: 'showCoach')]
+    public function showCoach(UserRepository $userRepository)
+    {    
+        $User_coach = $userRepository->findByRole('["ROLE_COACH"]');
+        $user = $this->getUser();
+        return $this->render('user/coach/showCoach.html.twig', [
+            'controller_name' => 'UserController',
+            'User_coach' => $User_coach,
+            'user' => $user
+        ]);
+    }
+    #[Route('/doctor/showDoctor', name: 'showDoctor')]
+    public function showDoctor(UserRepository $userRepository)
+    {    
+        $User_doctor = $userRepository->findByRole('["ROLE_MEDCIN"]');
+        $user = $this->getUser();
+        
+        return $this->render('user/doctor/showDoctor.html.twig', [
+            'controller_name' => 'UserController',
+            'User_doctor' => $User_doctor,
+            'user' => $user
+        ]);
+    }
+    #[Route('/pharmacien/showPharmacien', name: 'showPharmacien')]
+    public function showPharmacien(UserRepository $userRepository)
+    {    
+        $User_pharmacien = $userRepository->findByRole('["ROLE_PHARMACIEN"]');
+        $user = $this->getUser();
+        return $this->render('user/pharmacien/showPharmacien.html.twig', [
+            'controller_name' => 'UserController',
+            'User_pharmacien' => $User_pharmacien,
+            'user' => $user
+        ]);
+    }
     private $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -37,7 +87,7 @@ class UserController extends AbstractController
     }
     #[Route('/client/liste', name: 'listeClient')]
     public function listeClient(UserRepository $userRepository ,Request $request, EntityManagerInterface $manager)
-    {    
+    {     
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
@@ -74,27 +124,152 @@ class UserController extends AbstractController
            'user' => $user
         ]);
     }
-
-
-    #[Route('/client/update', name: 'UpdateClientData')]
-    public function UpdateClientData(): Response
+    #[Route('/pharmacien/dashboard', name: 'dashPharmacien')]
+    public function dashPharmacien(): Response
     {
-        $user= $this->getUser(); 
-       
-        return $this->render('user/client/clientUpdateProfile.html.twig', [
+       $user = $this->getUser();
+      
+        //dd($this->getUser()); 
+        return $this->render('user/pharmacien/pharmacienDash.html.twig', [
             'controller_name' => 'UserController',
-           'user' =>$user
+           'user' => $user
         ]);
     }
 
-    #[Route('/dashboard/client/update/{id}', name: 'UpdateClientDashboard')]
-    public function UpdateClientDashboard($id, ManagerRegistry $em): Response
-    {
-        $user = $em->getRepository(User::class)->find($id) ;
-        
-        return $this->render('user/client/clientUpdateDash.html.twig', [
+    #[Route('/client/update/{id}', name: 'UpdateClientData')]
+    public function UpdateClientData($id, ManagerRegistry $doctrine,Request  $request): Response
+     
+        {
+            $user = $doctrine->getRepository(User::class)->find($id);
+            $form = $this->createForm(ProfileType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()){
+                /** @var UploadedFile $imageFile */
+           
+            $imageFile = $form->get('image')->getData();
+
+            // if($imageFile){
+                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                 $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('images_directory'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // ... handle exception if something happens during file upload
+                 }
+                 $user->setImage($newFilename);
+                $em = $doctrine->getManager();
+                $em->flush();
+          
+            }
+        return $this->render('user/client/clientUpdateProfile.html.twig', [
             'controller_name' => 'UserController',
-           'user' =>$user
+            'user' =>$user,
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/doctor/update/{id}', name: 'UpdateDoctorData')]
+    public function UpdateDoctorData($id, ManagerRegistry $doctrine,Request  $request): Response
+     
+        {
+            $user = $doctrine->getRepository(User::class)->find($id);
+            $form = $this->createForm(ProfileType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()){
+                /** @var UploadedFile $imageFile */
+           
+            $imageFile = $form->get('image')->getData();
+
+            // if($imageFile){
+                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                 $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('images_directory'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // ... handle exception if something happens during file upload
+                 }
+                 $user->setImage($newFilename);
+                $em = $doctrine->getManager();
+                $em->flush();
+          
+            }
+        return $this->render('user/doctor/doctorUpdateProfile.html.twig', [
+            'controller_name' => 'UserController',
+            'user' =>$user,
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/coach/update/{id}', name: 'UpdateCoachData')]
+    public function UpdateCoachData($id, ManagerRegistry $doctrine,Request  $request): Response
+     
+        {
+            $user = $doctrine->getRepository(User::class)->find($id);
+            $form = $this->createForm(ProfileType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()){
+                /** @var UploadedFile $imageFile */
+           
+            $imageFile = $form->get('image')->getData();
+
+            // if($imageFile){
+                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                 $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('images_directory'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // ... handle exception if something happens during file upload
+                 }
+                 $user->setImage($newFilename);
+                $em = $doctrine->getManager();
+                $em->flush();
+          
+            }
+        return $this->render('user/coach/coachUpdateProfile.html.twig', [
+            'controller_name' => 'UserController',
+            'user' =>$user,
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/pharmacien/update/{id}', name: 'UpdatePharmacienData')]
+    public function UpdatePharmacienData($id, ManagerRegistry $doctrine,Request  $request): Response
+     
+        {
+            $user = $doctrine->getRepository(User::class)->find($id);
+            $form = $this->createForm(ProfileType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted()){
+                /** @var UploadedFile $imageFile */
+           
+            $imageFile = $form->get('image')->getData();
+
+            // if($imageFile){
+                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                 $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                 try {
+                     $imageFile->move(
+                         $this->getParameter('images_directory'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // ... handle exception if something happens during file upload
+                 }
+                 $user->setImage($newFilename);
+                $em = $doctrine->getManager();
+                $em->flush();
+          
+            }
+        return $this->render('user/pharmacien/pharmacienUpdateProfile.html.twig', [
+            'controller_name' => 'UserController',
+            'user' =>$user,
+            'form' => $form->createView()
         ]);
     }
     #[Route('/client/{id}', name: 'clientDetails')]
@@ -243,34 +418,18 @@ class UserController extends AbstractController
         ]);
     }
     
-    #[Route('/update/{id}', name: 'updateUser')]
-    public function  updateClassroom(ManagerRegistry $doctrine,$id,  Request  $request) : Response
-    { $user = $doctrine
-        ->getRepository(User::class)
-        ->find($id);
-        $form = $this->createForm(ClassroomType::class, $user);
-        $form->add('update', SubmitType::class) ;
-        $form->handleRequest($request);
-        if ($form->isSubmitted())
-        { $em = $doctrine->getManager();
-            $em->flush();
-            return $this->redirectToRoute('listeClient');
-        }
-        return $this->renderForm("user/update.html.twig",
-            ["f"=>$form]) ;
 
 
-    }
    #[Route("client/delete/{id}", name:'deleteClient')]
     public function deleteClient($id, ManagerRegistry $doctrine)
-    {   
-        $c = $doctrine
-        ->getRepository(User::class)
-        ->find($id);
+    {   $connection =$doctrine->getConnection();
+        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
+        
+        $c = $doctrine->getRepository(User::class)->find($id);
         $em = $doctrine->getManager();
         $em->remove($c);
         $em->flush();
-        
+        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         return $this->redirectToRoute('listeClient');
     }
     #[Route("coach/delete/{id}", name:'deleteCoach')]
@@ -308,6 +467,70 @@ class UserController extends AbstractController
         $em->flush();
         
         return $this->redirectToRoute('listePharmaciens');
+    }
+    #[Route('/dashboard/client/update/{id}', name: 'UpdateClientDashboard')]
+    public function UpdateClientDashboard($id, ManagerRegistry $doctrine,Request  $request): Response
+    {
+        $user = $doctrine->getRepository(User::class)->find($id);
+        $form = $this->createForm(addType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted())
+        { $em = $doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('listeClient');
+        }
+        return $this->render('user/client/clientUpdateDash.html.twig', [
+            'controller_name' => 'UserController',
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/dashboard/coach/update/{id}', name: 'UpdateCoachDashboard')]
+    public function UpdateCoachDashboard($id, ManagerRegistry $doctrine,Request  $request): Response
+    {
+        $user = $doctrine->getRepository(User::class)->find($id);
+        $form = $this->createForm(addType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted())
+        { $em = $doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('listecoachs');
+        }
+        return $this->render('user/coach/coachUpdateDash.html.twig', [
+            'controller_name' => 'UserController',
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/dashboard/doctor/update/{id}', name: 'UpdateDoctorDashboard')]
+    public function UpdateDoctorDashboard($id, ManagerRegistry $doctrine,Request  $request): Response
+    {
+        $user = $doctrine->getRepository(User::class)->find($id);
+        $form = $this->createForm(addType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted())
+        { $em = $doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('listeDoctor');
+        }
+        return $this->render('user/doctor/doctorUpdateDash.html.twig', [
+            'controller_name' => 'UserController',
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/dashboard/pharmacien/update/{id}', name: 'UpdatePharmacienDashboard')]
+    public function UpdatePharmacienDashboard($id, ManagerRegistry $doctrine,Request  $request): Response
+    {
+        $user = $doctrine->getRepository(User::class)->find($id);
+        $form = $this->createForm(addType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted())
+        { $em = $doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('listePharmaciens');
+        }
+        return $this->render('user/pharmacien/pharmacienUpdateDash.html.twig', [
+            'controller_name' => 'UserController',
+            'form' => $form->createView()
+        ]);
     }
 
     

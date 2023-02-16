@@ -57,61 +57,32 @@
                     <div class="collapse navbar-collapse" id="sidenav">
                         <div class="navbar-nav flex-column">
                             <span class="navbar-header">Subscription</span>
-                            <ul class="list-unstyled ml-n2 mb-4">
-                                    <!-- Nav item -->
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-calendar nav-icon"></i>My
-                                        Subscriptions
-                                    </a>
+                                   <ul class="list-unstyled ml-n2 mb-4">
+                                <!-- Nav item -->
+                            <li class="nav-item  ">
+                                <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-calendar nav-icon"></i>Activity
+                                </a>
+                            </li>
+                                <!-- Nav item -->
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{ path('seanceListe') }}"><i class="fe fe-credit-card nav-icon"></i>Seance</a>
+                            </li>
+                                <!-- Nav item -->
+                            <li class="nav-item  ">
+                                <a class="nav-link" href="{{ path('planningListe') }}"><i class="fe fe-credit-card nav-icon"></i>Planning</a>
+                            </li>
+                                <!-- Nav item -->
+                                <li class="nav-item  ">
+                                    <a class="nav-link" href="{{ path('CoachclientList') }}"><i class="fe fe-credit-card nav-icon"></i>Client Liste</a>
                                 </li>
- 
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
-                                    </a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-credit-card nav-icon"></i>Planning list</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
-                                </li>
-                                {% if is_granted('ROLE_MEDCIN') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('ListeRendezVous') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
-                                </li>
-                                {% endif %}
-                                {% if is_granted('ROLE_COACH') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
-                                </li>
-                                {% endif %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('admindash') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
-                                </li>
-                                {% endif %}
-                            </ul>
+                        
+                        </ul>
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                    <a class="nav-link" href="{{ path('UpdateCoachData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">

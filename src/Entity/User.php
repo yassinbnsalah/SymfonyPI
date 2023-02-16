@@ -95,7 +95,7 @@ class User implements UserInterface
     private $reset_token;
 
     
-     #[ORM\Column(type:"string", length:255, nullable:false)]
+     #[ORM\Column(type:"string", length:255, nullable:true)]
      #[Groups("post:read")]
      
     private $Image;

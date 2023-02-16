@@ -24,21 +24,7 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-    #[Route('/zaza', name: 'app_admin')]
-    public function admin(): Response
-    {
-        return $this->render('home/admin.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
    
-    #[Route('/coach', name: 'app_coach')]
-    public function coach(): Response
-    {
-        return $this->render('home/coach.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
     #[Route('/pharmacien', name: 'app_pharmacien')]
     public function pharmacien(): Response
     {

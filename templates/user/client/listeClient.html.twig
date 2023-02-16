@@ -13,11 +13,11 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="admin-dashboard.html">Dashboard</a>
+                  <a href="{{ path('admindash') }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">Users</a></li>
+                
                 <li class="breadcrumb-item active" aria-current="page">
-                    All Client
+                    <a href="{{ path('listeClient') }}">Client</a>
                 </li>
               </ol>
             </nav>
@@ -61,12 +61,7 @@
                     <!-- Table Head -->
                     <thead>
                       <tr>
-                        <th scope="col" class="border-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkAll" />
-                            <label class="custom-control-label" for="checkAll"></label>
-                          </div>
-                        </th>
+                   
                         <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">Cin </th>
                         <th scope="col" class="border-0">Full name</th>
@@ -77,16 +72,12 @@
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
+                        {% for u in  User_client %}
                     <tbody>
                       <!-- Table body -->
-                      {%  for u in  User_client %}
+                
                       <tr>
-                        <td class="align-middle border-top-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="postOne" />
-                            <label class="custom-control-label" for="postOne"></label>
-                          </div>
-                        </td>
+                   
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
@@ -100,12 +91,11 @@
                          
                         </td>
                        
-                        <td class="align-middle border-top-0">
+                      <td class="align-middle border-top-0">
                         <div class="d-flex align-items-center">
-                          <a href="{{ path('UpdateClientDashboard' , {'id' : u.id }) }}" class="text-inherit">
-                            <img src="/uploads/{{ u.image }}" alt="" class="rounded-circle avatar-xs mr-2">
+                            <img src="/uploads/{{ u.image }}"  alt=""
+                              class="rounded-circle avatar-xs mr-2" />
                          {{ u.Name }}
-                          </a>
                           </div>
                         </td>
                         <td class="align-middle border-top-0">
@@ -119,17 +109,17 @@
                          {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteClient"><i
-                            class="fe fe-edit dropdown-item-icon"></i></a>
+                     
+                         <a class="btn btn-white" href="{{ path('UpdateClientDashboard',{'id':u.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteClient{{u.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
                         
                         </td>
-                        <div class="modal fade" id="DeleteClient" tabindex="-1" role="dialog" aria-labelledby="DeleteClientLabel"
-                                    aria-hidden="true">
+                       <div class="modal fade" id="DeleteClient{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteClientLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">
                                         <div class="modal-header">
                                           <h4 class="modal-title mb-0" id="DeleteClientLabel">
-                                            Delete Client Slote ? 
+                                            Delete Client  ? 
                                           </h4>
                                           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
@@ -137,7 +127,7 @@
                                         </div>
                                         <div class="modal-body">
                                 <div class="form-group mb-2">
-                                              <label class="form-label" for="title">are you sure do you want to delete Client Slot? <span class="text-danger">*</span></label>
+                                              <label class="form-label" for="title">are you sure do you want to delete Client? <span class="text-danger">*</span></label>
 
 
                                             </div>
@@ -145,8 +135,8 @@
 
                                             <div>
 
-
-                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteClient', {'id' : u.id  }) }}">DELETE</a>
+                             
+                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteClient',{'id':u.id}) }}">DELETE</a>
                                               <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
                                                 Close
                                               </button>
@@ -157,8 +147,9 @@
                                     </div>
                                     </div>
                       </tr>
-                    {% endfor %}
+                  
                     </tbody>
+                      {% endfor %}
                   </table>
                 </div>
               </div>
@@ -206,6 +197,7 @@
       </div>
       <div class="modal-body">
         {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+        
           <div class="form-group mb-2">
             <label class="form-label" for="title">Cin<span class="text-danger">*</span></label>
              {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control' , 'placeholder':'CIN'}})}}

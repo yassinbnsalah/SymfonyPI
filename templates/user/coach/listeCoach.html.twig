@@ -13,11 +13,11 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="admin-dashboard.html">Dashboard</a>
+                  <a href="{{ path('admindash') }}" >Dashboard</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#!">Users</a></li>
+
                 <li class="breadcrumb-item active" aria-current="page">
-                    All Coach
+                  <a  href="{{ path('listecoachs') }}"> Coach</a>
                 </li>
               </ol>
             </nav>
@@ -61,12 +61,7 @@
                     <!-- Table Head -->
                     <thead>
                       <tr>
-                        <th scope="col" class="border-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="checkAll" />
-                            <label class="custom-control-label" for="checkAll"></label>
-                          </div>
-                        </th>
+                       
                         <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">Cin </th>
                         <th scope="col" class="border-0">Full name</th>
@@ -81,12 +76,7 @@
                       <!-- Table body -->
                       {%  for u in  User_coach %}
                       <tr>
-                        <td class="align-middle border-top-0">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="postOne" />
-                            <label class="custom-control-label" for="postOne"></label>
-                          </div>
-                        </td>
+                   
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
@@ -118,11 +108,11 @@
                          {{ u.Age }}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCoach"><i
-                            class="fe fe-edit dropdown-item-icon"></i></a>
+                         <a class="btn btn-white" href="{{ path('UpdateCoachDashboard',{'id':u.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCoach{{u.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
                         
                         </td>
-                        <div class="modal fade" id="DeleteCoach" tabindex="-1" role="dialog" aria-labelledby="DeleteCoachLabel"
+                        <div class="modal fade" id="DeleteCoach{{u.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteCoachLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">

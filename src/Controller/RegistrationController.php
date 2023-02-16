@@ -21,7 +21,7 @@ class RegistrationController extends AbstractController
     {
         $this->passwordEncoder = $passwordEncoder;
     }
-
+ 
     #[Route('/registration', name: 'app_registration')]
     public function registration(Request $request, EntityManagerInterface $manager) {
     {

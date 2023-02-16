@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Disponibility;
 use App\Form\DisponibilityType;
-use App\Repository\DisponibilityRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\DisponibilityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SanteController extends AbstractController
 {
@@ -39,12 +40,13 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/dashboard/doctor/clientliste', name: 'ListeClientByDoctor')]
-    public function ListeClientByDoctor(): Response
+    public function ListeClientByDoctor(UserRepository $userRepository): Response
     {
-
+        $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
         return $this->render('user/doctor/ListeClientDoctor.html.twig', [
             'controller_name' => 'HomeController',
+            'User_client' => $User_client,
             'user' => $user
         ]);
     }
@@ -86,7 +88,7 @@ class SanteController extends AbstractController
             $em->persist($dispo);
             $em->flush() ; 
             return $this->redirectToRoute('ListeDisponibility'); 
-        }
+        } 
         return $this->render('user/doctor/updateDisponibility.html.twig', [
             'controller_name' => 'HomeController',
             'user' => $user,

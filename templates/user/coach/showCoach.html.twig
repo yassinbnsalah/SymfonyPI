@@ -22,7 +22,7 @@
                         </div>
                         <div class="lh-1">
                             <h2 class="mb-0">
-                                {{ user.name }}
+                                {{ user.Name }}
                                 <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
@@ -81,7 +81,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
                                 </li>
-                                <li class="nav-item">
+                                <li  class="nav-item active">
                                     <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
                                 </li>
                                 <li class="nav-item">
@@ -110,7 +110,7 @@
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
@@ -136,69 +136,57 @@
                 <!-- Card -->
                <!-- Card -->
                <div class="card ">
-                <!-- Card Header -->
-                <div class="card-header">
-                  <h3 class="mb-0 ">Profile Details</h3>
-                  <p class="mb-0 ">You have full control to manage your own account setting.</p>
-                </div>
+              
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="d-lg-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center mb-4 mb-lg-0">
-                      <img src="/uploads/{{ app.user.image }}" id="img-uploaded"
-                        class="avatar-xl rounded-circle " alt="">
-                      <div class="ml-3">
-                        <h4 class="mb-0">Your avatar</h4>
-                        <p class=" mb-0">PNG or JPG no bigger than 800px wide and tall.</p>
+                 
+                  <hr class="my-5">
+               
+                    <h4 class="mb-2">Liste des Coach</h4>
+                    <p class="mb-4 ">Edit your personal information and address.</p>
+                    <!-- Form -->
+                      <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+            <!-- Tab -->
+              <div class="tab-content">
+                <!-- Tab pane -->
+                <div class="tab-pane fade show active" id="tabPaneGrid" role="tabpanel" aria-labelledby="tabPaneGrid">
+                  <div class="mb-4">
+                    <input type="search" class="form-control" placeholder="Search Instructor" />
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+                      <!-- Card -->
+                       {%  for u in  User_coach  %}
+                      <div class="card mb-6">
+                    
+                        <!-- Card body -->
+                        <div class="card-body">
+                          <div class="text-center">
+                            <img src="/uploads/{{u.image}}" class="rounded-circle avatar-xl mb-3" alt="" />
+                            <h4 class="mb-0">Coach.{{u.Name}}</h4>
+                            <p class="mb-0">Age {{u.Age}}</p>
+                          </div>
+                          <div class="d-flex justify-content-between border-bottom py-3 mt-5">
+                            <span>{{u.Email}}</span>
+                      
+                          </div>
+                          <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>Number</span>
+                            <span class="text-warning">
+                              {{u.Numero}} 
+                            </span>
+                          </div>
+                          <div class="d-flex justify-content-between pt-2">
+                            <span>Adresse</span>
+                            <span class="text-dark"> {{u.Adresse}} </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                {{ form_start(form , {'attr':{class: 'row' , novalidate: 'novalidate'}} ) }}
-                    <div>
-                        <div class="form-group">
-                            <label for="image" class="form-label"></label>
-                          
-                           {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
-                           
-                        </div>
-                  
+                    {% endfor %}
+                      </div>
                     </div>
-                  </div>
-                  <hr class="my-5">
-                  <div>
-                    <h4 class="mb-0">Personal Details</h4>
-                    <p class="mb-4 ">Edit your personal information and address.</p>
-                
-                   <!-- Form -->
-                       
-                              <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Cin" class="form-label">Cin <span class="text-danger">*</span></label>
-                                 {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control'}})}}
-                              </div>
-                              <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Name" class="form-label">Name<span class="text-danger">*</span> </label>
-                                 {{ form_widget(form.Name , {'attr' : {'class' : 'form-control '}})}}
-                              </div>
-                              <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Adresse" class="form-label">Adresse<span class="text-danger">*</span> </label>
-                                 {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control'}})}}
-                              </div>
-                              <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Age" class="form-label">Age<span class="text-danger">*</span>  </label>
-                                  {{ form_widget(form.Age , {'attr' : {'class' : 'form-control'}})}}
-                              </div>
-                               <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="NumeroTel" class="form-label">NumeroTel<span class="text-danger">*</span>  </label>
-                                  {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control'}})}}
-                              </div>
-                    
-                           
-                              <div class="col-12 col-md-12 col-lg-6">
-                                {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
-                                 <a href="#!" class="btn btn-outline-white">
-                                 Cancel
-                                 </a>
-                              </div>
-                              {{ form_end(form)}}
                   </div>
                 </div>
               </div>
