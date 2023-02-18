@@ -113,12 +113,16 @@ class User implements UserInterface
      #[ORM\OneToMany(mappedBy: 'todoctor', targetEntity: RendezVous::class)]
      private Collection $rdvdoctor;
 
+     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Planning::class)]
+     private Collection $plannings;
+
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
          $this->disponibilities = new ArrayCollection();
          $this->rendezVouses = new ArrayCollection();
          $this->rdvdoctor = new ArrayCollection();
+         $this->plannings = new ArrayCollection();
      }
 
     public function __toString()
@@ -423,6 +427,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($rdvdoctor->getTodoctor() === $this) {
                 $rdvdoctor->setTodoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Planning>
+     */
+    public function getPlannings(): Collection
+    {
+        return $this->plannings;
+    }
+
+    public function addPlanning(Planning $planning): self
+    {
+        if (!$this->plannings->contains($planning)) {
+            $this->plannings->add($planning);
+            $planning->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanning(Planning $planning): self
+    {
+        if ($this->plannings->removeElement($planning)) {
+            // set the owning side to null (unless already changed)
+            if ($planning->getCoach() === $this) {
+                $planning->setCoach(null);
             }
         }
 

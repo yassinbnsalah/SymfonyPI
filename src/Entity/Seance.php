@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use App\Repository\ActivityRepository;
+use App\Repository\SeanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ActivityRepository::class)]
-class Activity
+#[ORM\Entity(repositoryClass: SeanceRepository::class)]
+class Seance
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 125)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $image = null;
+    #[ORM\Column]
+    private ?int $duree = null;
 
-    #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Planning::class)]
+    #[ORM\Column(length: 50)]
+    private ?string $niveau = null;
+
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Planning::class)]
     private Collection $plannings;
 
     public function __construct()
@@ -37,14 +40,14 @@ class Activity
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): self
+    public function setName(string $name): self
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -61,14 +64,26 @@ class Activity
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getDuree(): ?int
     {
-        return $this->image;
+        return $this->duree;
     }
 
-    public function setImage(?string $image): self
+    public function setDuree(int $duree): self
     {
-        $this->image = $image;
+        $this->duree = $duree;
+
+        return $this;
+    }
+
+    public function getNiveau(): ?string
+    {
+        return $this->niveau;
+    }
+
+    public function setNiveau(string $niveau): self
+    {
+        $this->niveau = $niveau;
 
         return $this;
     }
@@ -85,7 +100,7 @@ class Activity
     {
         if (!$this->plannings->contains($planning)) {
             $this->plannings->add($planning);
-            $planning->setActivity($this);
+            $planning->setSeance($this);
         }
 
         return $this;
@@ -95,8 +110,8 @@ class Activity
     {
         if ($this->plannings->removeElement($planning)) {
             // set the owning side to null (unless already changed)
-            if ($planning->getActivity() === $this) {
-                $planning->setActivity(null);
+            if ($planning->getSeance() === $this) {
+                $planning->setSeance(null);
             }
         }
 

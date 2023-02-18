@@ -170,4 +170,28 @@ class SanteController extends AbstractController
             return $this->redirectToRoute('ListeDisponibility'); 
        
     }
+
+
+    
+    #[Route('/dashboard/pharmacien/ordenance', name: 'ListeOrdenance')]
+    public function ListeOrdenance( ): Response
+    {
+        $userConnected = $this->getUser(); 
+        return $this->render('user/pharmacien/pharmacienDash.html.twig', [
+            'controller_name' => 'HomeController',
+            'user' => $userConnected,
+        ]);
+       
+    }
+
+    #[Route('/dashboard/pharmacien/medicament', name: 'ListeMedicament')]
+    public function ListeMedicament(): Response
+    {
+        $userConnected = $this->getUser(); 
+        return $this->render('user/pharmacien/listemedicament.html.twig', [
+            'controller_name' => 'HomeController',
+            'user' => $userConnected,
+        ]);
+       
+    }
 }

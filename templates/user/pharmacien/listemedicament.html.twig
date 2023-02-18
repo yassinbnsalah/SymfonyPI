@@ -1,8 +1,9 @@
+
 {% extends 'navbar.html.twig' %}
 
 
-
-{% block body %}<!-- Page Content -->
+{% block body %}
+<!-- Page Content -->
 <div class="pt-5 pb-5">
     <div class="container">
         <!-- User info -->
@@ -10,11 +11,10 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <!-- Bg -->
                 <div class="pt-16 rounded-top" style="
-                            background: url({{asset('assets/images/background/profile-bg.jpg')}}) no-repeat;
+                background: url({{asset('assets/images/background/profile-bg.jpg')}}) no-repeat;
                             background-size: cover;
                         "></div>
-                     <div
-                    class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
+                <div class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
                     <div class="d-flex align-items-center">
                         <div class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5">
                             <img src="/uploads/{{ app.user.image }}" class="avatar-xl rounded-circle border-width-4 border-white"
@@ -31,7 +31,7 @@
                                     </svg>
                                 </a>
                             </h2>
-                            <p class="mb-0 d-block">{{ user.email }}</p>
+                            <p class="mb-0 d-block">{{  app.user.email }}</p>
                         </div>
                     </div>
                     
@@ -56,33 +56,21 @@
                         <!-- Collapse navbar -->
                     <div class="collapse navbar-collapse" id="sidenav">
                         <div class="navbar-nav flex-column">
-                            <span class="navbar-header">Sport</span>
+                            <span class="navbar-header">Medicament</span>
                             <ul class="list-unstyled ml-n2 mb-4">
-                                <!-- Nav item -->
-                            <li class="nav-item  ">
-                                <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-calendar nav-icon"></i>Activity
-                                </a>
-                            </li>
-                                <!-- Nav item -->
-                            <li class="nav-item ">
-                                <a class="nav-link " href="{{ path('seanceListe') }}"><i class="fe fe-credit-card nav-icon"></i>Seance</a>
-                            </li>
-                                <!-- Nav item -->
-                            <li class="nav-item  ">
-                                <a class="nav-link" href="{{ path('planningListe') }}"><i class="fe fe-credit-card nav-icon"></i>Planning</a>
-                            </li>
-                                <!-- Nav item -->
-                                <li class="nav-item active ">
-                                    <a class="nav-link" href="{{ path('CoachclientList') }}"><i class="fe fe-credit-card nav-icon"></i>Client Liste</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('ListeOrdenance') }}"><i class="fe fe-settings nav-icon"></i>Ordenannace liste</a>
                                 </li>
-                        
-                        </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('ListeMedicament') }}"><i class="fe fe-settings nav-icon"></i>Medicament liste</a>
+                                </li>
+                            </ul>
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('UpdateCoachData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                    <a class="nav-link" href="{{ path('UpdatePharmacienData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
@@ -108,67 +96,56 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Client Liste</h3>
-                        <span> Planning liste Dashboard is a quick overview of all current
-                            Planning liste.</span>
+                        <h3 class="mb-0">Medicament Liste</h3>  
+                      
+                        <span> Medicament liste Dashboard is a quick overview of all current
+                            Medicament liste.</span>
+                            <a data-toggle="modal" data-target="#newCatgory" class="btn btn-primary btn-sm mr-0">add Medicament </a>
+                    
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
                             <thead>
                                 <tr>
-          
                         <th scope="col" class="border-0">ID</th>
-                        <th scope="col" class="border-0">Cin </th>
-                        <th scope="col" class="border-0">Full name</th>
-                        
-                        <th scope="col" class="border-0">Email</th>
-                        <th scope="col" class="border-0">Adresse </th>
-                        <th scope="col" class="border-0">Age </th>
-                   
+                        <th scope="col" class="border-0">Name</th>
+                        <th scope="col" class="border-0">Quantity</th>
+                        <th scope="col" class="border-0">price</th>
+                       
+                        <th scope="col" class="border-0">Action </th>
                       </tr>
                             </thead>
-                           {% for u in  User_client %}
                     <tbody>
-                      <!-- Table body -->
-                
+
                       <tr>
-                
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                           {{ u.id }}
+                                222
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                          
-                            <h5 class="mb-0">{{ u.CIN }}</h5>
-                         
-                        </td>
-                       
-                      <td class="align-middle border-top-0">
-                        <div class="d-flex align-items-center">
-                            <img src="/uploads/{{ u.image }}"  alt=""
-                              class="rounded-circle avatar-xs mr-2" />
-                         {{ u.Name }}
-                          </div>
+                            <h5 class="mb-0">FFF</h5>
                         </td>
                         <td class="align-middle border-top-0">
-                           {{ u.Email }}
-                          </td>
+                            <div class="d-flex align-items-center">
+                                FFFF
+                            </div>
+                        </td>
+                        <td class="align-middle border-top-0">
+                            ffff
+                        </td>
                        
                         <td class="align-middle border-top-0">
-                         {{ u.Adresse }}
-                        </td>
-                         <td class="align-middle border-top-0">
-                         {{ u.Age }}
-                        </td>
-                                  
-                                </tr>
+                            <a class="btn btn-primary btn-sm" > update </a>
+                            <a class="btn btn-danger btn-sm" > delete </a>
+                        </td>    
+                       
+                        </tr>
                             
                             </tbody>
-                            {% endfor %}
                         </table>
                     </div>
                 </div>
@@ -176,5 +153,48 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0" id="newCatgoryLabel">
+         Add New Medicament
+      </h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+    </button>
+    </div>
+    <div class="modal-body">
+     
+       
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">Name<span class="text-danger">*</span></label>
+          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
+          <small>Field must contain a unique value</small>
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">quantity<span class="text-danger">*</span></label><br>
+          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
 
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">Price<span class="text-danger">*</span></label><br>
+          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
+
+        </div>
+      
+      
+        <div>
+
+         <a href="#" class="btn btn-primary btn-sm"> save </a>
+          <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+       
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}
