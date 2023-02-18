@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Disponibility;
+use App\Entity\Medicament;
 use App\Entity\RendezVous;
 use App\Entity\User;
+use App\Form\AddMedicamentType;
 use App\Form\DisponibilityType;
 use App\Form\RendezVousType;
 use App\Repository\DisponibilityRepository;
+use App\Repository\MedicamentRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -185,12 +188,23 @@ class SanteController extends AbstractController
     }
 
     #[Route('/dashboard/pharmacien/medicament', name: 'ListeMedicament')]
-    public function ListeMedicament(): Response
+    public function ListeMedicament(MedicamentRepository $repo, Request $req): Response
     {
+        $Medicament = $repo->findAll();
         $userConnected = $this->getUser(); 
+
+        $MedicamentToadd = new Medicament();
+        $form = $this->createForm(AddMedicamentType::class, $MedicamentToadd);
+        $form->handleRequest($req);
+        if ($form->isSubmitted()) {
+            $repo->save($MedicamentToadd, true);
+            return $this->redirectToRoute('ListeMedicament'); 
+        }
         return $this->render('user/pharmacien/listemedicament.html.twig', [
             'controller_name' => 'HomeController',
             'user' => $userConnected,
+            'Medicaments' => $Medicament,
+            'form' => $form->createView()
         ]);
        
     }

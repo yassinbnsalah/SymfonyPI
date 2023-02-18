@@ -117,34 +117,68 @@
                       </tr>
                             </thead>
                     <tbody>
-
+                    {% for medicament in Medicaments %}
                       <tr>
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                                222
+                              {{ medicament.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                            <h5 class="mb-0">FFF</h5>
+                            <h5 class="mb-0">   {{ medicament.nom }}</h5>
                         </td>
                         <td class="align-middle border-top-0">
                             <div class="d-flex align-items-center">
-                                FFFF
+                                {{ medicament.quantite }}
                             </div>
                         </td>
                         <td class="align-middle border-top-0">
-                            ffff
+                            {{ medicament.prix }}
                         </td>
                        
                         <td class="align-middle border-top-0">
-                            <a class="btn btn-primary btn-sm" > update </a>
-                            <a class="btn btn-danger btn-sm" > delete </a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('UpdateMedicament',{'id':medicament.id}) }}"> update </a>
+                            <a class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#Deletemedicament{{ medicament.id }}"> delete </a>
                         </td>    
-                       
+                        <div class="modal fade" id="Deletemedicament{{ medicament.id }}" tabindex="-1" role="dialog" aria-labelledby="DeletemedicamentLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title mb-0" id="DeletemedicamentLabel">
+                                Delete Disponibility Slote ? 
+                              </h4>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                             
+                               
+                                <div class="form-group mb-2">
+                                  <label class="form-label" for="title">are you sure do you want to delete Disponibility Slot? <span class="text-danger">*</span></label>
+                                  
+                               
+                                </div>
+                           
+                              
+                                <div>
+                        
+                                    
+                                 <a class="btn btn-danger btn-sm" href="{{ path('deleteMedicament', {'id' : medicament.id  }) }}">DELETE</a>
+                                  <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                    Close
+                                  </button>
+                                </div>
+                             
+                            </div>
+                          </div>
+                        </div>
+                        </div>
                         </tr>
-                            
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -166,33 +200,37 @@ aria-hidden="true">
     </button>
     </div>
     <div class="modal-body">
-     
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
        
         <div class="form-group mb-2">
           <label class="form-label" for="title">Name<span class="text-danger">*</span></label>
-          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
+          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control' , 'placeholder':'Name medicament'}})}}
           <small>Field must contain a unique value</small>
         </div>
         <div class="form-group mb-2">
           <label class="form-label" for="title">quantity<span class="text-danger">*</span></label><br>
-          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
+          {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control' , 'placeholder':'Quantity'}})}}
 
         </div>
         <div class="form-group mb-2">
           <label class="form-label" for="title">Price<span class="text-danger">*</span></label><br>
-          <input type="text" id="fname" class="form-control" placeholder="First Name" required />
+          {{ form_widget(form.prix , {'attr' : {'class' : 'form-control' , 'placeholder':'Price medicament'}})}}
 
         </div>
-      
+        <div class="form-group mb-2">
+            <label class="form-label" for="title">Description<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control' , 'placeholder':'Description medicament'}})}}
+  
+          </div>
       
         <div>
 
-         <a href="#" class="btn btn-primary btn-sm"> save </a>
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
           <button type="button" class="btn btn-outline-white" data-dismiss="modal">
             Close
           </button>
         </div>
-       
+        {{ form_end(form)}}
     </div>
   </div>
 </div>

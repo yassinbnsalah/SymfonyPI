@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Medicament;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,7 @@ class AddMedicamentType extends AbstractType
             ->add('description')
             ->add('quantite')
             ->add('prix')
+            ->add('save' , SubmitType::class)
         ;
     }
 
