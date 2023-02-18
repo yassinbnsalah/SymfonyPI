@@ -33,6 +33,7 @@ class StoreController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+                $category->setNbProduct(0) ;
                 $manager->persist($category);
                 $manager->flush();
                 return $this->redirectToRoute('categoryListe');
@@ -97,7 +98,7 @@ class StoreController extends AbstractController
                 $manager->flush();
                 return $this->redirectToRoute('produitListe');
           }
-          return $this->render('store/produit/listeProduit.html.twig', [
+          return $this->render('store/product/listeProduit.html.twig', [
             'controller_name' => 'StoreController',
             'produitt' => $produitt,
             'form' => $form->createView()
@@ -121,27 +122,31 @@ class StoreController extends AbstractController
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
         if ($form->isSubmitted()){ 
-                  /** @var UploadedFile $imageFile */
-           
-                  $imageFile = $form->get('image')->getData();
+             if( $form->get('image')->getData()){
+                    /** @var UploadedFile $imageFile */
+                            
+                    $imageFile = $form->get('image')->getData();
 
-                  // if($imageFile){
-                       $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                       $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-                       try {
-                           $imageFile->move(
-                               $this->getParameter('images_directory'),
-                               $newFilename
-                           );
-                       } catch (FileException $e) {
-                           // ... handle exception if something happens during file upload
-                       }
-                       $produit->setImage($newFilename);
+                    // if($imageFile){
+                        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                        try {
+                            $imageFile->move(
+                                $this->getParameter('images_directory'),
+                                $newFilename
+                            );
+                        } catch (FileException $e) {
+                            // ... handle exception if something happens during file upload
+                        }
+                        $produit->setImage($newFilename);
+          }
+                 
             $em = $doctrine->getManager();
-            $em->flush();
+             $em->flush();
+           
             return $this->redirectToRoute('produitListe');
         }
-        return $this->render('store/produit/produitUpdateDash.html.twig', [
+        return $this->render('store/product/produitUpdateDash.html.twig', [
             'controller_name' => 'StoreController',
             'form' => $form->createView()
         ]);

@@ -21,6 +21,12 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Produit::class)]
     private Collection $produit;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbProduct = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->produit = new ArrayCollection();
@@ -75,5 +81,29 @@ class Category
     public function __toString()
     {
         return $this->getName(); // Or whatever property you want to use as the string representation
+    }
+
+    public function getNbProduct(): ?int
+    {
+        return $this->nbProduct;
+    }
+
+    public function setNbProduct(?int $nbProduct): self
+    {
+        $this->nbProduct = $nbProduct;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

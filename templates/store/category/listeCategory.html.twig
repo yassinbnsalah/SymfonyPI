@@ -44,7 +44,7 @@
           </div>
           <div class="p-4 row">
             <!-- Form -->
-            <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
+            <form class="d-flex align-items-center col-12 col-md-8 col-lg-12">
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
@@ -63,7 +63,10 @@
                       <tr>
                         <th scope="col" class="border-0">ID</th>
                         <th scope="col" class="border-0">Name</th>
-                        <th scope="col" class="border-0">Action</th>
+                        <th scope="col" class="border-0">Slug</th>
+                        <th scope="col" class="border-0">NB Product</th>
+                        <th scope="col" class="border-0">Update</th>
+                        <th scope="col" class="border-0">Delete</th>
                       </tr>
                     </thead>
                         {% for c in  categoryy %}
@@ -82,11 +85,20 @@
                         <td class="align-middle border-top-0">                      
                             <h5 class="mb-0">{{ c.name }}</h5>
                         </td>
+                        <td class="align-middle border-top-0">                      
+                          <h5 class="mb-0">{{ c.slug }}</h5>
+                      </td>
+                      <td class="align-middle border-top-0">                      
+                        <h5 class="mb-0">{{ c.nbProduct }}</h5>
+                    </td>
                         <td class="text-muted align-middle border-top-0">
                      
-                         <a class="btn btn-white" href="{{ path('UpdateCategoryDashboard',{'id':c.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCategory{{c.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                         <a class="btn btn-white" href="{{ path('UpdateCategoryDashboard',{'id':c.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i></a>
+                         
                         
+                        </td>
+                        <td> 
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCategory{{c.id}}"><i class="fe fe-trash dropdown-item-icon "></i></a>
                         </td>
                        <div class="modal fade" id="DeleteCategory{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteCategoryLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -131,28 +143,7 @@
             </div>
           </div>
           <!-- Card Footer -->
-          <div class="card-footer">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
-                      class="mdi mdi-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link mx-1 rounded" href="#!">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+         
         </div>
       </div>
     </div>
@@ -177,7 +168,11 @@
              {{ form_widget(form.name , {'attr' : {'class' : 'form-control' , 'placeholder':'name of category'}})}}
             <small>Field must contain a unique value</small>
           </div>
-        
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Slug<span class="text-danger">*</span></label>
+             {{ form_widget(form.slug , {'attr' : {'class' : 'form-control' , 'placeholder':'Slug of category'}})}}
+            <small>Field must contain a unique value</small>
+          </div>
           <div>
 
             {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
