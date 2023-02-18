@@ -1,0 +1,85 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+
+<div class="container-fluid p-4">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">All Produit</h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{{ path('admindash') }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item"><a href="{{ path('produitListe') }}">Produit</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                   Update Produit
+                </li>
+              </ol>
+            </nav>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+   <div class="col-lg-9 col-md-8 col-12">
+                <!-- Card -->
+        
+                    
+                    <div class="card mb-4">
+                        <!-- Card Header -->
+                        <div class="card-header">
+                           <h4 class="mb-0">Update Produit</h4>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                           <!-- Form -->
+                           {{ form_start(form , {'attr':{class: 'row' , novalidate: 'novalidate'}} ) }}
+                              <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">category <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.category , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                              <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.name , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                                 <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">description <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.description , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                                 <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">buyprice <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.buyprice , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                                 <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">sellprice <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.sellprice , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                                   <div class="form-group col-12 col-md-12 col-lg-6">
+                                 <label for="name" class="form-label">quantity <span class="text-danger">*</span></label>
+                                 {{ form_widget(form.quantity , {'attr' : {'class' : 'form-control'}})}}
+                              </div>
+                            <div class="form-group">
+                            <label for="image" class="form-label"></label>
+                             {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
+                              </div>
+                              <div class="col-12 col-md-12 col-lg-6">
+                                {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+                                 <a href="{{ path('produitListe') }}" class="btn btn-outline-white">
+                                 Cancel
+                                 </a>
+                              </div>
+                              {{ form_end(form)}}
+                        </div>
+                     </div>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

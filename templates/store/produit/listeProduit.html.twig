@@ -9,7 +9,7 @@
       <div class="col-lg-12 col-md-12 col-12">
         <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
           <div class="mb-2 mb-lg-0">
-            <h1 class="mb-1 h2 font-weight-bold">All Category</h1>
+            <h1 class="mb-1 h2 font-weight-bold">All Produit</h1>
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -17,13 +17,13 @@
                 </li>
                 
                 <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ path('categoryListe') }}">Category</a>
+                    <a href="{{ path('produitListe') }}">Produit</a>
                 </li>
               </ol>
             </nav>
           </div>
           <div>
-            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCategory">New Category</a>
+            <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newProduit">New Produit</a>
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
-              <input type="search" class="form-control pl-6" placeholder="Search Category" />
+              <input type="search" class="form-control pl-6" placeholder="Search Produit" />
             </form>
           </div>
           <div>
@@ -62,11 +62,17 @@
                     <thead>
                       <tr>
                         <th scope="col" class="border-0">ID</th>
+                        <th scope="col" class="border-0">category</th>
                         <th scope="col" class="border-0">Name</th>
+                        <th scope="col" class="border-0">Description</th>
+                        <th scope="col" class="border-0">Buy Price</th>
+                        <th scope="col" class="border-0">Sell Price</th>
+                        <th scope="col" class="border-0">Quantity</th>
+                        <th scope="col" class="border-0">Image</th>
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
-                        {% for c in  categoryy %}
+                        {% for p in  produitt %}
                     <tbody>
                       <!-- Table body -->
                 
@@ -75,25 +81,44 @@
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                           {{ c.id }}
+                           {{ p.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">                      
-                            <h5 class="mb-0">{{ c.name }}</h5>
+                            <h5 class="mb-0">{{ p.category }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <h5 class="mb-0">{{ p.name }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <h5 class="mb-0">{{ p.description }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <h5 class="mb-0">{{ p.buyprice }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <h5 class="mb-0">{{ p.sellprice }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <h5 class="mb-0">{{ p.quantity }}</h5>
+                        </td>
+                          <td class="align-middle border-top-0">                      
+                            <img src="/uploads/{{ p.image }}"  alt=""
+                              class="rounded-circle avatar-xs mr-2" />
                         </td>
                         <td class="text-muted align-middle border-top-0">
                      
-                         <a class="btn btn-white" href="{{ path('UpdateCategoryDashboard',{'id':c.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
-                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteCategory{{c.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
+                         <a class="btn btn-white" href="{{ path('UpdateProduitDashboard',{'id':p.id}) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Update</a>
+                          <a class="btn btn-white" data-toggle="modal" data-target="#DeleteProduit{{p.id}}"><i class="fe fe-trash dropdown-item-icon "></i>Delete</a>
                         
                         </td>
-                       <div class="modal fade" id="DeleteCategory{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteCategoryLabel" aria-hidden="true">
+                       <div class="modal fade" id="DeleteProduit{{p.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteProduitLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h4 class="modal-title mb-0" id="DeleteCategoryLabel">
-                                            Delete Category  ? 
+                                          <h4 class="modal-title mb-0" id="DeleteProduitLabel">
+                                            Delete Produit  ? 
                                           </h4>
                                           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
@@ -101,7 +126,7 @@
                                         </div>
                                         <div class="modal-body">
                                 <div class="form-group mb-2">
-                                              <label class="form-label" for="title">are you sure do you want to delete Category? <span class="text-danger">*</span></label>
+                                              <label class="form-label" for="title">are you sure do you want to delete Produit? <span class="text-danger">*</span></label>
 
 
                                             </div>
@@ -110,7 +135,7 @@
                                             <div>
 
                              
-                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteCategory',{'id':c.id}) }}">DELETE</a>
+                                             <a class="btn btn-danger btn-sm" href="{{ path('deleteProduit',{'id':p.id}) }}">DELETE</a>
                                               <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
                                                 Close
                                               </button>
@@ -157,13 +182,13 @@
       </div>
     </div>
   </div>
- <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="newCategoryLabel"
+ <div class="modal fade" id="newProduit" tabindex="-1" role="dialog" aria-labelledby="newProduitLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title mb-0" id="newCategoryLabel">
-          Add New Category
+        <h4 class="modal-title mb-0" id="newProduitLabel">
+          Add New Produit
         </h4>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
@@ -172,11 +197,41 @@
       <div class="modal-body">
         {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
         
+      <div class="form-group mb-2">
+            <label class="form-label" for="title">category<span class="text-danger">*</span></label>
+             {{ form_widget(form.category , {'attr' : {'class' : 'form-control' }})}}
+          </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Name<span class="text-danger">*</span></label>
-             {{ form_widget(form.name , {'attr' : {'class' : 'form-control' , 'placeholder':'name of category'}})}}
+            <label class="form-label" for="title">Name <span class="text-danger">*</span></label>
+            {{ form_widget(form.name , {'attr' : {'class' : 'form-control' }})}}
             <small>Field must contain a unique value</small>
           </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Description<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control' }})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Buy Price<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.buyprice , {'attr' : {'class' : 'form-control' }})}}
+
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">Sell Price<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.sellprice , {'attr' : {'class' : 'form-control' }})}}
+
+          </div>
+           <div class="form-group mb-2">
+            <label class="form-label" for="title">Quantity<span class="text-danger">*</span></label><br>
+            {{ form_widget(form.quantity , {'attr' : {'class' : 'form-control' }})}}
+
+          </div>
+         <div class="form-group">
+                            <label for="image" class="form-label">image</label>
+                          
+                           {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
+                           
+                        </div>
         
           <div>
 
