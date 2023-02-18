@@ -35,7 +35,7 @@ class HomeController extends AbstractController
     #[Route('/error', name: 'app_error')]
     public function error(): Response
     { 
-        return $this->render('error/error-404.html.twig', [
+        return $this->render('error-404.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

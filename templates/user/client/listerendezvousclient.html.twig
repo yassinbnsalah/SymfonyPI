@@ -161,11 +161,14 @@
                                     {% if rdv.getFromuser() == user %}
                                 <tr>
                                     <td class="align-middle border-top-0">
+                                        
+                                        <a href="{{ path('rendezdetails' , {'id' : rdv.id  } ) }}">
                                         <h5 class="mb-0">
                                            
                                                 #{{ rdv.id }}
                                             
                                         </h5>
+                                    </a>
                                     </td>
                                     <td class="align-middle border-top-0"> {{ rdv.getFromuser().getName()  }}</td>
                                     <td class="align-middle border-top-0">{{ rdv.getDateRV|date('d-m-Y') }}</td>

@@ -27,7 +27,13 @@ class SubscriptionType extends AbstractType
                     '6 months' => "3",
                 ],
             ])
-            ->add('paiementType')
+            ->add('paiementType', ChoiceType::class, [
+                'choices'  => [
+                    'Cash' => "Cash",
+                    'Cheque' => "Cheque",
+                    'En ligne' => "En ligne",
+                ],
+            ])
             ->add('amount', TextType::class)
             ->add('save' , SubmitType::class)
             //->add('user')

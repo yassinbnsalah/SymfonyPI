@@ -63,7 +63,7 @@
                                     </a>
                                 </li>
                                     <!-- Nav item -->
-                                <li class="nav-item">
+                                <li class="nav-item ">
                                     <a class="nav-link" href="{{ path('ListeClientByDoctor') }}"><i class="fe fe-credit-card nav-icon"></i>Client list</a>
                                 </li>
                                     <!-- Nav item -->
@@ -104,66 +104,79 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Rendez vous details </h3>
+                        <p class="mb-0">
+                            Rendezvous Dashboard is a quick overview of all rendez vous details <a class="badge badge-primary"> imprimer </a>
+                        </p>
+                        <a class="btn btn-primary btn-sm"> Generate Ordenance </a>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <div class="alert bg-light-danger text-dark-warning alert-dismissible fade show" role="alert">
+                            <strong>rendez vous ID : # {{ rendezVous.id }} </strong> <span class="badge badge-info">{{ rendezVous.getState() }} </span>
+                            <p class="mb-0">
+                                This rendez vous passed at<strong> {{ rendezVous.getDatePassageRV|date('d-m-Y')}}</strong><br>
+                                This rendez vous will be at <strong>{{ rendezVous.getDateRV|date('d-m-Y')}} </strong><br>
+                                This rendez vous from  <strong>{{ rendezVous.getFromuser().getName() }} </strong>
+                            </p>
+                                <!-- Button -->
+                          
+                        </div>
+        
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!-- Card header -->
                     <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Rendez vous liste</h3>
-                        <span>Rendez vous Dashboard is a quick overview of all current
-                            Rendez vous.</span>
+                        <h3 class="h4 mb-3">Ordenance Liste</h3>
+                       
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
                             <thead>
                                 <tr>
-                                    
-                                    <th scope="col" class="border-0">ID</th>
-                                    <th scope="col" class="border-0">from user</th>
-                                    <th scope="col" class="border-0">date rendez vous</th>
-                                    <th scope="col" class="border-0">date passage</th>
-                                    <th scope="col" class="border-0">state</th>
-                                    <th scope="col" class="border-0">Action</th>
-                                    
+                                    <th class="border-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkAll" />
+                                            <label class="custom-control-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                    <th class="border-0">Name</th>
+                                    <th class="border-0">price</th>
+                                    <th class="border-0">quantity</th>
+                                    <th class="border-0">Status</th>
+                                   
+                                  
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for rdv in rendezvous %}
-                                    {% if rdv.getTodoctor() == user %}
+
                                 <tr>
                                     <td class="align-middle border-top-0">
-                                        <h5 class="mb-0"> 
-                                            <a href="{{ path('doctorrendezdetails' , {'id' : rdv.id  } ) }}" class="text-inherit">
-                                                {{ rdv.id }}
-                                            </a>
-                                        </h5>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
+                                            <label class="custom-control-label" for="withdrawTwo"></label>
+                                        </div>
                                     </td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getFromuser().getName()  }}</td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getDateRV|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getDatePassageRV|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">  
-                                        {% if   rdv.getState() == 'Cancel' %}
-                                        <span class="badge-dot bg-danger mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                        {% if   rdv.getState() ==  'confirm' %}
-                                        <span class="badge-dot bg-success mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                        {% if   rdv.getState() ==  'inconfirmed' %}
-                                        <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                    
-                                        </td>
-                                            <td class="align-middle border-top-0"> 
-                                                <a href="{{ path('confirmerendezvous' ,{'id':rdv.id} ) }}" class="badge badge-success" > Confirme </a>    
-                                                {% if   rdv.getState() != 'Cancel' %}
-                                                <a href="{{ path('cancelrdv' ,{'id':rdv.id} ) }}" class="badge badge-danger " > cancel </a>
-                                                {% endif %}       
-                                            </td>
+                                    <td class="align-middle border-top-0">#1060</td>
+                                    <td class="align-middle border-top-0">PayPal</td>
+                                    <td class="align-middle border-top-0">
+                                        <span class="badge badge-warning">Pending</span>
+                                    </td>
+                                    <td class="align-middle border-top-0">$1200</td>
                                 </tr>
-                                    {% endif %}
-                                {% endfor %}
+                           
                             </tbody>
                         </table>
+           
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>

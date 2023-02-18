@@ -22,7 +22,7 @@ class RendezVousController extends AbstractController
             'controller_name' => 'RendezVousController',
         ]);
     }
-    #[Route('/rendezvous/add/{id}', name: 'addRendezVous1')]
+    #[Route('/rendez-vous/add/{id}', name: 'addRendezVous1')]
     public function addRendezVous(Request $request,$id,ManagerRegistry $em): Response
         {
         $DoctorByID = $em->getRepository(User::class)->find($id) ;
@@ -49,7 +49,7 @@ class RendezVousController extends AbstractController
 
     }
    
-    #[Route('/rendezvous/confirme/{id}', name: 'confirmerendezvous')]
+    #[Route('/rendez-vous/confirme/{id}', name: 'confirmerendezvous')]
     public function confirmerendezvous($id , RendezVousRepository $repo, ManagerRegistry $em): Response
     {   
         $user = $this->getUser();
@@ -60,7 +60,7 @@ class RendezVousController extends AbstractController
         $em->flush() ;
         return $this->redirectToRoute('listeRendezVousForDoctor');
     }
-    #[Route('/rendezvous/cancel/{id}', name: 'cancelrdv')]
+    #[Route('/rendez-vous/cancel/{id}', name: 'cancelrdv')]
     public function CancelRendezVous($id , RendezVousRepository $repo, ManagerRegistry $em): Response
     {
         $rdvtocancel = $repo->find($id); 
@@ -77,6 +77,38 @@ class RendezVousController extends AbstractController
         }else{
             return $this->redirectToRoute('rendezVousListe');
         }
+     
+    }
+
+    #[Route('/client/rendez-vous/{id}', name: 'rendezdetails')]
+    public function rendezdetails($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    {
+        $rdvdetails = $repo->find($id); 
+        
+        $user = $this->getUser(); 
+      
+       
+        return $this->render('user/client/rendezvousdetails.html.twig', [
+                'user' => $user, 
+                'rendezVous' => $rdvdetails
+        ]);
+       
+     
+    }
+
+    #[Route('/doctor/rendez-vous/{id}', name: 'doctorrendezdetails')]
+    public function doctorrendezdetails($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    {
+        $rdvdetails = $repo->find($id); 
+        
+        $user = $this->getUser(); 
+      
+       
+        return $this->render('user/doctor/rendezvousdetails.html.twig', [
+                'user' => $user, 
+                'rendezVous' => $rdvdetails
+        ]);
+       
      
     }
 }

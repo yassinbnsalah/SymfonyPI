@@ -35,6 +35,9 @@ class RendezVous
     #[ORM\ManyToOne(inversedBy: 'rdvdoctor')]
     private ?User $todoctor = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $note = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class RendezVous
     public function setTodoctor(?User $todoctor): self
     {
         $this->todoctor = $todoctor;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(string $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

@@ -16,8 +16,8 @@
               </p>
             </div>
             <div>
-              <a href="instructor-courses.html" class="btn btn-white ">Back to Doctors Liste</a>
-              <a href="instructor-courses.html" class="btn btn-success ">Save</a>
+              <a href="{{ path('showDoctor') }}" class="btn btn-white ">Back to Doctors Liste</a>
+              
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
             </div>
             <!-- Stepper content -->
             <div class="bs-stepper-content mt-5">
-              {{ form_start(form , {'attr':{ novalidate: 'novalidate'}} ) }}
+             {{ form_start(form , {'attr':{ novalidate: 'novalidate'}} ) }}
                 <!-- Content one -->
                 <div id="test-l-1" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger1">
                   <!-- Card -->
@@ -81,16 +81,7 @@
                         <input id="courseTitle" class="form-control" type="text" placeholder="Course Title"  value={{ doctor.Numero}} disabled />
                      
                       </div>
-                      <div class="form-group">
-                        <label for="courseTitle" class="form-label">Date rendezVous</label>
-                        {{ form_widget(form.DateRV , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
-                     
-                      </div>
-                      <div class="form-group">
-                        <label for="courseTitle" class="form-label">Date rendezVous</label>
-                        {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control ' , 'placeholder':'Date Disponibility'}})}}
-                     
-                      </div>
+                
                     </div>
                   </div>
                   <!-- Button -->
@@ -165,7 +156,7 @@
                     <div class="card-body ">
                         <div class="form-group">
                             <label for="courseTitle" class="form-label">Note</label>
-                            <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" />
+                            {{ form_widget(form.note , {'attr' : {'class' : 'form-control' , 'placeholder':'Note'}})}}
                          
                           </div>
                     
@@ -176,12 +167,13 @@
                     <a class="btn btn-secondary" onclick="courseForm.previous()">
                       Previous
                     </a>
-                    {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+                  
+                  {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
                   </div>
                 </div>
              
            
-                {{ form_end(form)}}
+               {{ form_end(form)}} 
             </div>
           </div>
         </div>

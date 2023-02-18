@@ -22,7 +22,7 @@
                         </div>
                         <div class="lh-1">
                             <h2 class="mb-0">
-                                {{ user.Name }}
+                                {{ user.name }}
                                 <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
@@ -78,14 +78,14 @@
                                     <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
                                 </li>
                                     <!-- Nav item -->
-                                 <li class="nav-item active">
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('rendezVousListe') }}"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('rendezVousListe') }}" ><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
@@ -110,7 +110,7 @@
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
-                                <li class="nav-item" >
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
@@ -134,80 +134,79 @@
             </div>
             <div class="col-lg-9 col-md-8 col-12">
                 <!-- Card -->
-               <!-- Card -->
-               <div class="card ">
-                <div class="card-header border-bottom-0">
-                    <h3 class="mb-0">Liste des doctor</h3>
-                    <p class="mb-4 ">Edit your personal information and address.</p>
+                <div class="card mb-4">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Rendez vous details </h3> 
+                        <p class="mb-0">
+                            Rendezvous Dashboard is a quick overview of all rendez vous details <a class="badge badge-primary"> imprimer </a>
+                        </p>
+                        
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <div class="alert bg-light-danger text-dark-warning alert-dismissible fade show" role="alert">
+                            <strong>rendez vous ID : # {{ rendezVous.id }} </strong> <span class="badge badge-info">{{ rendezVous.getState() }} </span>
+                            <p class="mb-0">
+                                This rendez vous passed at<strong> {{ rendezVous.getDatePassageRV|date('d-m-Y')}}</strong><br>
+                                This rendez vous will be at <strong>{{ rendezVous.getDateRV|date('d-m-Y')}} </strong><br>
+                                This rendez vous for doctor   <strong>{{ rendezVous.getToDoctor().getName() }} </strong>
+                            </p>
+                                <!-- Button -->
+                          
+                        </div>
+        
+                    </div>
                 </div>
-                <table class="table mb-0 text-nowrap">
-                    <thead>
-                        <tr>
-                                                            
-                                                            <th scope="col" class="border-0">ID</th>
-                                                            <th scope="col" class="border-0">Cin </th>
-                                                            <th scope="col" class="border-0">Full name</th>
-                                                            
-                                                            <th scope="col" class="border-0">Email</th>
-                                                        
-                                                            <th scope="col" class="border-0">CheckRendezVous </th>
-                                                        </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                        {%  for u in  User_doctor %}
-                                                        
-                                                            <!-- Table body -->
-                                                    
-                                                            <tr>
-                                                    
-                                                            <td class="align-middle border-top-0">
-                                                                <h5 class="mb-0">
-                                                                <a href="#!" class="text-inherit">
-                                                                {{ u.id }}
-                                                                </a>
-                                                                </h5>
-                                                            </td>
-                                                            <td class="align-middle border-top-0">
-                                                                
-                                                                <h5 class="mb-0">{{ u.CIN }}</h5>
-                                                            
-                                                            </td>
-                                                            
-                                                            <td class="align-middle border-top-0">
-                                                            <div class="d-flex align-items-center">
-                                                                {% if  u.image %}
-                                                                <img src="/uploads/{{ u.image }}"  alt=""
-                                                                    class="rounded-circle avatar-xs mr-2" />
-                                                                    {% else %}
-                                                                    <img src="{{asset('assets/images/avatar/avatar-1.jpg')}}"  alt=""
-                                                                    class="rounded-circle avatar-xs mr-2" />
-                                                                    
-                                                                    {% endif %}
-                                                            {{ u.Name }}
-                                                                </div>
-                                                            </td>
-                                                            <td class="align-middle border-top-0">
-                                                                {{ u.Email }} 
-                                                                </td>
-                                                            
-                                                            
-                                                            <td class="align-middle border-top-0">
-                                                                {% if u.getDisponibilities()|length != 0 %}
-                                                                    <a class="badge badge-primary" href="{{ path('addRendezVous' , {'id' : u.id  }) }}"> Check for rendez Vous </a> 
-                                                                {% else %} 
-                                                                    <span class="badge badge-danger"> Not Available </span> 
-                                                                {% endif %}
-                                                                
-                                                            </td>   
-                                                                    </tr>
-                                                                
-                                                                
-                                                        {% endfor %}
-                                                    </tbody>
-                 </table>
-                  </div>
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!-- Card header -->
+                    <div class="card-header border-bottom-0">
+                        <h3 class="h4 mb-3">Ordenance Liste</h3>
+                       
+                    </div>
+                    <!-- Table -->
+                    <div class="table-responsive border-0">
+                        <table class="table mb-0 text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkAll" />
+                                            <label class="custom-control-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                    <th class="border-0">Name</th>
+                                    <th class="border-0">price</th>
+                                    <th class="border-0">quantity</th>
+                                    <th class="border-0">Status</th>
+                                   
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-middle border-top-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
+                                            <label class="custom-control-label" for="withdrawTwo"></label>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle border-top-0">#1060</td>
+                                    <td class="align-middle border-top-0">PayPal</td>
+                                    <td class="align-middle border-top-0">
+                                        <span class="badge badge-warning">Pending</span>
+                                    </td>
+                                    <td class="align-middle border-top-0">$1200</td>
+                                   
+                                    
+                                </tr>
+                           
+                            </tbody>
+                        </table>
+           
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
     </div>

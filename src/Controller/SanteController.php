@@ -44,25 +44,32 @@ class SanteController extends AbstractController
     public function addRendezVous(Request $request,$id,ManagerRegistry $em): Response
     {
         $DoctorByID = $em->getRepository(User::class)->find($id) ;
-        $rendezvous = new RendezVous();
-        $user = $this->getUser();
-        $form = $this->createForm(RendezVousType::class, $rendezvous);
-        $form->handleRequest($request);
-        $rendezvous->setFromuser($user);
-        if($form->isSubmitted() && $form->isValid()){
-            $rendezvous->setState('inconfirmed') ; 
-            $rendezvous->setDatePassageRV(new \DateTime()) ;
+        if($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN'){
+            $rendezvous = new RendezVous();
+            $user = $this->getUser();
+            $form = $this->createForm(RendezVousType::class, $rendezvous);
+            $form->handleRequest($request);
             $rendezvous->setFromuser($user);
-            $rendezvous->setTodoctor($DoctorByID) ;
-            $em=$em->getManager(); 
-            $em->persist($rendezvous);
-            $em->flush() ; 
-            return $this->redirectToRoute('rendezVousListe');
+            if($form->isSubmitted() && $form->isValid()){
+                $rendezvous->setDateRV(new \DateTime($request->request->get('radio'))) ;
+                $rendezvous->setState('inconfirmed') ; 
+                $rendezvous->setDatePassageRV(new \DateTime()) ;
+                $rendezvous->setFromuser($user);
+                $rendezvous->setTodoctor($DoctorByID) ;
+                $em=$em->getManager(); 
+                $em->persist($rendezvous);
+                $em->flush() ;
+                return $this->redirectToRoute('rendezVousListe');
+            }
+            return $this->render('sante/addrendezvous.html.twig', [
+                'form' => $form->createView(),
+                'doctor' => $DoctorByID,
+            ]);
         }
-        return $this->render('sante/addrendezvous.html.twig', [
-            'form' => $form->createView(),
-            'doctor' => $DoctorByID,
-        ]);
+        else{
+            return $this->redirectToRoute('app_error');
+        }
+       
     }
 
 

@@ -57,6 +57,17 @@ class SubController extends AbstractController
         return $this->redirectToRoute('clientDetails', array('id' => $subtosuspend->getUser()->getId())); 
     }
 
+    #[Route('/subscription/insuspend/{id}', name: 'insuspendSub')]
+    public function insuspandSubscription($id , SubscriptionRepository $repo, ManagerRegistry $em): Response
+    {
+        $subtosuspend = $repo->find($id); 
+        $subtosuspend->setState("Confirmed");
+        $subtosuspend->setDateExpire(new \DateTime()); 
+        $em = $em->getManager();  
+        $em->persist($subtosuspend); 
+        $em->flush() ;
+        return $this->redirectToRoute('clientDetails', array('id' => $subtosuspend->getUser()->getId())); 
+    }
     #[Route('/subscription/cancel/{id}', name: 'cancelSub')]
     public function CancelSubscription($id , SubscriptionRepository $repo, ManagerRegistry $em): Response
     {

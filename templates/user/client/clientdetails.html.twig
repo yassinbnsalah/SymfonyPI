@@ -174,13 +174,17 @@
                     {{ sub.paiementType }}
                   </td>
                   <td class="align-middle border-top-0">
-                   
-                     
-                     
-                        
+                    {% if sub.state == "Confirmed" %}
                         <a class="btn btn-white btn-sm" href="{{ path('suspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-pause dropdown-item-icon "></i></a>
                         <a class="btn btn-white btn-sm" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-x-circle dropdown-item-icon "></i></a>
                         <a class="btn btn-white btn-sm" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+                    {% endif %}
+                    {% if sub.state == "Suspended" %}
+                        <a class="btn btn-white btn-sm" href="{{ path('insuspendSub' , {'id' : sub.id  }) }}"><i class="fe fe-play dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('cancelSub' , {'id' : sub.id  }) }}"><i class="fe fe-x-circle dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+                        {% endif %}
+                       
                     
                   </td>
                 </tr>

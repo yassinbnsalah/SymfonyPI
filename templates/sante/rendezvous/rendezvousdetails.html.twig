@@ -1,7 +1,8 @@
 {% extends 'navbar.html.twig' %}
 
 
-{% block body %}<!-- Page Content -->
+{% block body %}
+<!-- Page Content -->
 <div class="pt-5 pb-5">
     <div class="container">
         <!-- User info -->
@@ -110,58 +111,7 @@
                             Rendez vous.</span>
                     </div>
                     <!-- Table -->
-                    <div class="table-responsive border-0">
-                        <table class="table mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    
-                                    <th scope="col" class="border-0">ID</th>
-                                    <th scope="col" class="border-0">from user</th>
-                                    <th scope="col" class="border-0">date rendez vous</th>
-                                    <th scope="col" class="border-0">date passage</th>
-                                    <th scope="col" class="border-0">state</th>
-                                    <th scope="col" class="border-0">Action</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for rdv in rendezvous %}
-                                    {% if rdv.getTodoctor() == user %}
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <h5 class="mb-0"> 
-                                            <a href="{{ path('doctorrendezdetails' , {'id' : rdv.id  } ) }}" class="text-inherit">
-                                                {{ rdv.id }}
-                                            </a>
-                                        </h5>
-                                    </td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getFromuser().getName()  }}</td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getDateRV|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">  {{ rdv.getDatePassageRV|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">  
-                                        {% if   rdv.getState() == 'Cancel' %}
-                                        <span class="badge-dot bg-danger mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                        {% if   rdv.getState() ==  'confirm' %}
-                                        <span class="badge-dot bg-success mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                        {% if   rdv.getState() ==  'inconfirmed' %}
-                                        <span class="badge-dot bg-warning mr-1 d-inline-block align-middle"></span> {{ rdv.getState() }}
-                                        {% endif %}
-                                    
-                                        </td>
-                                            <td class="align-middle border-top-0"> 
-                                                <a href="{{ path('confirmerendezvous' ,{'id':rdv.id} ) }}" class="badge badge-success" > Confirme </a>    
-                                                {% if   rdv.getState() != 'Cancel' %}
-                                                <a href="{{ path('cancelrdv' ,{'id':rdv.id} ) }}" class="badge badge-danger " > cancel </a>
-                                                {% endif %}       
-                                            </td>
-                                </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                   
                 </div>
             </div>
         </div>
