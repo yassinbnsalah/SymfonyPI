@@ -158,7 +158,7 @@
                             <label for="image" class="form-label"></label>
                           
                            {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
-                           
+                              {{ form_errors(form.image )}}
                         </div>
                   
                     </div>
@@ -173,6 +173,7 @@
                               <div class="form-group col-12 col-md-12 col-lg-6">
                                  <label for="Cin" class="form-label">Cin <span class="text-danger">*</span></label>
                                  {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control'}})}}
+                                    {{ form_errors(form.CIN )}}
                               </div>
                               <div class="form-group col-12 col-md-12 col-lg-6">
                                  <label for="Name" class="form-label">Name<span class="text-danger">*</span> </label>

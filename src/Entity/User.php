@@ -19,45 +19,47 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("post:read")]
     private ?int $id = null;
 
     
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Cin is required")]
     #[Assert\PositiveOrZero]
-    #[Groups("post:read")]
-    
     private ?int $CIN = null;
 
 
  
      #[ORM\Column(length:50)]
-     #[Assert\Length(min : 2,max : 10,minMessage : "Votre Nom doit être au moins {{ limit }} characters long",maxMessage : "Votre Nom ne peut pas dépasser {{ limit }} characters")]
-     #[Groups("post:read")]
+     #[Assert\NotBlank(message:"Name is required")]
+     #[Assert\Length(min : 4,max : 20,minMessage : "Votre Nom doit être au moins {{ limit }} characters long",maxMessage : "Votre Nom ne peut pas dépasser {{ limit }} characters")]
+
     
     private ?string $Name= null;
 
     
      #[ORM\Column]
-     #[Assert\NotBlank]
+     #[Assert\NotBlank(message:"Numero Telephone is required")]
      #[Assert\Positive]
      #[Assert\Length(min :4,max : 8,minMessage :"Votre Numero doit être au moins {{ limit }} characters long",maxMessage : "Votre Numero ne peut pas dépasser {{ limit }} characters")]
-     #[Groups("post:read")]
+
      private ?int $Numero  = null;
 
      #[ORM\Column]
-     #[Assert\NotBlank]
+     #[Assert\NotBlank(message:"Age is required")]
+     #[Assert\Positive]
      private ?int $Age  = null;
 
     #[ORM\Column(length:255)]
-    #[Assert\Email(message : "The email '{{ value }}' is not a valid email.",  )]
-    #[Groups("post:read")]
+    #[Assert\NotBlank(message:"Email is required")]
+    #[Assert\Email(message : "The email '{{ value }}' is not a valid email.")]
+   
     
     private ?string $Email = null;
 
     
     #[ORM\Column(length:255)]
-    #[Groups("post:read")]
+    #[Assert\NotBlank(message:"Adresse is required")]
+
    
     private ?string $Adresse = null;
     
@@ -66,37 +68,37 @@ class User implements UserInterface
      * @var string The hashed password
      */
      #[ORM\Column]
+     #[Assert\NotBlank]
      #[Assert\Length(min : "8", minMessage:"Votre mot de passe doit faire minimum 8 carractéres")]
      
      private ?string $Password = null;
 
-    
-     #[Assert\EqualTo(propertyPath:"Password", message:"Vous n'avez pas tapé le méme mot de passe")]
-     #[Groups("post:read")]
-     
-    public $confirm_password;
+
+    #[Assert\EqualTo(propertyPath:"Password", message:"Vous n'avez pas tapé le méme mot de passe")]
+    #[Assert\NotBlank]
+    public $confirm_password = null;
 
     
     #[ORM\Column(type:"json", nullable:true)]
-    #[Groups("post:read")]
+
     
     private $roles = [];
 
    
      #[ORM\Column(type:"string", length:50, nullable:true)]
-     #[Groups("post:read")]
+
      
     private $activation_token;
 
    
      #[ORM\Column(type:"string", length:50, nullable:true)]
-     #[Groups("post:read")]
+
      
     private $reset_token;
 
     
      #[ORM\Column(type:"string", length:255, nullable:true)]
-     #[Groups("post:read")]
+  
      
     private $Image;
 
