@@ -57,6 +57,9 @@
               <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
                 <div class="table-responsive border-0">
                   <!-- Table -->
+                  {% if data is not empty %}
+                 <div class="alert alert-danger">{{ data }}</div>
+                  {% endif %}
                   <table class="table mb-0 text-nowrap">
                     <!-- Table Head -->
                     <thead>
@@ -201,56 +204,99 @@
         {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
         
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Cin<span class="text-danger">*</span></label>
-             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control' , 'placeholder':'CIN'}})}}
-            <small>Field must contain a unique value</small>
+            {{ form_label(form.CIN,"Cin" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control ', 'placeholder':'CIN'}})}}
+            {% elseif form_errors(form.CIN ) %} 
+            {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'CIN'}})}}
+            {% else %}
+            {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'CIN'}})}}
+            {% endif %}
+            {{ form_errors(form.CIN )}}
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Name <span class="text-danger">*</span></label>
-            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control' , 'placeholder':'Name'}})}}
-            <small>Field must contain a unique value</small>
+            {{ form_label(form.Name,"Name" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control ', 'placeholder':'Name'}})}}
+            {% elseif form_errors(form.Name ) %} 
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Name'}})}}
+            {% else %}
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Name'}})}}
+            {% endif %}
+            {{ form_errors(form.Name )}}
+           
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Adresse<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control' , 'placeholder':'Adresse'}})}}
-
+            {{ form_label(form.Adresse,"Adresse" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control ', 'placeholder':'Adresse'}})}}
+            {% elseif form_errors(form.Adresse ) %} 
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Adresse'}})}}
+            {% else %}
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Adresse'}})}}
+            {% endif %}
+            {{ form_errors(form.Adresse )}}
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Age<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control' , 'placeholder':'Age'}})}}
-
+            {{ form_label(form.Age,"Age")}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control ', 'placeholder':'Age'}})}}
+            {% elseif form_errors(form.Age ) %} 
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Age'}})}}
+            {% else %}
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Age'}})}}
+            {% endif %}
+            {{ form_errors(form.Age )}}
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">NumeroTel<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control' , 'placeholder':'NumeroTel'}})}}
-
+            {{ form_label(form.Numero,"Numero Telephone" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control ', 'placeholder':'Numero'}})}}
+            {% elseif form_errors(form.Numero ) %} 
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Numero'}})}}
+            {% else %}
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Numero'}})}}
+            {% endif %}
+            {{ form_errors(form.Numero )}}
           </div>
            <div class="form-group mb-2">
-            <label class="form-label" for="title">Email<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control' , 'placeholder':'Email'}})}}
-
+            {{ form_label(form.Email,"Email" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control ', 'placeholder':'Email'}})}}
+            {% elseif form_errors(form.Email ) %} 
+            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Email'}})}}
+            {% else %}
+            {{ form_widget(form.Email , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Email'}})}}
+            {% endif %}
+            {{ form_errors(form.Email )}}
           </div>
            <div class="form-group mb-2">
-            <label class="form-label" for="title">Password<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
-
+            {{ form_label(form.Password,"Password" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control ', 'placeholder':'Password'}})}}
+            {% elseif form_errors(form.Password ) %} 
+            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Password'}})}}
+            {% else %}
+            {{ form_widget(form.Password , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Password'}})}}
+            {% endif %}
+           <span class="badge badge-danger"> {{ form_errors(form.Password )}}</span>
           </div>
           <div class="form-group mb-2">
-            <label class="form-label" for="title">Confirm Password<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control' , 'placeholder':'Password'}})}}
+            {{ form_label(form.confirm_password,"Confirm Password" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control ', 'placeholder':'Password'}})}}
+            {% elseif form_errors(form.confirm_password ) %} 
+            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Password'}})}}
+            {% else %}
+            {{ form_widget(form.confirm_password , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Password'}})}}
+            {% endif %}
+            {{ form_errors(form.confirm_password )}}
+          </div>
 
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Confirmed</label>
-            <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-              <label class="custom-control-label" for="customSwitch1"></label>
-            </div>
-          </div>
           <div>
 
             {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
-         
+      
             <button type="button" class="btn btn-outline-white" data-dismiss="modal">
               Close
             </button>

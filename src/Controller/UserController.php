@@ -16,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -90,7 +91,8 @@ class UserController extends AbstractController
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() ){
+            if($form->isValid()){
                 $user->setRoles(['ROLE_CLIENT']);
               
                 $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
@@ -100,10 +102,21 @@ class UserController extends AbstractController
                 $manager->persist($user);
                 $manager->flush();
                 return $this->redirectToRoute('listeClient');
-          }
+
+          }else{
+            $data = "FAILED";
+            $response = new JsonResponse($data);
+            return $this->render('user/client/listeClient.html.twig', [
+                'controller_name' => 'UserController',
+                'User_client' => $User_client,
+                'data' => $response->getContent(),
+                'form' => $form->createView()
+            ]);
+          }}
         return $this->render('user/client/listeClient.html.twig', [
             'controller_name' => 'UserController',
             'User_client' => $User_client,
+            'data'=>"",
             'form' => $form->createView()
         ]);
     }
@@ -140,7 +153,7 @@ class UserController extends AbstractController
             $user = $doctrine->getRepository(User::class)->find($id);
             $form = $this->createForm(ProfileType::class, $user);
             $form->handleRequest($request);
-            if ($form->isSubmitted()){
+            if ($form->isSubmitted() && $form->isValid()){
                 /** @var UploadedFile $imageFile */
            
             $imageFile = $form->get('image')->getData();
@@ -174,7 +187,7 @@ class UserController extends AbstractController
             $user = $doctrine->getRepository(User::class)->find($id);
             $form = $this->createForm(ProfileType::class, $user);
             $form->handleRequest($request);
-            if ($form->isSubmitted()){
+            if ($form->isSubmitted() && $form->isValid()){
                 /** @var UploadedFile $imageFile */
            
             $imageFile = $form->get('image')->getData();
@@ -208,7 +221,7 @@ class UserController extends AbstractController
             $user = $doctrine->getRepository(User::class)->find($id);
             $form = $this->createForm(ProfileType::class, $user);
             $form->handleRequest($request);
-            if ($form->isSubmitted()){
+            if ($form->isSubmitted() && $form->isValid()){
                 /** @var UploadedFile $imageFile */
            
             $imageFile = $form->get('image')->getData();
@@ -242,7 +255,7 @@ class UserController extends AbstractController
             $user = $doctrine->getRepository(User::class)->find($id);
             $form = $this->createForm(ProfileType::class, $user);
             $form->handleRequest($request);
-            if ($form->isSubmitted()){
+            if ($form->isSubmitted()&& $form->isValid()){
                 /** @var UploadedFile $imageFile */
            
             $imageFile = $form->get('image')->getData();
@@ -276,7 +289,7 @@ class UserController extends AbstractController
         $sb = new Subscription() ; 
         $form = $this->createForm(SubscriptionType :: class , $sb);
         $form->handleRequest($req) ; 
-        if($form->isSubmitted())
+        if($form->isSubmitted()&& $form->isValid())
         {
             
             $date = \DateTime::createFromFormat('Y-m-d',$sb->getDateSub()->format('Y-m-d'));
@@ -343,7 +356,7 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
 
-        if($form->isSubmitted()){
+        if($form->isSubmitted()&& $form->isValid()){
             $dispo->setDoctor($Doctor);
             $em = $em->getManager(); 
             $em->persist($dispo);
@@ -418,17 +431,24 @@ class UserController extends AbstractController
 
 
    #[Route("client/delete/{id}", name:'deleteClient')]
-    public function deleteClient($id, ManagerRegistry $doctrine)
-    {   $connection =$doctrine->getConnection();
-        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
-        
-        $c = $doctrine->getRepository(User::class)->find($id);
+    public function deleteClient($id,ManagerRegistry $doctrine)
+    {  
+        // First, delete the child records
+        $subscriptions = $doctrine->getRepository(Subscription::class)->findBy(['user' => $id]);
+        foreach ($subscriptions as $subscription) {
+
+            $em = $doctrine->getManager();
+            $em->remove($subscription);
+        }
+        // Then, delete the parent record
+        $user = $doctrine->getRepository(User::class)->find($id);
         $em = $doctrine->getManager();
-        $em->remove($c);
+        $em->remove($user);
+        // Finally, flush the changes to the database
         $em->flush();
-        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         return $this->redirectToRoute('listeClient');
     }
+    
     #[Route("coach/delete/{id}", name:'deleteCoach')]
     public function deleteCoach($id, ManagerRegistry $doctrine)
     {   
@@ -471,7 +491,7 @@ class UserController extends AbstractController
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted()&& $form->isValid())
         { $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute('listeClient');
@@ -487,7 +507,7 @@ class UserController extends AbstractController
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted()&& $form->isValid())
         { $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute('listecoachs');
@@ -503,7 +523,7 @@ class UserController extends AbstractController
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted()&& $form->isValid())
         { $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute('listeDoctor');
@@ -519,7 +539,7 @@ class UserController extends AbstractController
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted()&& $form->isValid())
         { $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute('listePharmaciens');
