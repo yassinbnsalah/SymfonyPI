@@ -35,7 +35,6 @@ class OrdenanceController extends AbstractController
         $ordennance = new Ordennance() ; 
         $form = $this->createForm(OrdennanceType::class, $ordennance);
         $form->handleRequest($request);
-      //  dd($medicaments);
       if($form->isSubmitted()){
         $rendezvous->setOrdennance($ordennance); 
         $ordennance->setDateordenance(new \DateTime() ) ; 
@@ -47,24 +46,17 @@ class OrdenanceController extends AbstractController
         $rendezvous->setOrdennance($ordennance); 
         $repo->save($rendezvous);
         foreach ($medicaments as $medi){
-       
              if($request->request->get('ch'.(string)$medi->getId()) == true ) {
                 $ide = "qte" . (string)$medi->getId() ; 
-                // dd($request->request->get($ide));
                 $ordLigne = new OrdennanceLigne(); 
                 $ordLigne->setQunatite($request->request->get($ide));
                 $ordLigne->setMedicament($medi) ; 
                 $ordLigne->setOrdennance($ordennance) ; 
-                $ordlig->save($ordLigne) ; 
-               
-                
+                $ordlig->save($ordLigne) ;  
              }
-           
-            
          }
          return $this->redirectToRoute('doctorrendezdetails', array('id' => $id)); 
       }
-     
         return $this->render('user/doctor/DoctorGenerateOrdenance.html.twig', [
             'controller_name' => 'OrdenanceController',
             'user' => $user,
@@ -79,20 +71,43 @@ class OrdenanceController extends AbstractController
     //  , RendezVousRepository $repo,MedicamentRepository $medicamentRepo ,ManagerRegistry $em , OrdennanceRepository $ordRepo): Response
     // {
     //     $user = $this->getUser(); 
-    //     $ordennance = $ordRepo->find($id) ; 
+    //     $rendezvous = $repo->find($id) ; 
     //     $medicaments = $medicamentRepo->findAll(); 
-    //     $ordennance = new Ordennance() ; 
+    //     $ordennance = $rendezvous->getOrdennance() ; 
     //     $form = $this->createForm(OrdennanceType::class, $ordennance);
     //     $form->handleRequest($request);
-    //   //  dd($medicaments);
     //   if($form->isSubmitted()){
-     
+    //     foreach ($medicaments as $medi){
+    //         if($request->request->get('ch'.(string)$medi->getId()) == true ) {
+    //             $ide = "qte" . (string)$medi->getId() ; 
+    //             $test = false ;
+    //             foreach ($ordennance->getOrdennanceLignes() as $ordligne){
+    //                 if($ordligne->getMedicament() == $medi){
+    //                     $ordligne->setQunatite($request->request->get($ide));
+    //                     $ordlig->save($ordligne) ; 
+    //                     $test = true ; 
+    //                 }
+    //             }
+    //             if($test == false){
+    //                 $ordLigne = new OrdennanceLigne(); 
+    //                 $ordLigne->setQunatite($request->request->get($ide));
+    //                 $ordLigne->setMedicament($medi) ; 
+    //                 $ordLigne->setOrdennance($ordennance) ; 
+    //                 $ordlig->save($ordLigne) ; 
+    //             }
+    //         }
+    //     }
+    //     foreach ($ordennance->getOrdennanceLignes() as $OrdLigner){
+    //         if($request->request->get('ch'.(string)$OrdLigner->getMedicament()->getId()) == false ) {
+    //             $ordlig->remove($OrdLigner) ; 
+    //         }
+    //     }
     //      return $this->redirectToRoute('doctorrendezdetails', array('id' => $id)); 
     //   }
-     
-    //     return $this->render('user/doctor/DoctorGenerateOrdenance.html.twig', [
+    //     return $this->render('user/doctor/DoctorUpdateOrdenance.html.twig', [
     //         'controller_name' => 'OrdenanceController',
     //         'user' => $user,
+    //         'ordenance' => $ordennance , 
     //         'form' => $form->createView(),
     //         'medicaments' => $medicaments,
     //         'rendezvous' => $rendezvous
