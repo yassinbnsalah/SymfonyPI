@@ -66,51 +66,51 @@ class OrdenanceController extends AbstractController
         ]);
     }
 
-    // #[Route('/rendezvous/update/ordenance/{id}', name: 'UpdateOrdenance')]
-    // public function UpdateOrdenance(Request $request , $id, OrdennanceLigneRepository $ordlig
-    //  , RendezVousRepository $repo,MedicamentRepository $medicamentRepo ,ManagerRegistry $em , OrdennanceRepository $ordRepo): Response
-    // {
-    //     $user = $this->getUser(); 
-    //     $rendezvous = $repo->find($id) ; 
-    //     $medicaments = $medicamentRepo->findAll(); 
-    //     $ordennance = $rendezvous->getOrdennance() ; 
-    //     $form = $this->createForm(OrdennanceType::class, $ordennance);
-    //     $form->handleRequest($request);
-    //   if($form->isSubmitted()){
-    //     foreach ($medicaments as $medi){
-    //         if($request->request->get('ch'.(string)$medi->getId()) == true ) {
-    //             $ide = "qte" . (string)$medi->getId() ; 
-    //             $test = false ;
-    //             foreach ($ordennance->getOrdennanceLignes() as $ordligne){
-    //                 if($ordligne->getMedicament() == $medi){
-    //                     $ordligne->setQunatite($request->request->get($ide));
-    //                     $ordlig->save($ordligne) ; 
-    //                     $test = true ; 
-    //                 }
-    //             }
-    //             if($test == false){
-    //                 $ordLigne = new OrdennanceLigne(); 
-    //                 $ordLigne->setQunatite($request->request->get($ide));
-    //                 $ordLigne->setMedicament($medi) ; 
-    //                 $ordLigne->setOrdennance($ordennance) ; 
-    //                 $ordlig->save($ordLigne) ; 
-    //             }
-    //         }
-    //     }
-    //     foreach ($ordennance->getOrdennanceLignes() as $OrdLigner){
-    //         if($request->request->get('ch'.(string)$OrdLigner->getMedicament()->getId()) == false ) {
-    //             $ordlig->remove($OrdLigner) ; 
-    //         }
-    //     }
-    //      return $this->redirectToRoute('doctorrendezdetails', array('id' => $id)); 
-    //   }
-    //     return $this->render('user/doctor/DoctorUpdateOrdenance.html.twig', [
-    //         'controller_name' => 'OrdenanceController',
-    //         'user' => $user,
-    //         'ordenance' => $ordennance , 
-    //         'form' => $form->createView(),
-    //         'medicaments' => $medicaments,
-    //         'rendezvous' => $rendezvous
-    //     ]);
-    // }
+    #[Route('/rendezvous/update/ordenance/{id}', name: 'UpdateOrdenance')]
+    public function UpdateOrdenance(Request $request , $id, OrdennanceLigneRepository $ordlig
+     , RendezVousRepository $repo,MedicamentRepository $medicamentRepo ,ManagerRegistry $em , OrdennanceRepository $ordRepo): Response
+    {
+        $user = $this->getUser(); 
+        $rendezvous = $repo->find($id) ; 
+        $medicaments = $medicamentRepo->findAll(); 
+        $ordennance = $rendezvous->getOrdennance() ; 
+        $form = $this->createForm(OrdennanceType::class, $ordennance);
+        $form->handleRequest($request);
+      if($form->isSubmitted()){
+        foreach ($medicaments as $medi){
+            if($request->request->get('ch'.(string)$medi->getId()) == true ) {
+                $ide = "qte" . (string)$medi->getId() ; 
+                $test = false ;
+                foreach ($ordennance->getOrdennanceLignes() as $ordligne){
+                    if($ordligne->getMedicament() == $medi){
+                        $ordligne->setQunatite($request->request->get($ide));
+                        $ordlig->save($ordligne) ; 
+                        $test = true ; 
+                    }
+                }
+                if($test == false){
+                    $ordLigne = new OrdennanceLigne(); 
+                    $ordLigne->setQunatite($request->request->get($ide));
+                    $ordLigne->setMedicament($medi) ; 
+                    $ordLigne->setOrdennance($ordennance) ; 
+                    $ordlig->save($ordLigne) ; 
+                }
+            }
+        }
+        foreach ($ordennance->getOrdennanceLignes() as $OrdLigner){
+            if($request->request->get('ch'.(string)$OrdLigner->getMedicament()->getId()) == false ) {
+                $ordlig->remove($OrdLigner) ; 
+            }
+        }
+         return $this->redirectToRoute('doctorrendezdetails', array('id' => $id)); 
+      }
+        return $this->render('user/doctor/DoctorUpdateOrdenance.html.twig', [
+            'controller_name' => 'OrdenanceController',
+            'user' => $user,
+            'ordenance' => $ordennance , 
+            'form' => $form->createView(),
+            'medicaments' => $medicaments,
+            'rendezvous' => $rendezvous
+        ]);
+    }
 }

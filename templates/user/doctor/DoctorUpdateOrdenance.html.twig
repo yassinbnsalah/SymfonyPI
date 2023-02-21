@@ -1,5 +1,5 @@
 {% extends 'navbar.html.twig' %}
-<!-- MATKHDEMEECH IL PAGE HEDHY PEACE -->
+
 
 {% block body %}<!-- Page Content -->
 <div class="pt-5 pb-5">
@@ -127,6 +127,11 @@
                               <input type="text" id="lname" class="form-control" disabled  value="{{ rendezvous.getFromuser().getName() }}">
                             
                             </div>
+                            <div class="form-group col-12 col-md-6">
+                                <label class="form-label" for="lname">Ordenance Ligne</label>
+                                
+                              
+                              </div>
                             <div class="table-responsive border-0">
                                 <table class="table mb-0 text-nowrap">
                                     <thead>
@@ -155,18 +160,64 @@
                                                         <td class="align-middle border-top-0">
                                                             <div class="custom-control custom-checkbox">
                                                                
-                                                                <input type="checkbox" class="custom-control-input" name="ch{{ ordligne.getMedicament().id }}" checked id="customCheck1">
-                                                                <label class="custom-control-label" for="customCheck1">{{ ordligne.getMedicament().nom }}  </label>
+                                                                <input type="checkbox" class="custom-control-input" name="ch{{ordligne.getMedicament().id }}" checked id="customCheck1{{ordligne.getMedicament().id}}">
+                                                                <label class="custom-control-label" for="customCheck1{{ordligne.getMedicament().id}}">{{ ordligne.getMedicament().nom }}  </label>
                                                              
                                                             </div>
                                                         </td>
                                                         <td class="align-middle border-top-0">{{ ordligne.getMedicament().quantite }}</td>
                                                         <td class="align-middle border-top-0">{{ ordligne.getMedicament().prix }}</td>
                                                         <td class="align-middle border-top-0">
-                                                            <input type="text" name="qte{{ordligne.getMedicament().id}}" class="form-control form-control-sm">
+                                                            <input type="text" name="qte{{ordligne.getMedicament().id}}" value={{ordligne.getQunatite()}} class="form-control form-control-sm">
                                                         </td>
                                                     </tr>   
                                                 
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group col-12 col-md-6">
+                                <label class="form-label" for="lname">Medicament available</label>
+                                
+                              
+                              </div>
+                            <div class="table-responsive border-0">
+                                <table class="table mb-0 text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="border-0">ID</th>
+                                            <th scope="col" class="border-0">nom</th>
+                                            <th scope="col" class="border-0"> quantity</th>
+                                            <th scope="col" class="border-0">Price</th>
+                                            <th scope="col" class="border-0">quantity</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for medic in medicaments %}
+                                        <tr>
+                                            <td class="align-middle border-top-0">
+                                                <h5 class="mb-0">
+                                                    <a href="#!" class="text-inherit" >
+                                                     # {{ medic.id }}
+                                                    </a>
+                                                </h5>
+                                            </td>
+                                            <td class="align-middle border-top-0">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" name="ch{{ medic.id }}" id="customCheck{{ medic.id }}">
+                                                    <label class="custom-control-label" for="customCheck{{ medic.id }}">{{ medic.nom }}</label>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle border-top-0">{{ medic.quantite }}</td>
+                                            <td class="align-middle border-top-0">{{ medic.prix }}</td>
+                                            <td class="align-middle border-top-0">
+                                                <input type="text" name="qte{{medic.id}}" class="form-control form-control-sm">
+                                               
+                                            </td>
+                                          
+                                        </tr>   
+                                      
                                         {% endfor %}
                                     </tbody>
                                 </table>
