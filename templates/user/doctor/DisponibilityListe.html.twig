@@ -215,8 +215,9 @@ aria-hidden="true">
        
       <div class="form-group mb-2">
         <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
+       
         {%  if data is  empty %} 
-        {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active ', 'placeholder':'DateToday'}})}}
+        {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active  ', 'placeholder':'DateToday'}})}}
         <small>Field must contain a unique value</small>
         {% elseif form_errors(form.dateDispo ) %} 
         {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-invalid' , 'placeholder':'DateToday'}})}}

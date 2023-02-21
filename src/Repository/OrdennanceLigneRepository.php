@@ -21,7 +21,7 @@ class OrdennanceLigneRepository extends ServiceEntityRepository
         parent::__construct($registry, OrdennanceLigne::class);
     }
 
-    public function save(OrdennanceLigne $entity, bool $flush = false): void
+    public function save(OrdennanceLigne $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 

@@ -6,6 +6,7 @@ use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RendezVousType;
 use App\Form\UpdateRendezVousType;
+use App\Repository\OrdennanceRepository;
 use App\Repository\RendezVousRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,7 +122,8 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/doctor/rendez-vous/{id}', name: 'doctorrendezdetails')]
-    public function doctorrendezdetails(Request $request , $id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    public function doctorrendezdetails(Request $request , $id , OrdennanceRepository $ordrepo , RendezVousRepository $repo, ManagerRegistry $em): Response
+    
     {
        
         $rdvtoupdate = $repo->find($id) ; 
@@ -130,7 +132,8 @@ class RendezVousController extends AbstractController
         
         $form = $this->createForm(UpdateRendezVousType::class, $rdvtoupdate);
         $form->handleRequest($request);
-        $rdvdetails = $repo->find($id); 
+        $rdvdetails = $repo->find($id);
+        $ordenances =  $ordrepo->findAll() ; 
         if($form->isSubmitted()){
             if($form->isValid()){
                 $em=$em->getManager();
@@ -139,6 +142,7 @@ class RendezVousController extends AbstractController
                 return $this->render('user/doctor/rendezvousdetails.html.twig', [
                     'user' => $user, 
                     'data' => $data , 
+                    'ordenances' => $ordenances,
                     'form' => $form->createView() ,
                     'rendezVous' => $rdvdetails
             ]);
@@ -148,6 +152,7 @@ class RendezVousController extends AbstractController
                 return $this->render('user/doctor/rendezvousdetails.html.twig', [
                     'user' => $user, 
                     'data' => $data , 
+                    'ordenances' => $ordenances,
                     'form' => $form->createView() ,
                     'rendezVous' => $rdvdetails1
             ]);
@@ -157,6 +162,7 @@ class RendezVousController extends AbstractController
         return $this->render('user/doctor/rendezvousdetails.html.twig', [
                 'user' => $user, 
                 'data' => $data , 
+                'ordenances' => $ordenances,
                 'form' => $form->createView() ,
                 'rendezVous' => $rdvdetails
         ]);

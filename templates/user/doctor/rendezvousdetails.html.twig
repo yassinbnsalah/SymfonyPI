@@ -109,7 +109,14 @@
                         <p class="mb-0">
                             Rendezvous Dashboard is a quick overview of all rendez vous details <a class="badge badge-primary"> imprimer </a>
                         </p>
-                        <a class="btn btn-primary btn-sm"> Generate Ordenance </a>
+                     
+                        {% if  rendezVous.getOrdennance() %}
+                        <a class="btn btn-primary btn-sm" href="{{ path('GenerateOrdenance',{'id':rendezVous.id}) }}"> Update Ordenance </a>
+                        {% else %}
+                        <a class="btn btn-primary btn-sm" href="{{ path('GenerateOrdenance',{'id':rendezVous.id}) }}"> Generate Ordenance </a>
+                        {% endif %}
+                
+                        
                         <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newCatgory"> Update Rendez Vous </a>
                     </div>
                     <!-- Card body -->
@@ -162,21 +169,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
-                                            <label class="custom-control-label" for="withdrawTwo"></label>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle border-top-0">#1060</td>
-                                    <td class="align-middle border-top-0">PayPal</td>
-                                    <td class="align-middle border-top-0">
-                                        <span class="badge badge-warning">Pending</span>
-                                    </td>
-                                    <td class="align-middle border-top-0">$1200</td>
-                                </tr>
+                                {% for ordl in ordenances%}
+                                    {% if ordl.getRendezVous() == rendezVous %} 
+                                        {% for ligne in ordl.getOrdennanceLignes() %}
+                                            <tr>
+                                                <td class="align-middle border-top-0">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
+                                                        <label class="custom-control-label" for="withdrawTwo"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle border-top-0">#{{ ligne.getMedicament().getNom() }}</td>
+                                                <td class="align-middle border-top-0">{{  ligne.getMedicament().getPrix() }}</td>
+                                                <td class="align-middle border-top-0">
+                                                    <span class="badge badge-warning">{{  ligne.getMedicament().getQuantite() }}</span>
+                                                </td>
+                                                <td class="align-middle border-top-0">happy </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {%endif %}
+                                {% endfor %}
                            
                             </tbody>
                         </table>

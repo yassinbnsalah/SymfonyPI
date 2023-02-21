@@ -42,6 +42,9 @@ class RendezVous
     #[ORM\Column(length: 255)]
     private ?string $note = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Ordennance $ordenance = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,4 +145,16 @@ class RendezVous
 
         return $this;
     }
+
+    public function getOrdennance(): ?Ordennance
+    {
+        return $this->ordenance;
+    }
+    public function setOrdennance(Ordennance $ordenance): self
+    {
+        $this->ordenance = $ordenance;
+
+        return $this;
+    }
+   
 }
