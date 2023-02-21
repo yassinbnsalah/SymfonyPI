@@ -13,6 +13,7 @@ use App\Repository\DisponibilityRepository;
 use App\Repository\MedicamentRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -50,22 +51,36 @@ class SanteController extends AbstractController
         if($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN'){
             $rendezvous = new RendezVous();
             $user = $this->getUser();
+            $data = null  ; 
             $form = $this->createForm(RendezVousType::class, $rendezvous);
             $form->handleRequest($request);
             $rendezvous->setFromuser($user);
-            if($form->isSubmitted() && $form->isValid()){
-                $rendezvous->setDateRV(new \DateTime($request->request->get('radio'))) ;
-                $rendezvous->setState('inconfirmed') ; 
-                $rendezvous->setDatePassageRV(new \DateTime()) ;
-                $rendezvous->setFromuser($user);
-                $rendezvous->setTodoctor($DoctorByID) ;
-                $em=$em->getManager(); 
-                $em->persist($rendezvous);
-                $em->flush() ;
-                return $this->redirectToRoute('rendezVousListe');
+            if($form->isSubmitted()){
+                if ($request->request->get('radio')){
+                    $rendezvous->setDateRV(new \DateTime($request->request->get('radio'))) ;
+                    $rendezvous->setState('inconfirmed') ; 
+                    $rendezvous->setDatePassageRV(new \DateTime()) ;
+                    $rendezvous->setHourRV(new \DateTime());
+                    $rendezvous->setHourPassageRV(new \DateTime());
+                    $rendezvous->setFromuser($user);
+                    $rendezvous->setTodoctor($DoctorByID) ;
+                    $em=$em->getManager(); 
+                    $em->persist($rendezvous);
+                    $em->flush() ;
+                    return $this->redirectToRoute('rendezVousListe');
+                }else{
+                    $data = "please pick a date with doctor" ; 
+                    return $this->render('sante/addrendezvous.html.twig', [
+                        'form' => $form->createView(),
+                        'data' => $data , 
+                        'doctor' => $DoctorByID,
+                    ]);
+                }
+             
             }
             return $this->render('sante/addrendezvous.html.twig', [
                 'form' => $form->createView(),
+                'data' => $data , 
                 'doctor' => $DoctorByID,
             ]);
         }
@@ -114,20 +129,34 @@ class SanteController extends AbstractController
     public function ListeDisponibility(Request $req,ManagerRegistry $em): Response
     {
         $dispo = new Disponibility() ; 
+        $dispo->setDateDispo(new \DateTime()); 
         $form = $this->createForm(DisponibilityType::class, $dispo);
         $form->handleRequest($req) ; 
 
         $user = $this->getUser();
-
+        $data = null ; 
         if($form->isSubmitted()){
+            if($form->isValid()){
             $dispo->setDoctor($user);
             $em = $em->getManager(); 
             $em->persist($dispo);
             $em->flush() ; 
         }
+        else{
+            $data = "Failed to add new Disponibility Slote  please click in ";
+            // $response = new JsonResponse($data);
+            return $this->render('user/doctor/DisponibilityListe.html.twig', [
+                'controller_name' => 'UserController',
+                'user' => $user,
+                'data' =>  $data,
+                'form' => $form->createView()
+            ]);
+        }
+        }
         return $this->render('user/doctor/DisponibilityListe.html.twig', [
             'controller_name' => 'HomeController',
             'user' => $user,
+            'data' =>  $data,
             'form' => $form->createView()
         ]);
     }
@@ -141,17 +170,30 @@ class SanteController extends AbstractController
         $form->handleRequest($req) ; 
 
         $user = $this->getUser();
-
+        $data = null ; 
         if($form->isSubmitted()){
+            if($form->isValid()){
             $dispo->setDoctor($user);
             $em = $em->getManager(); 
             $em->persist($dispo);
             $em->flush() ; 
             return $this->redirectToRoute('ListeDisponibility'); 
+        }
+        else{
+            $data = "Failed to add new Disponibility Slote to this Doctor please click in ";
+            // $response = new JsonResponse($data);
+            return $this->render('user/doctor/updateDisponibility.html.twig', [
+                'controller_name' => 'UserController',
+                'user' => $user,
+                'data' =>  $data,
+                'form' => $form->createView()
+            ]);
+        }
         } 
         return $this->render('user/doctor/updateDisponibility.html.twig', [
             'controller_name' => 'HomeController',
             'user' => $user,
+            'data' =>  $data,
             'form' => $form->createView()
         ]);
     }

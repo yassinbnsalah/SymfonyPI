@@ -6,7 +6,7 @@ use App\Repository\ActivityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
@@ -16,12 +16,14 @@ class Activity
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Nom is required")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 200)]
     private ?string $description = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank(message:"Image is required")]
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Planning::class)]

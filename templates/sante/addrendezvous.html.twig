@@ -11,9 +11,14 @@
             <!-- Content -->
             <div class="mb-4 mb-lg-0">
               <h1 class="text-white mb-1">Add New Rendez vous</h1>
+              {% if data is not empty %}
+              <div class="alert alert-danger"><strong>{{ data }}</strong></div>
+              {% else %}
               <p class="mb-0 text-white lead">
                 Just fill the form and create your  Rendez vous.
               </p>
+               {% endif %}
+            
             </div>
             <div>
               <a href="{{ path('showDoctor') }}" class="btn btn-white ">Back to Doctors Liste</a>

@@ -148,7 +148,7 @@
                                 <tr>
                                     
                                     <th scope="col" class="border-0">ID</th>
-                                    <th scope="col" class="border-0">from user</th>
+                                    <th scope="col" class="border-0">To doctor</th>
                                     <th scope="col" class="border-0">date rendez vous</th>
                                     <th scope="col" class="border-0">date passage</th>
                                     <th scope="col" class="border-0">state</th>
@@ -170,7 +170,7 @@
                                         </h5>
                                     </a>
                                     </td>
-                                    <td class="align-middle border-top-0"> {{ rdv.getFromuser().getName()  }}</td>
+                                    <td class="align-middle border-top-0"> {{ rdv.getTodoctor().getName()  }}</td>
                                     <td class="align-middle border-top-0">{{ rdv.getDateRV|date('d-m-Y') }}</td>
                                     <td class="align-middle border-top-0"> {{ rdv.getDatePassageRV|date('d-m-Y') }}</td>
                                     <td class="align-middle border-top-0"> 

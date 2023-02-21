@@ -19,6 +19,10 @@
               </ol>
             </nav>
           </div>
+          {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
+          
+           {% endif %}
           <div>
             <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">New Sub</a>
           </div>
@@ -217,23 +221,55 @@
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
-            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'DateToday'}})}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active ', 'placeholder':'DateToday'}})}}
             <small>Field must contain a unique value</small>
+            {% elseif form_errors(form.dateSub ) %} 
+            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-invalid' , 'placeholder':'DateToday'}})}}
+            {% else %}
+            {{ form_widget(form.dateSub , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-valid' , 'placeholder':'DateToday'}})}}
+            {% endif %}
+            <small>  {{ form_errors(form.dateSub )}} </small>
+            
+          
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">Type<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.type , {'attr' : {'class' : 'form-control' , 'placeholder':'DateToday'}})}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.type , {'attr' : {'class' : 'form-control  ', 'placeholder':'type'}})}}
+            {% elseif form_errors(form.type ) %} 
+            {{ form_widget(form.type , {'attr' : {'class' : 'form-control   is-invalid' , 'placeholder':'type'}})}}
+            {% else %}
+            {{ form_widget(form.type , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'type'}})}}
+            {% endif %}
+            {{ form_errors(form.type )}}
+          
+
 
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">Paiement methode<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control' , 'placeholder':'Paiement method'}})}}
-
+            {%  if data is  empty %} 
+            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control ', 'placeholder':'paiementType'}})}}
+            {% elseif form_errors(form.paiementType ) %} 
+            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control  is-invalid' , 'placeholder':'paiementType'}})}}
+            {% else %}
+            {{ form_widget(form.paiementType , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'paiementType'}})}}
+            {% endif %}
+            {{ form_errors(form.paiementType )}}
+            
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">Amount<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control' , 'placeholder':'Total amount'}})}}
-
+            {%  if data is  empty %} 
+            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control  ', 'placeholder':'amount'}})}}
+            {% elseif form_errors(form.amount ) %} 
+            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control  is-invalid' , 'placeholder':'amount'}})}}
+            {% else %}
+            {{ form_widget(form.amount , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'amount'}})}}
+            {% endif %}
+     
+            <small>         {{ form_errors(form.amount )}} </small>
           </div>
           <div class="mb-2">
             <label class="form-label">Confirmed</label>

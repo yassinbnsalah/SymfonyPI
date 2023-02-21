@@ -19,6 +19,10 @@
               </ol>
             </nav>
           </div>
+          {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
+          
+           {% endif %}
           <div>
             <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">Add New Disponibility</a>
           </div>
@@ -143,9 +147,9 @@
                         <td class="align-middle border-top-0">{{ dispo.Note }}</td>
                         <td class="align-middle border-top-0">
                          
-                            <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO" >remove</a>
+                            <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO{{dispo.id}}" >remove</a>
                         </td>
-                        <div class="modal fade" id="DeleteDISPO" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
+                        <div class="modal fade" id="DeleteDISPO{{dispo.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                           <div class="modal-content">
@@ -207,17 +211,45 @@
          
           <div class="form-group mb-2">
             <label class="form-label" for="title">Date Sub<span class="text-danger">*</span></label>
-            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active' , 'placeholder':'Date Disponibility'}})}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active ', 'placeholder':'DateToday'}})}}
+            <small>Field must contain a unique value</small>
+            {% elseif form_errors(form.dateDispo ) %} 
+            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-invalid' , 'placeholder':'DateToday'}})}}
+            {% else %}
+            {{ form_widget(form.dateDispo , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-valid' , 'placeholder':'DateToday'}})}}
+            {% endif %}
+            <small>  {{ form_errors(form.dateDispo )}} </small>
+          
             <small>Field must contain a unique value</small>
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">HeureStart<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker' , 'placeholder':'HeureStart'}})}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker ', 'placeholder':'DateToday'}})}}
+            <small>Field must contain a unique value</small>
+            {% elseif form_errors(form.heureStart ) %} 
+            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker is-invalid' , 'placeholder':'DateToday'}})}}
+            {% else %}
+            {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker is-valid' , 'placeholder':'DateToday'}})}}
+            {% endif %}
+            <small>  {{ form_errors(form.heureStart )}} </small>
+         
   
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="title">HeureEnd<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control' , 'placeholder':'HeureEnd'}})}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control ', 'placeholder':'heureEnd'}})}}
+            <small>Field must contain a unique value</small>
+            {% elseif form_errors(form.heureEnd ) %} 
+            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control   is-invalid' , 'placeholder':'heureEnd'}})}}
+            {% else %}
+            {{ form_widget(form.heureEnd , {'attr' : {'class' : 'form-control  is-valid' , 'placeholder':'heureEnd'}})}}
+            {% endif %}
+            <small>  {{ form_errors(form.heureEnd )}} </small>
+         
+        
   
           </div>
           <div class="form-group mb-2">

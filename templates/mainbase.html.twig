@@ -38,7 +38,24 @@
                   ><img src="{{asset('assets/images/brand/logo/logo.svg')}}" alt=""
                   /></a>
                <!-- Mobile view nav wrap -->
-              
+               <ul class="nav justify-content-center">
+                  <li class="nav-item">
+                    <a class="nav-link text-secondary" href="#list-item-1"> <strong> 
+                       <i class="nav-icon fe fe-home mr-2"></i>Home </strong></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-secondary" href="#list-item-2"><strong> 
+                     <i class="nav-icon fe fe-shopping-cart mr-2"></i>Recomded Product </strong></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-secondary" href="#list-item-3"><strong>
+                     <i class="nav-icon fe fe-message-square mr-2"></i> Feedbacks </strong></a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="#" class="nav-link text-secondary"  data-toggle="modal" data-target="#exampleModal"><strong>
+                        <i class="nav-icon fe fe-mail mr-2"></i> Contact US </strong></a>
+                    </li>
+                </ul>
                <!-- Collapse -->
                <div class="collapse navbar-collapse" id="navbar-default">
                 
@@ -71,6 +88,7 @@
                                     ></a>
                               </div>
                               <ul class="list-group list-group-flush notification-list-scroll">
+
                                  <li class="list-group-item bg-light">
                                     <div class="row">
                                        <div class="col">
@@ -124,130 +142,7 @@
                                        </div>
                                     </div>
                                  </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-2.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">
-                                                   Brooklyn Simmons
-                                                </h5>
-                                                <p class="mb-3">
-                                                   Just launched a new Courses React for Beginner.
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-thumbs-up text-success mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:20 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-3.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">Jenny Wilson</h5>
-                                                <p class="mb-3">
-                                                   Krisitn Watsan like your comment on course
-                                                   Javascript Introduction!
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-thumbs-up text-info mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:56 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-4.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">Sina Ray</h5>
-                                                <p class="mb-3">
-                                                   You earn new certificate for complete the Javascript
-                                                   Beginner course.
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-award text-warning mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:56 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
+                            
                               </ul>
                               <div class="border-top px-3 pt-3 pb-0">
                                  <a
@@ -366,6 +261,34 @@
          </nav>
         
         {% block body %}{% endblock %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabelOne">New message</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+               <form>
+                 <div class="form-group">
+                   <label for="recipient-name" class="col-form-label">Recipient:</label>
+                   <input type="text" class="form-control" id="recipient-name">
+                 </div>
+                 <div class="form-group">
+                   <label for="message-text" class="col-form-label">Message:</label>
+                   <textarea class="form-control" id="message-text"></textarea>
+                 </div>
+               </form>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary">Send message</button>
+             </div>
+           </div>
+         </div>
+       </div> 
         <div class="footer">
             <div class="container">
                 <div class="row align-items-center no-gutters border-top py-2">

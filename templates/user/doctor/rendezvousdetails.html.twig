@@ -110,14 +110,23 @@
                             Rendezvous Dashboard is a quick overview of all rendez vous details <a class="badge badge-primary"> imprimer </a>
                         </p>
                         <a class="btn btn-primary btn-sm"> Generate Ordenance </a>
+                        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newCatgory"> Update Rendez Vous </a>
                     </div>
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="alert bg-light-danger text-dark-warning alert-dismissible fade show" role="alert">
+                        {% if data is not empty %}
+                        <div class="alert bg-light-danger text-dark alert-dismissible fade show"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
+                      
+                         {% endif %}
+                        <div class="alert bg-light-danger text-dark alert-dismissible fade show" role="alert">
                             <strong>rendez vous ID : # {{ rendezVous.id }} </strong> <span class="badge badge-info">{{ rendezVous.getState() }} </span>
                             <p class="mb-0">
                                 This rendez vous passed at<strong> {{ rendezVous.getDatePassageRV|date('d-m-Y')}}</strong><br>
-                                This rendez vous will be at <strong>{{ rendezVous.getDateRV|date('d-m-Y')}} </strong><br>
+                                {% if form_errors(form.DateRV ) %} 
+                                <strong>This rendez Can't be at {{ rendezVous.getDateRV|date('d-m-Y')}} </strong><br>
+                                {%else%}
+                                This rendez vous will be at <strong>{{ rendezVous.getDateRV|date('d-m-Y')}} : {{ rendezVous.getHourRV()|date('H:i')}}</strong>  <br>
+                                {% endif %}
                                 This rendez vous from  <strong>{{ rendezVous.getFromuser().getName() }} </strong>
                             </p>
                                 <!-- Button -->
@@ -180,5 +189,55 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelOne" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelOne">Update Rendez Vous</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Date Rendezvous:</label>
+              {%  if data is  empty %} 
+              {{ form_widget(form.DateRV , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active ', 'placeholder':'DateToday'}})}}
+              <small>Field must contain a unique value</small>
+              {% elseif form_errors(form.DateRV ) %} 
+              {{ form_widget(form.DateRV , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-invalid' , 'placeholder':'DateToday'}})}}
+              {% else %}
+              {{ form_widget(form.DateRV , {'attr' : {'class' : 'form-control flatpickr flatpickr-input active is-valid' , 'placeholder':'DateToday'}})}}
+              {% endif %}
+              <small>  {{ form_errors(form.DateRV )}} </small>
+             
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Heure Rendez Vous:</label>
+              {%  if data is  empty %} 
+              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr ', 'placeholder':'HourRV'}})}}
+              <small>Field must contain a unique value</small>
+              {% elseif form_errors(form.HourRV ) %} 
+              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr is-invalid' , 'placeholder':'HourRV'}})}}
+              {% else %}
+              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr  is-valid' , 'placeholder':'HourRV'}})}}
+              {% endif %}
+              <small>  {{ form_errors(form.HourRV )}} </small>
+            
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Note:</label>
+                {{ form_widget(form.note , {'attr' : {'class' : 'form-control ', 'placeholder':'Note'}})}}
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          {{ form_widget(form.update , {'attr' : {'class' : 'btn btn-primary' }})}}
+        </div>
 
+        {{ form_end(form)}}
+      </div>
+    </div>
+  </div> 
 {% endblock %}

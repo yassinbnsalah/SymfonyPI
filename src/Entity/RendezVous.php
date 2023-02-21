@@ -6,6 +6,7 @@ use App\Repository\RendezVousRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
 class RendezVous
 {
@@ -15,6 +16,9 @@ class RendezVous
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"Date is required")]
+    #[Assert\GreaterThanOrEqual("today",
+    message:"Date must be higher than today")]  
     private ?\DateTimeInterface $DateRV = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]

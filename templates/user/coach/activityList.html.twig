@@ -109,9 +109,14 @@
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
                         <h3 class="mb-0">Activity Liste</h3>
+                        <a href="#" class="badge badge-primary"  data-toggle="modal" data-target="#newCatgory">add activity</a>
+                        {% if data is not empty %}
+                        <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
+                        {% else %}
                         <span> Activity liste Dashboard is a quick overview of all current
                             Activity liste.</span>
-                            <a href="#" class="badge badge-primary"  data-toggle="modal" data-target="#newCatgory">add activity</a>
+                         {% endif %}
+                    
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
@@ -197,18 +202,42 @@ aria-hidden="true">
        
         <div class="form-group mb-2">
           <label class="form-label" for="title">nom<span class="text-danger">*</span></label>
-          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control' , 'placeholder':'nom'}})}}
+          {%  if data is  empty %} 
+          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
           <small>Field must contain a unique value</small>
+          {% elseif form_errors(form.nom ) %} 
+          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'nom'}})}}
+          {% else %}
+          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'nom'}})}}
+          {% endif %}
+          <small>  {{ form_errors(form.nom )}} </small>
+         
         </div>
         <div class="form-group mb-2">
           <label class="form-label" for="title">description<span class="text-danger">*</span></label><br>
-          {{ form_widget(form.description , {'attr' : {'class' : 'form-control' , 'placeholder':'description'}})}}
-
+     
+          {%  if data is  empty %} 
+          {{ form_widget(form.description , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
+          <small>Field must contain a unique value</small>
+          {% elseif form_errors(form.description ) %} 
+          {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'nom'}})}}
+          {% else %}
+          {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'nom'}})}}
+          {% endif %}
+          <small>  {{ form_errors(form.description )}} </small>
         </div>
         <div class="form-group mb-2">
           <label class="form-label" for="title">image<span class="text-danger">*</span></label><br>
-          {{ form_widget(form.image , {'attr' : {'class' : 'form-control' , 'placeholder':'image'}})}}
-
+ 
+          {%  if data is  empty %} 
+          {{ form_widget(form.image , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
+          <small>Field must contain a unique value</small>
+          {% elseif form_errors(form.image ) %} 
+          {{ form_widget(form.image , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'nom'}})}}
+          {% else %}
+          {{ form_widget(form.image , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'nom'}})}}
+          {% endif %}
+          <small>  {{ form_errors(form.image )}} </small>
         </div>
         <div>
 

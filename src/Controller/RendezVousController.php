@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RendezVousType;
+use App\Form\UpdateRendezVousType;
 use App\Repository\RendezVousRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,6 +50,29 @@ class RendezVousController extends AbstractController
 
     }
    
+    #[Route('/rendez-vous/update/{id}', name: 'updateRendezVous')]
+    public function updateRendezVous(Request $request,$id,ManagerRegistry $em): Response
+        {
+        $rendezvous = $em->getRepository(RendezVous::class)->find($id) ;
+       
+        $user = $this->getUser();
+        $form = $this->createForm(RendezVousType::class, $rendezvous);
+        $form->handleRequest($request);
+        $rendezvous->setFromuser($user);
+        if($form->isSubmitted()){
+          
+            $em=$em->getManager();
+            $em->persist($rendezvous);
+            $em->flush() ; 
+            return $this->redirectToRoute('listeRendezVous');
+        }
+        return $this->render('sante/updateRendezVous.html.twig', [
+            'form' => $form->createView(),
+            'doctor' => $user,
+        ]);
+
+    }
+
     #[Route('/rendez-vous/confirme/{id}', name: 'confirmerendezvous')]
     public function confirmerendezvous($id , RendezVousRepository $repo, ManagerRegistry $em): Response
     {   
@@ -97,15 +121,43 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/doctor/rendez-vous/{id}', name: 'doctorrendezdetails')]
-    public function doctorrendezdetails($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    public function doctorrendezdetails(Request $request , $id , RendezVousRepository $repo, ManagerRegistry $em): Response
     {
-        $rdvdetails = $repo->find($id); 
-        
-        $user = $this->getUser(); 
-      
        
+        $rdvtoupdate = $repo->find($id) ; 
+        $data =null ; 
+        $user = $this->getUser(); 
+        
+        $form = $this->createForm(UpdateRendezVousType::class, $rdvtoupdate);
+        $form->handleRequest($request);
+        $rdvdetails = $repo->find($id); 
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $em=$em->getManager();
+                $em->persist($rdvtoupdate);
+                $em->flush() ; 
+                return $this->render('user/doctor/rendezvousdetails.html.twig', [
+                    'user' => $user, 
+                    'data' => $data , 
+                    'form' => $form->createView() ,
+                    'rendezVous' => $rdvdetails
+            ]);
+            }else{
+                $data = "can not update rendez vous check" ; 
+                $rdvdetails1 = $repo->find($id); 
+                return $this->render('user/doctor/rendezvousdetails.html.twig', [
+                    'user' => $user, 
+                    'data' => $data , 
+                    'form' => $form->createView() ,
+                    'rendezVous' => $rdvdetails1
+            ]);
+            }
+           
+        }
         return $this->render('user/doctor/rendezvousdetails.html.twig', [
                 'user' => $user, 
+                'data' => $data , 
+                'form' => $form->createView() ,
                 'rendezVous' => $rdvdetails
         ]);
        

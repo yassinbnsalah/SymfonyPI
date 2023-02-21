@@ -209,10 +209,12 @@
             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control ', 'placeholder':'CIN'}})}}
             {% elseif form_errors(form.CIN ) %} 
             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'CIN'}})}}
+            <p class="text-danger">{{ form_errors(form.CIN)}}</p>
             {% else %}
             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'CIN'}})}}
             {% endif %}
-            {{ form_errors(form.CIN )}}
+           
+           
           </div>
           <div class="form-group mb-2">
             {{ form_label(form.Name,"Name" )}}

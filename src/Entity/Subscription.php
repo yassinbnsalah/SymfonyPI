@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SubscriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 class Subscription
@@ -15,18 +16,29 @@ class Subscription
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message:"Date is required")]
+    #[Assert\GreaterThanOrEqual("today",
+    message:"Date must be higher than today")]  
+    // #[Assert\Date(message :"le date ne doit etre ")]
     private ?\DateTimeInterface $dateSub = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateExpire = null;
 
     #[ORM\Column(length: 125)]
+    #[Assert\NotBlank(message:"Type is required")]
     private ?string $type = null;
 
     #[ORM\Column(length: 125)]
+    #[Assert\NotBlank(message:"Paiment method is required")]
     private ?string $paiementType = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(
+        value: 18,
+        message:"Amount must be possitive"
+    )]
+    #[Assert\NotBlank(message:"Amount is required")]
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]

@@ -26,6 +26,7 @@ class SportController extends AbstractController
     #[Route('/dashboard/coach/activity', name: 'activityListe')]
     public function activityListe(ActivityRepository $repo,Request $req,ManagerRegistry $em): Response
     {
+        $data = null ; 
         $user = $this->getUser();
         $act = $repo->findAll();
         $activity = new Activity();
@@ -33,15 +34,28 @@ class SportController extends AbstractController
         $form->handleRequest($req);
         if($form->isSubmitted())
         {
-            $em = $em->getManager(); 
-            $em->persist($activity);
-            $em->flush() ;
-            return $this->redirectToRoute('activityListe'); 
+            if($form->isValid()){
+                $em = $em->getManager(); 
+                $em->persist($activity);
+                $em->flush() ;
+                return $this->redirectToRoute('activityListe'); 
+            }
+            else{
+                $data = "can not add this activity check " ;
+                return $this->render('user/coach/activityList.html.twig', [
+                   'data' => $data ,
+                    'user' => $user,
+                    'activites' => $act,
+                    'form' => $form->createView()
+                ]);
+            }
+        
         }
         return $this->render('user/coach/activityList.html.twig', [
             'controller_name' => 'SportController',
             'user' => $user,
             'activites' => $act,
+            'data' => $data , 
             'form' => $form->createView()
         ]);
     }
@@ -88,19 +102,31 @@ class SportController extends AbstractController
         $activity = $repo->find($id) ; 
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($req) ; 
-
-       
+        $data = null ;
         $user = $this->getUser();
-        if($form->isSubmitted()){
-          
-            $em = $em->getManager(); 
-            $em->persist($activity);
-            $em->flush() ; 
-            return $this->redirectToRoute('activityListe'); 
+        if($form->isSubmitted())
+        {
+            if($form->isValid()){
+                $em = $em->getManager(); 
+                $em->persist($activity);
+                $em->flush() ;
+                return $this->redirectToRoute('activityListe'); 
+            }
+            else{
+                $data = "can not update this activity check " ;
+                return $this->render('user/coach/updateActivity.html.twig', [
+                   'data' => $data ,
+                    'user' => $user,
+                    'activites' => $activity,
+                    'form' => $form->createView()
+                ]);
+            }
+        
         }
         return $this->render('user/coach/updateActivity.html.twig', [
             'controller_name' => 'SportController',
             'user' => $user,
+            'data' => $data , 
             'form' => $form->createView()
         ]);
     }
