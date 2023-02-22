@@ -5,11 +5,12 @@ namespace App\Controller;
 use App\Entity\Medicament;
 use App\Form\AddMedicamentType;
 use App\Repository\MedicamentRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MedicammentController extends AbstractController
 {
@@ -43,7 +44,7 @@ class MedicammentController extends AbstractController
         return $this->render('medicament/addMedicamment.html.twig', [
             'f' => $form->createView()
         ]);
-    }
+    } 
     #[Route('/doctor/medicament/{id}', name: 'UpdateMedicament')]
     public function UpdateMedicament(MedicamentRepository $repo, $id, ManagerRegistry $doctrine, Request  $request): Response
 
@@ -53,16 +54,33 @@ class MedicammentController extends AbstractController
         $form = $this->createForm(AddMedicamentType::class, $Medicament);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            if ($form->isValid()) {
             $repo->save($Medicament, true);
             return $this->redirectToRoute('ListeMedicament'); 
+        } else {
+            $data = "Failed to Update Medicament  please try again";
+            $response = new JsonResponse($data);
+            return $this->render('user/pharmacien/updatemedicament.html.twig', [
+        'controller_name' => 'MedicammentController',
+                'Medicament' => $Medicament,
+                'user' => $userConnected,
+                'data' => $response->getContent(),
+                'form' => $form->createView()
+
+            ]);
         }
-        return $this->render('user/pharmacien/updatemedicament.html.twig', [
-            'controller_name' => 'MedicammentController',
-            'Medicament' => $Medicament,
-            'user' => $userConnected,
-            'form' => $form->createView()
-        ]);
     }
+    return $this->render('user/pharmacien/updatemedicament.html.twig', [
+        'controller_name' => 'MedicammentController',
+        'Medicament' => $Medicament,
+        'user' => $userConnected,
+        'data' => "",
+        'form' => $form->createView()
+      
+    ]);
+    
+}
+   
 
     #[Route("medicament/delete/{id}", name: 'deleteMedicament')]
     public function deleteMedicament($id, ManagerRegistry $doctrine)

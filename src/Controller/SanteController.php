@@ -2,23 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Disponibility;
+use DateTime;
+use App\Entity\User;
 use App\Entity\Medicament;
 use App\Entity\RendezVous;
-use App\Entity\User;
+use App\Form\RendezVousType;
+use App\Entity\Disponibility;
 use App\Form\AddMedicamentType;
 use App\Form\DisponibilityType;
-use App\Form\RendezVousType;
-use App\Repository\DisponibilityRepository;
+use App\Repository\UserRepository;
 use App\Repository\MedicamentRepository;
 use App\Repository\RendezVousRepository;
-use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\DisponibilityRepository;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SanteController extends AbstractController
@@ -99,13 +100,13 @@ class SanteController extends AbstractController
         $rendezvous = $repo->findAll() ; 
         if($usercurrent->getRoles()[0] == 'ROLE_ADMIN'){
             return $this->render('sante/rendezvous/listerendezvous.html.twig', [
-                'controller_name' => 'HomeController',
+                'controller_name' => 'SanteController',
                 'user' => $usercurrent ,
                 'rendezvous' => $rendezvous
             ]);
         }else{
             return $this->render('user/doctor/Dashboarddoctor.html.twig', [
-                'controller_name' => 'HomeController',
+                'controller_name' => 'SanteController',
                 'user' => $usercurrent ,
                 'rendezvous' => $rendezvous
             ]);
@@ -120,7 +121,7 @@ class SanteController extends AbstractController
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
         return $this->render('user/doctor/ListeClientDoctor.html.twig', [
-            'controller_name' => 'HomeController',
+            'controller_name' => 'SanteController',
             'User_client' => $User_client,
             'user' => $user
         ]);
@@ -146,7 +147,7 @@ class SanteController extends AbstractController
             $data = "Failed to add new Disponibility Slote  please click in ";
             // $response = new JsonResponse($data);
             return $this->render('user/doctor/DisponibilityListe.html.twig', [
-                'controller_name' => 'UserController',
+                'controller_name' => 'SanteController',
                 'user' => $user,
                 'data' =>  $data,
                 'form' => $form->createView()
@@ -154,7 +155,7 @@ class SanteController extends AbstractController
         }
         }
         return $this->render('user/doctor/DisponibilityListe.html.twig', [
-            'controller_name' => 'HomeController',
+            'controller_name' => 'SanteController',
             'user' => $user,
             'data' =>  $data,
             'form' => $form->createView()
@@ -183,7 +184,7 @@ class SanteController extends AbstractController
             $data = "Failed to add new Disponibility Slote to this Doctor please click in ";
             // $response = new JsonResponse($data);
             return $this->render('user/doctor/updateDisponibility.html.twig', [
-                'controller_name' => 'UserController',
+                'controller_name' => 'SanteController',
                 'user' => $user,
                 'data' =>  $data,
                 'form' => $form->createView()
@@ -191,7 +192,7 @@ class SanteController extends AbstractController
         }
         } 
         return $this->render('user/doctor/updateDisponibility.html.twig', [
-            'controller_name' => 'HomeController',
+            'controller_name' => 'SanteController',
             'user' => $user,
             'data' =>  $data,
             'form' => $form->createView()
@@ -239,15 +240,29 @@ class SanteController extends AbstractController
         $form = $this->createForm(AddMedicamentType::class, $MedicamentToadd);
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
+            if ($form->isValid()) {
             $repo->save($MedicamentToadd, true);
             return $this->redirectToRoute('ListeMedicament'); 
+        } else {
+            $data = "Failed to add new Medicament  please click in ";
+            $response = new JsonResponse($data);
+            return $this->render('user/pharmacien/listemedicament.html.twig', [
+                'controller_name' => 'HomeController',
+                'user' => $userConnected,
+                'Medicaments' => $Medicament,
+                'data' => $response->getContent(),
+                'form' => $form->createView()
+
+            ]);
         }
-        return $this->render('user/pharmacien/listemedicament.html.twig', [
-            'controller_name' => 'HomeController',
-            'user' => $userConnected,
-            'Medicaments' => $Medicament,
-            'form' => $form->createView()
-        ]);
-       
     }
-}
+    return $this->render('user/pharmacien/listemedicament.html.twig', [
+        'controller_name' => 'HomeController',
+        'user' => $userConnected,
+        'Medicaments' => $Medicament,
+        'data' => "",
+        'form' => $form->createView()
+      
+    ]);
+    
+}}

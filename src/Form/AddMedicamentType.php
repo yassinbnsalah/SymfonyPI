@@ -4,19 +4,28 @@ namespace App\Form;
 
 use App\Entity\Medicament;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class AddMedicamentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('description')
-            ->add('quantite')
-            ->add('prix')
+            ->add('nom', null, [
+                'empty_data' => ''
+            ])
+            ->add('description', null, [
+                'empty_data' => ''
+            ])
+            ->add('quantite', IntegerType::class, [
+                'empty_data' => ' '
+            ])
+            ->add('prix', IntegerType::class, [
+                'empty_data' => ' '
+            ])
             ->add('save' , SubmitType::class)
         ;
     }

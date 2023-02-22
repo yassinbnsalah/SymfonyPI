@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MedicamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MedicamentRepository::class)]
@@ -16,15 +17,19 @@ class Medicament
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"nom is required")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"description is required")]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"quantite is required")]
     private ?float $quantite = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"prix is required")]
     private ?float $prix = null;
 
     #[ORM\OneToMany(mappedBy: 'medicament', targetEntity: OrdennanceLigne::class)]

@@ -107,15 +107,13 @@
               <!-- Card Footer -->
               <div class="card-footer">
                 <div class="row align-items-center no-gutters">
-                  <div class="col-auto">
-                    <img src="assets/images/avatar/avatar-1.jpg" class="rounded-circle avatar-xs" alt="">
-                  </div>
+               
                   <div class="col ml-2">
                     <span>Fit-health Store</span>
                   </div>
                   <div class="col-auto">
-                    <a href="#!" class="text-muted bookmark">
-                      <i class="fe fe-shopping-bag  "></i>
+                         <a href="{{path("cart_add", {id: produit.id})}}" class="btn btn-success">
+                        <i class="fas fa-shopping-cart"></i>
                     </a>
                   </div>
                 </div>

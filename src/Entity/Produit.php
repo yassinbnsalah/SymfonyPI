@@ -70,7 +70,7 @@ class Produit
         return $this->buyprice;
     }
 
-    public function setBuyprice(?int $buyprice): self
+    public function setBuyprice(?int $buyprice): self 
     {
         $this->buyprice = $buyprice;
 

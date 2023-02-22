@@ -98,25 +98,57 @@
                     <div class="card-header">
                        <h4 class="mb-0">Update Medicament </h4>
                     </div>
+                      {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} </strong></div>
+          {% endif %}
                     <!-- Card Body -->
                     <div class="card-body">
                        <!-- Form -->
                        {{ form_start(form , {'attr':{class: 'row' , novalidate: 'novalidate'}} ) }}
                           <div class="form-group col-12 col-md-12 col-lg-6">
-                             <label for="senderName" class="form-label">Name </label>
-                             {{ form_widget(form.nom , {'attr' : {'class' : 'form-control' , 'placeholder':'Date Disponibility'}})}}
+            {{ form_label(form.nom,"Name" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control ', 'placeholder':'nom'}})}}
+            {% elseif form_errors(form.nom ) %} 
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'nom'}})}}
+            {% else %}
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'nom'}})}}
+            {% endif %}
+            {{ form_errors(form.nom )}}
                           </div>
                           <div class="form-group col-12 col-md-12 col-lg-6">
-                             <label for="address" class="form-label">description<span class="text-danger">*</span> </label>
-                             {{ form_widget(form.description , {'attr' : {'class' : 'form-control' , 'placeholder':'description'}})}}
+
+            {{ form_label(form.description,"description" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control ', 'placeholder':'description'}})}}
+            {% elseif form_errors(form.description ) %} 
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'description'}})}}
+            {% else %}
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'description'}})}}
+            {% endif %}
+            {{ form_errors(form.description )}}
                           </div>
                           <div class="form-group col-12 col-md-12 col-lg-6">
-                             <label for="mailDriver" class="form-label">quantite<span class="text-danger">*</span> </label>
-                             {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control' , 'placeholder':'quantity'}})}}
+            {{ form_label(form.quantite,"quantite" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control ', 'placeholder':'quantite'}})}}
+            {% elseif form_errors(form.quantite ) %} 
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'quantite'}})}}
+            {% else %}
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'quantite'}})}}
+            {% endif %}
+            {{ form_errors(form.quantite )}}
                           </div>
                           <div class="form-group col-12 col-md-12 col-lg-6">
-                             <label for="userName" class="form-label">prix<span class="text-danger">*</span>  </label>
-                              {{ form_widget(form.prix , {'attr' : {'class' : 'form-control' , 'placeholder':'prix'}})}}
+            {{ form_label(form.prix,"prix" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control ', 'placeholder':'prix'}})}}
+            {% elseif form_errors(form.prix ) %} 
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'prix'}})}}
+            {% else %}
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'prix'}})}}
+            {% endif %}
+            {{ form_errors(form.prix )}}
                           </div>
                        
                           <div class="col-12 col-md-12 col-lg-6">

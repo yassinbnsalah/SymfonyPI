@@ -64,7 +64,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" href="{{ path('ListeMedicament') }}"><i class="fe fe-settings nav-icon"></i>Medicament liste</a>
                                 </li>
-                            </ul>
+                            </ul> 
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
@@ -104,6 +104,9 @@
                     
                     </div>
                     <!-- Table -->
+                       {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
+          {% endif %}
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
                             <thead>
@@ -182,7 +185,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
@@ -203,23 +206,52 @@ aria-hidden="true">
         {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
        
         <div class="form-group mb-2">
-          <label class="form-label" for="title">Name<span class="text-danger">*</span></label>
-          {{ form_widget(form.nom , {'attr' : {'class' : 'form-control' , 'placeholder':'Name medicament'}})}}
-          <small>Field must contain a unique value</small>
+          {{ form_label(form.nom,"Name" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control ', 'placeholder':'nom'}})}}
+            {% elseif form_errors(form.nom ) %} 
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'nom'}})}}
+            {% else %}
+            {{ form_widget(form.nom , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'nom'}})}}
+            {% endif %}
+            {{ form_errors(form.nom )}}
         </div>
         <div class="form-group mb-2">
-          <label class="form-label" for="title">quantity<span class="text-danger">*</span></label><br>
-          {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control' , 'placeholder':'Quantity'}})}}
+            {{ form_label(form.quantite,"quantite" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control ', 'placeholder':'quantite'}})}}
+            {% elseif form_errors(form.quantite ) %} 
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'quantite'}})}}
+            {% else %}
+            {{ form_widget(form.quantite , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'quantite'}})}}
+            {% endif %}
+            {{ form_errors(form.quantite )}}
 
         </div>
         <div class="form-group mb-2">
-          <label class="form-label" for="title">Price<span class="text-danger">*</span></label><br>
-          {{ form_widget(form.prix , {'attr' : {'class' : 'form-control' , 'placeholder':'Price medicament'}})}}
+
+            {{ form_label(form.prix,"quantite" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control ', 'placeholder':'prix'}})}}
+            {% elseif form_errors(form.prix ) %} 
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'prix'}})}}
+            {% else %}
+            {{ form_widget(form.prix , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'prix'}})}}
+            {% endif %}
+            {{ form_errors(form.prix )}}
 
         </div>
         <div class="form-group mb-2">
-            <label class="form-label" for="title">Description<span class="text-danger">*</span></label><br>
-            {{ form_widget(form.description , {'attr' : {'class' : 'form-control' , 'placeholder':'Description medicament'}})}}
+
+            {{ form_label(form.description,"description" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control ', 'placeholder':'description'}})}}
+            {% elseif form_errors(form.description ) %} 
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'description'}})}}
+            {% else %}
+            {{ form_widget(form.description , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'description'}})}}
+            {% endif %}
+            {{ form_errors(form.description )}}
   
           </div>
       
