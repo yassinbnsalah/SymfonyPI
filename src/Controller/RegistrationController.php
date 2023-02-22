@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
  
     #[Route('/registration', name: 'app_registration')]
     public function registration(Request $request, EntityManagerInterface $manager) {
-    {
+    
         
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -67,6 +67,6 @@ class RegistrationController extends AbstractController
     [
         'form' => $form->createView()
     ]);
-    }
+    
 }
 }

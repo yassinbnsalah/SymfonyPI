@@ -47,6 +47,7 @@ class User implements UserInterface
      #[ORM\Column]
      #[Assert\NotBlank(message:"Age is required")]
      #[Assert\Positive]
+     
      private ?int $Age  = null;
 
     #[ORM\Column(length:255)]
@@ -98,7 +99,7 @@ class User implements UserInterface
 
     
      #[ORM\Column(type:"string", length:255, nullable:true)]
-  
+     #[Assert\Image(mimeTypesMessage : "Veuillez télécharger une image valide (JPG, JPEG, PNG, GIF)")]
      
     private $Image;
 

@@ -27,62 +27,62 @@
                             <label for="CIN" class="form-label">CIN</label>
                      
                             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control' , 'placeholder':'CIN'}})}}
+                        {{ form_errors(form.CIN )}}
                         </div>
                                <!-- Username -->
                         <div class="form-group">
                             <label for="Name" class="form-label">Name</label>
                      
                             {{ form_widget(form.Name , {'attr' : {'class' : 'form-control' , 'placeholder':'Name'}})}}
+                       {{ form_errors(form.Name )}}
                         </div>
                              <!-- CIN -->
                         <div class="form-group">
                             <label for="image" class="form-label">image</label>
                           
                            {{ form_row(form.image, {'attr':{'placeholder': 'Your photo ' , id : 'customFile1'}}) }}
-                           
+                           {{ form_errors(form.image )}}
                         </div>
                             <!-- Adresse -->
                         <div class="form-group">
                             <label for="Adresse" class="form-label">Adresse</label>
                      
                             {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control' , 'placeholder':'Adresse'}})}}
+                        {{ form_errors(form.Adresse )}}
                         </div>
                             <!-- Age -->
                         <div class="form-group">
                             <label for="Age" class="form-label">Age</label>
                      
                             {{ form_widget(form.Age , {'attr' : {'class' : 'form-control' , 'placeholder':'Age'}})}}
+                       {{ form_errors(form.Age )}}
                         </div>
                               <!-- NumeroTel -->
                         <div class="form-group">
                             <label for="Numero" class="form-label">NumeroTel</label>
                      
                             {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control' , 'placeholder':'Numero'}})}}
+                            {{ form_errors(form.Numero )}}
                         </div>
                             <!-- Email -->
                         <div class="form-group">
                             <label for="Email" class="form-label">Email</label>
                             {{ form_widget(form.Email , {'attr' : {'class' : 'form-control', 'placeholder':'xxxxxx@xxx.xx'}})}}
+                             {{ form_errors(form.Email )}}
                         </div>
                             <!-- Password -->
                         <div class="form-group">
                             <label for="Password" class="form-label">Password</label>
                             {{ form_widget(form.Password , {'attr' : {'class' : 'form-control', 'placeholder':'Password'}})}}
+                         {{ form_errors(form.Password )}}
                         </div>
                         <!-- confirme Password -->
                         <div class="form-group">
                             <label for="confirm_password" class="form-label">Confirm Password</label>
                             {{ form_widget(form.confirm_password, {'attr' : {'class' : 'form-control','placeholder':'Password'}})}}
+                        {{ form_errors(form.confirm_password )}}
                         </div>
                             <!-- Checkbox -->
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="agreeCheck" />
-                                <label class="custom-control-label" for="agreeCheck"><span>I agree to the <a href="#!">Terms of
-                                            Service </a>and
-                                        <a href="#!">Privacy Policy.</a></span></label>
-                            </div>
-                        </div>
                         <div>
                                 <!-- Button -->
                             

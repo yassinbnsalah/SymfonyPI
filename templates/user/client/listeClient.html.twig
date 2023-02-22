@@ -21,8 +21,13 @@
                 </li>
               </ol>
             </nav>
+    
           </div>
+          {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newClient"> ici </a></strong></div>
+          {% endif %}
           <div>
+        
             <a href="admin-cms-post-new.html" class="btn btn-primary" data-toggle="modal" data-target="#newClient">New Client</a>
           </div>
         </div>
@@ -57,9 +62,7 @@
               <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
                 <div class="table-responsive border-0">
                   <!-- Table -->
-                  {% if data is not empty %}
-                 <div class="alert alert-danger">{{ data }}</div>
-                  {% endif %}
+              
                   <table class="table mb-0 text-nowrap">
                     <!-- Table Head -->
                     <thead>
@@ -213,8 +216,6 @@
             {% else %}
             {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'CIN'}})}}
             {% endif %}
-           
-           
           </div>
           <div class="form-group mb-2">
             {{ form_label(form.Name,"Name" )}}
@@ -281,7 +282,7 @@
             {% else %}
             {{ form_widget(form.Password , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Password'}})}}
             {% endif %}
-           <span class="badge badge-danger"> {{ form_errors(form.Password )}}</span>
+         {{ form_errors(form.Password )}}
           </div>
           <div class="form-group mb-2">
             {{ form_label(form.confirm_password,"Confirm Password" )}}
