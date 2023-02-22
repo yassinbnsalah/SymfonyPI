@@ -35,7 +35,7 @@ class Subscription
 
     #[ORM\Column]
     #[Assert\GreaterThan(
-        value: 18,
+        value: 0,
         message:"Amount must be possitive"
     )]
     #[Assert\NotBlank(message:"Amount is required")]

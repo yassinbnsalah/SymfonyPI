@@ -231,12 +231,12 @@ aria-hidden="true">
       <div class="form-group mb-2">
         <label class="form-label" for="title">HeureStart<span class="text-danger">*</span></label><br>
         {%  if data is  empty %} 
-        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker ', 'placeholder':'DateToday'}})}}
+        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control ', 'placeholder':'heureStart'}})}}
         <small>Field must contain a unique value</small>
         {% elseif form_errors(form.heureStart ) %} 
-        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker is-invalid' , 'placeholder':'DateToday'}})}}
+        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'heureStart'}})}}
         {% else %}
-        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control selectpicker is-valid' , 'placeholder':'DateToday'}})}}
+        {{ form_widget(form.heureStart , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'heureStart'}})}}
         {% endif %}
         <small>  {{ form_errors(form.heureStart )}} </small>
      

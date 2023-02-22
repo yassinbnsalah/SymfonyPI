@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,12 +13,14 @@ class HomeController extends AbstractController
     
 
     #[Route('/', name: 'homepageVisitor')]
-    public function homepageVisitor(): Response
+    public function homepageVisitor(ProduitRepository $Rep): Response
     {   
+        $produitt = $Rep->findAll();
         if($this->getUser()){
             return $this->render('home/home.html.twig', [
                 'controller_name' => 'HomeController',
-                'user' => $this->getUser()
+                'user' => $this->getUser(),
+                'produits' => $produitt 
             ]);
         }
         return $this->render('home/index.html.twig', [
