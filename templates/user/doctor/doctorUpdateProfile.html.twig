@@ -110,6 +110,7 @@
                   <h3 class="mb-0 ">Profile Details</h3>
                   <p class="mb-0 ">You have full control to manage your own account setting.</p>
                 </div>
+        
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="d-lg-flex align-items-center justify-content-between">
@@ -138,28 +139,55 @@
                     <p class="mb-4 ">Edit your personal information and address.</p>
                 
                    <!-- Form -->
-                       
-                              <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Cin" class="form-label">Cin <span class="text-danger">*</span></label>
-                                 {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control'}})}}
+                         <div class="form-group col-12 col-md-12 col-lg-6">
+            {{ form_label(form.CIN,"Cin" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'CIN'}})}}
+            {% elseif form_errors(form.CIN ) %} 
+            {{ form_widget(form.CIN , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'CIN'}})}}
+            {% endif %}
+            {{ form_errors(form.CIN )}}
                               </div>
                               <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Name" class="form-label">Name<span class="text-danger">*</span> </label>
-                                 {{ form_widget(form.Name , {'attr' : {'class' : 'form-control '}})}}
+                  {{ form_label(form.Name,"Name" )}}
+            {%  if data is  empty %} 
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Name'}})}}
+            {% elseif form_errors(form.Name ) %} 
+            {{ form_widget(form.Name , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Name'}})}}  
+            {% endif %}
+            {{ form_errors(form.Name )}}
+      
                               </div>
                               <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Adresse" class="form-label">Adresse<span class="text-danger">*</span> </label>
-                                 {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control'}})}}
+              {{ form_label(form.Adresse,"Adresse" )}}
+            {%  if data is  empty %} 
+             {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Adresse'}})}}
+            {% elseif form_errors(form.Adresse ) %} 
+            {{ form_widget(form.Adresse , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Adresse'}})}}
+            {% endif %}
+            {{ form_errors(form.Adresse )}}
+           
                               </div>
                               <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="Age" class="form-label">Age<span class="text-danger">*</span>  </label>
-                                  {{ form_widget(form.Age , {'attr' : {'class' : 'form-control'}})}}
+            {{ form_label(form.Age,"Age")}}
+            {%  if data is  empty %} 
+           {{ form_widget(form.Age , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Age'}})}}
+            {% elseif form_errors(form.Age ) %} 
+            {{ form_widget(form.Age , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Age'}})}}
+            {% endif %}
+            {{ form_errors(form.Age )}}
+         
                               </div>
                                <div class="form-group col-12 col-md-12 col-lg-6">
-                                 <label for="NumeroTel" class="form-label">NumeroTel<span class="text-danger">*</span>  </label>
-                                  {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control'}})}}
+                       {{ form_label(form.Numero,"Numero Telephone" )}}
+            {%  if data is  empty %} 
+             {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control is-valid' , 'placeholder':'Numero'}})}}
+            {% elseif form_errors(form.Numero ) %} 
+            {{ form_widget(form.Numero , {'attr' : {'class' : 'form-control is-invalid' , 'placeholder':'Numero'}})}}
+            {% endif %}
+            {{ form_errors(form.Numero )}}
+        
                               </div>
-                    
                            
                               <div class="col-12 col-md-12 col-lg-6">
                                 {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}

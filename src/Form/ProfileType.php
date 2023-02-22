@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 
 class ProfileType extends AbstractType
@@ -16,21 +17,28 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('CIN')
-            ->add('Name')
+             ->add('CIN',IntegerType::class, [
+                'empty_data' => ' '
+            ])
+            ->add('Name', null, [
+                'empty_data' => ''
+            ])
             ->add('Numero')
-            ->add('Age')
+            ->add('Age', IntegerType::class, [
+                'empty_data' => ' '
+            ])
             ->add('Adresse')
             ->add('image',FileType::class,[
-                'label' => 'image',
                 'mapped' => false,
                 'required' => false,
+                'data' => '',
                 'constraints' => [
                     new File([
                         'maxSize' => '2Mi',
                         'mimeTypesMessage' => 'Please upload a valid image file',
                     ])
                 ],
+                
             ])
             ->add('save' ,  SubmitType::class)
         ;
