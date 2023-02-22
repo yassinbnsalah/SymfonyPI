@@ -45,6 +45,7 @@ class OrdenanceController extends AbstractController
         $em1->flush() ; 
         $rendezvous->setOrdennance($ordennance); 
         $repo->save($rendezvous);
+        // here is the  change 
         foreach ($medicaments as $medi){
              if($request->request->get('ch'.(string)$medi->getId()) == true ) {
                 $ide = "qte" . (string)$medi->getId() ; 
