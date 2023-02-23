@@ -1,3 +1,4 @@
+
 {% extends 'navbar.html.twig' %}
 
 
@@ -55,15 +56,15 @@
                         <!-- Collapse navbar -->
                     <div class="collapse navbar-collapse" id="sidenav">
                         <div class="navbar-nav flex-column">
-                            <span class="navbar-header">Medicament</span>
+                            <span class="navbar-header">ordonnance</span>
                             <ul class="list-unstyled ml-n2 mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="{{ path('ListeOrdenance') }}"><i class="fe fe-settings nav-icon"></i>Ordenannace liste</a>
+                                    <a class="nav-link" href="{{ path('ListeOrdenance') }}"><i class="fe fe-settings nav-icon"></i>Ordenannace liste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('ListeMedicament') }}"><i class="fe fe-settings nav-icon"></i>Medicament liste</a>
+                                    <a class="nav-link active" href="{{ path('Listeordonnance') }}"><i class="fe fe-settings nav-icon"></i>ordonnance liste</a>
                                 </li>
-                            </ul>
+                            </ul> 
                                 <!-- Navbar header -->
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
@@ -95,9 +96,12 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Ordenannace Liste</h3>
-                        <span> Planning liste Dashboard is a quick overview of all current
-                            Planning liste.</span>
+                        <h3 class="mb-0">ordonnance Liste</h3>  
+                      
+                        <span> ordonnance liste Dashboard is a quick overview of all current
+                            ordonnance liste.</span>
+                            <a data-toggle="modal" data-target="#newCatgory" class="btn btn-primary btn-sm mr-0">add ordonnance </a>
+                    
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
@@ -105,69 +109,134 @@
                             <thead>
                                 <tr>
                         <th scope="col" class="border-0">ID</th>
-                        <th scope="col" class="border-0">Date de l'ordonnance</th>
-                        <th scope="col" class="border-0">Amount</th>
-                        <th scope="col" class="border-0">Rendez Voud ID</th>
-                        <th scope="col" class="border-0">Nom de client</th>
-                        <th scope="col" class="border-0">Details </th>
+                        <th scope="col" class="border-0">date</th>
+                        <th scope="col" class="border-0">Quantity</th>
+                        <th scope="col" class="border-0">price</th>
+                       
+                        <th scope="col" class="border-0">Action </th>
                       </tr>
                             </thead>
                     <tbody>
-{% for ordonnance in ordonnances %}
+                    {% for ordonnance in ordonnances %}
                       <tr>
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="#!" class="text-inherit">
-                            {{ ordonnance.id }}
+                              {{ ordonnance.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                            <h5 class="mb-0">{{ ordonnance.dateordenance}}</h5>
+                            <h5 class="mb-0">   {{ ordonnance.dateordenance}}</h5>
                         </td>
                         <td class="align-middle border-top-0">
                             <div class="d-flex align-items-center">
-                                   {{ ordonnance.amount }}
+                                {{ ordonnance.amount }}
                             </div>
                         </td>
                         <td class="align-middle border-top-0">
-                           {{ ordonnance.getRendezVous }}
+                            {{ ordonnance.rendezvousID}}
                         </td>
                         <td class="align-middle border-top-0">
-                            fffff
+                            {{ ordonnance.clientName }}
                         </td>
+                       
                         <td class="align-middle border-top-0">
-                            <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalScrollable"> details </a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('Updateordonnance',{'id':ordonnance.id}) }}"> update </a>
+                            <a class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#Deleteordonnance{{ ordonnance.id }}"> delete </a>
                         </td>    
-                        <div class="modal fade " id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalScrollableTitle">Ordenannace ID : </h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                        <div class="modal fade" id="Deleteordonnance{{ ordonnance.id }}" tabindex="-1" role="dialog" aria-labelledby="DeleteordonnanceLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title mb-0" id="DeleteordonnanceLabel">
+                                Delete Disponibility Slote ? 
+                              </h4>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                             
+                               
+                                <div class="form-group mb-2">
+                                  <label class="form-label" for="title">are you sure do you want to delete Disponibility Slot? <span class="text-danger">*</span></label>
+                                  
+                               
+                                </div>
+                           
+                              
+                                <div>
+                        
+                                    
+                                 <a class="btn btn-danger btn-sm" href="{{ path('deleteordonnance', {'id' : ordonnance.id  }) }}">DELETE</a>
+                                  <button type="button" class="btn btn-outline-white btn-sm" data-dismiss="modal">
+                                    Close
                                   </button>
                                 </div>
-                                <div class="modal-body">
-                                  BANJOUR LA VIDA 
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                                  
-                                </div>
-                              </div>
+                             
                             </div>
                           </div>
+                        </div>
+                        </div>
                         </tr>
-                        {% endfor %}
-                            
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0" id="newCatgoryLabel">
+         Add New Ordonnance
+      </h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+    </button>
+    </div>
+    <div class="modal-body">
+        {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+       
+        <div class="form-group mb-2">
+          {{ form_label(form.dateordenance,"Date de l'ordonnance" )}}
+            {{ form_errors(form.nom )}}
+        </div>
+        <div class="form-group mb-2">
+            {{ form_label(form.amount,"amount" )}}
+            {{ form_errors(form.amount )}}
 
+        </div>
+        <div class="form-group mb-2">
+
+            {{ form_label(form.rendezvousID,"rendezvous ID" )}}
+            {{ form_errors(form.rendezvousID)}}
+
+        </div>
+        <div class="form-group mb-2">
+
+            {{ form_label(form.clientName,"nom de client" )}}
+            {{ form_errors(form.clientName )}}
+  
+          </div>
+      
+        <div>
+
+            {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+          <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}

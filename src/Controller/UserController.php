@@ -11,6 +11,7 @@ use App\Entity\Disponibility;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
 use App\Repository\UserRepository;
+use App\Repository\OrdennanceRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -137,14 +138,15 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/pharmacien/dashboard', name: 'dashPharmacien')]
-    public function dashPharmacien(): Response
+    public function dashPharmacien(OrdennanceRepository $repo): Response
     {
-        $user = $this->getUser();
-
-        //dd($this->getUser()); 
+        $usercurrent = $this->getUser();
+        $ordonnance = $repo->findAll() ; 
+           
         return $this->render('user/pharmacien/pharmacienDash.html.twig', [
             'controller_name' => 'UserController',
-            'user' => $user
+            'user' => $usercurrent ,
+            'ordonnances' => $ordonnance
         ]);
     }
 
