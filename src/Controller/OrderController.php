@@ -20,6 +20,7 @@ class OrderController extends AbstractController
     public function index(Request $request,SessionInterface $session,ProduitRepository $productsRepository
     , OrderRepository $orderRepo , OrderLineRepository $orderLineRepository): Response
     {
+        $data = null ;
        #Panier recuperation here 
         $panier = $session->get("panier", []);
         $dataPanier = [];
@@ -39,30 +40,38 @@ class OrderController extends AbstractController
         $user = $this->getUser() ; 
 
         if($form->isSubmitted()){
-            $date = new \DateTime() ;
-            $order->setReference(strtoupper($user->getName()).$date->format('Y-m-d-H:i')) ; 
-            $order->setState("inconfirmed"); 
-            $order->setPrice($total) ; 
-            $order->setPaiementmethod("cash on delivry"); 
-            $order->setDateOrder(new \DateTime()); 
-            $order->setClient($user) ; 
-            $orderRepo->save($order); 
-            foreach($panier as $id => $quantite){
-                $product = $productsRepository->find($id);
-                $orderline = new OrderLine() ; 
-                $orderline->setProduct($product); 
-                $orderline->setQuantity($quantite) ; 
-                $orderline->setPrice($product->getSellprice() * $quantite); 
-                $orderline->setRelatedOrder($order) ; 
-                $orderLineRepository->save($orderline) ; 
+            if($form->isValid()){
+                $date = new \DateTime() ;
+                $order->setReference(strtoupper($user->getName()).$date->format('Y-m-d-H:i')) ; 
+                $order->setState("inconfirmed"); 
+                $order->setPrice($total) ; 
+                $order->setPaiementmethod("cash on delivry"); 
+                $order->setDateOrder(new \DateTime()); 
+                $order->setClient($user) ; 
+                $orderRepo->save($order); 
+                foreach($panier as $id => $quantite){
+                    $product = $productsRepository->find($id);
+                    $orderline = new OrderLine() ; 
+                    $orderline->setProduct($product); 
+                    $orderline->setQuantity($quantite) ; 
+                    $orderline->setPrice($product->getSellprice() * $quantite); 
+                    $orderline->setRelatedOrder($order) ; 
+                    $orderLineRepository->save($orderline) ; 
+                }
+                $session->remove('panier');
+                return $this->redirectToRoute('homepageVisitor'); 
+            }else{
+                $data = "error while creating order";
+                $form = $form->createView() ;
+                return $this->render('order/addOrder.html.twig', 
+                compact('dataPanier', 'total' ,'user','form','data')) ; 
             }
-            $session->remove('panier');
-            return $this->redirectToRoute('homepageVisitor'); 
+          
         }
         $form = $form->createView() ;
         return $this->render('order/addOrder.html.twig', 
-        compact('dataPanier', 'total' ,'user','form')
-   );
+        compact('dataPanier', 'total' ,'user','form','data'));
+  
     }
 
     #[Route('/order/liste', name: 'ListeOrder')]

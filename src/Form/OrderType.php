@@ -16,9 +16,13 @@ class OrderType extends AbstractType
             // ->add('reference')
             // ->add('state')
             // ->add('price')
-            ->add('shippingadress')
+            ->add('shippingadress', null , [
+                'empty_data' => ''
+            ])
             // ->add('dateOrder')
-            ->add('note')
+            ->add('note',null , [
+                'empty_data' => ''
+            ])
             // ->add('client')
             ->add('save' , SubmitType::class)
         ;

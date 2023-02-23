@@ -11,12 +11,17 @@
             <!-- Content -->
             <div class="mb-4 mb-lg-0">
               <h1 class="text-white mb-1">Add New Order</h1>
+              {% if data is not empty %}
+              <div class="alert alert-danger"><strong>{{ data }}</strong></div>
+              {% else %}
               <p class="mb-0 text-white lead">
                 Just fill the form and create your Order.
               </p>
+               {% endif %}
+             
             </div>
             <div>
-              <a href="instructor-courses.html" class="btn btn-white ">Back to Home</a>
+              <a href="{{ path('homepageVisitor') }}" class="btn btn-white ">Back to Home</a>
              
             </div>
           </div>
@@ -90,8 +95,15 @@
                      
                       <div class="form-group">
                         <label for="courseTitle" class="form-label">Shipping Adresse</label>
-                        {{ form_widget(form.shippingadress , {'attr' : {'class' : 'form-control ', 'placeholder':'Shipping Adresse'}})}}
+                        {%  if data is  empty %} 
+                        {{ form_widget(form.shippingadress , {'attr' : {'class' : 'form-control   ', 'placeholder':'shipping adress'}})}}
                     
+                        {% elseif form_errors(form.shippingadress ) %} 
+                        {{ form_widget(form.shippingadress , {'attr' : {'class' : 'form-control  is-invalid' , 'placeholder':'shipping adress'}})}}
+                        {% else %}
+                        {{ form_widget(form.shippingadress , {'attr' : {'class' : 'form-control   is-valid' , 'placeholder':'shipping adress'}})}}
+                        {% endif %}
+                        <small>  {{ form_errors(form.shippingadress )}} </small>
                       </div>
                     </div>
                   </div>
@@ -253,7 +265,7 @@
                     <a class="btn btn-secondary mt-5" onclick="courseForm.previous()">
                       Previous
                     </a>
-                    {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary mt-5' }})}}
+                    {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-danger mt-5' }})}}
                   </div>
                 </div>
                 {{ form_end(form)}}

@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,6 +35,22 @@ class SportController extends AbstractController
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $imageFile = $form->get('image')->getData();
+
+                if($imageFile){
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            
+                $activity->setImage($newFilename);
+            }
                 $em = $em->getManager();
                 $em->persist($activity);
                 $em->flush();

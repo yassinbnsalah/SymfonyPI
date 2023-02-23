@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 class Order
@@ -27,6 +27,7 @@ class Order
     private ?float $price = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    #[Assert\NotBlank(message:"Shipping Adress is required")]
     private ?string $shippingadress = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]

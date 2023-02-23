@@ -59,41 +59,38 @@
                             <span class="navbar-header">Subscription</span>
                             <ul class="list-unstyled ml-n2 mb-4">
                                     <!-- Nav item -->
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-calendar nav-icon"></i>My
-                                        Subscriptions
-                                    </a>
-                                </li>
- 
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('ListeOrder') }}"><i class="fe fe-calendar nav-icon"></i>Orders
-                                    </a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-credit-card nav-icon"></i>Planning list</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
-                                </li>
-                                    <!-- Nav item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
-                                </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('rendezVousListe') }}" ><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
-                                </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-airplay nav-icon"></i>My
+                                            Subscriptions
+                                        </a>
+                                    </li>
+     
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-file nav-icon"></i>Sub History
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="{{ path('ListeOrder') }}"><i class="fe fe-shopping-bag nav-icon"></i>Orders
+                                        </a>
+                                    </li>
+                                        <!-- Nav item -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#"><i class="fe fe-calendar nav-icon"></i>Planning list</a>
+                                    </li>
+                                        <!-- Nav item -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#"><i class="fe fe-file-text nav-icon"></i>Diet</a>
+                                    </li>
+                                        <!-- Nav item -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-activity nav-icon"></i>Doctors liste</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-minus nav-icon"></i>Coach liste</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="{{ path('rendezVousListe') }}" ><i class="fe fe-list nav-icon"></i>Rendez-vous liste</a>
+                                    </li>
                                 {% if is_granted('ROLE_MEDCIN') %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('listeRendezVousForDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>

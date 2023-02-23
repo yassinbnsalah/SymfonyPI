@@ -106,16 +106,17 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/client/rendez-vous/{id}', name: 'rendezdetails')]
-    public function rendezdetails($id , RendezVousRepository $repo, ManagerRegistry $em): Response
+    public function rendezdetails($id , RendezVousRepository $repo, ManagerRegistry $em,OrdennanceRepository $ordrepo): Response
     {
         $rdvdetails = $repo->find($id); 
         
         $user = $this->getUser(); 
-      
+        $ordenances = $ordrepo->findAll(); 
        
         return $this->render('user/client/rendezvousdetails.html.twig', [
                 'user' => $user, 
-                'rendezVous' => $rdvdetails
+                'rendezVous' => $rdvdetails,
+                'ordenances' => $ordenances
         ]);
        
      

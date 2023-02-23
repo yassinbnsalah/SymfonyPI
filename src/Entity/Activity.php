@@ -23,7 +23,7 @@ class Activity
     private ?string $description = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank(message:"Image is required")]
+
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Planning::class)]

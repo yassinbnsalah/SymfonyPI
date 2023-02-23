@@ -189,22 +189,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
-                                            <label class="custom-control-label" for="withdrawTwo"></label>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle border-top-0">#1060</td>
-                                    <td class="align-middle border-top-0">PayPal</td>
-                                    <td class="align-middle border-top-0">
-                                        <span class="badge badge-warning">Pending</span>
-                                    </td>
-                                    <td class="align-middle border-top-0">$1200</td>
-                                   
-                                    
-                                </tr>
+                                {% for ordl in ordenances%}
+                                {% if ordl.getRendezVous() == rendezVous %} 
+                                    {% for ligne in ordl.getOrdennanceLignes() %}
+                                        <tr>
+                                            <td class="align-middle border-top-0">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="withdrawTwo" />
+                                                    <label class="custom-control-label" for="withdrawTwo"></label>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle border-top-0">#{{ ligne.getMedicament().getNom() }}</td>
+                                            <td class="align-middle border-top-0">{{  ligne.getMedicament().getPrix() }} <sup> dt </sup></td>
+                                            <td class="align-middle border-top-0">
+                                              {{  ligne.getQunatite() }}
+                                            </td>
+                                            <td class="align-middle border-top-0">
+                                                {% if  ligne.getMedicament().getQuantite() > 0 %}
+                                                <span class="badge badge-success"> available </span> 
+                                                {% else %} 
+                                                <span class="badge badge-danger "> Not available </span>  
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {%endif %}
+                            {% endfor %}
                            
                             </tbody>
                         </table>
