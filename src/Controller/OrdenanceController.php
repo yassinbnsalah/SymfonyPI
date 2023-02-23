@@ -30,6 +30,7 @@ class OrdenanceController extends AbstractController
     public function GenerateOrdenance(
         Request $request,
         $id,
+        OrdennanceRepository $ordRepo , 
         OrdennanceLigneRepository $ordlig,
         RendezVousRepository $repo,
         MedicamentRepository $medicamentRepo,
@@ -51,6 +52,7 @@ class OrdenanceController extends AbstractController
             $em1->flush();
             $rendezvous->setOrdennance($ordennance);
             $repo->save($rendezvous);
+            $amount = 0 ; 
             // here is the  change 
             foreach ($medicaments as $medi) {
                 if ($request->request->get('ch' . (string)$medi->getId()) == true) {
@@ -60,8 +62,11 @@ class OrdenanceController extends AbstractController
                     $ordLigne->setMedicament($medi);
                     $ordLigne->setOrdennance($ordennance);
                     $ordlig->save($ordLigne);
+                    $amount = $amount + $request->request->get($ide)*$medi->getPrix() ; 
                 }
             }
+            $ordennance->setAmount($amount);
+            $ordRepo->save($ordennance) ; 
             return $this->redirectToRoute('doctorrendezdetails', array('id' => $id));
         }
         return $this->render('user/doctor/DoctorGenerateOrdenance.html.twig', [

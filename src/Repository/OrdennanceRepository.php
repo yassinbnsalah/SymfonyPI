@@ -21,7 +21,7 @@ class OrdennanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Ordennance::class);
     }
 
-    public function save(Ordennance $entity, bool $flush = false): void
+    public function save(Ordennance $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 

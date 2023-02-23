@@ -44,7 +44,7 @@ class SubController extends AbstractController
         // dd($allsub);
         return $this->redirectToRoute('clientDetails', array('id' => $user->getId()));
     }
-
+ 
     #[Route('/subscription/suspend/{id}', name: 'suspendSub')]
     public function suspandSubscription($id, SubscriptionRepository $repo, ManagerRegistry $em): Response
     {

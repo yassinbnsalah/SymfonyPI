@@ -60,51 +60,49 @@
                             <ul class="list-unstyled ml-n2 mb-4">
                                     <!-- Nav item -->
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-airplay nav-icon"></i>My
+                                    <a class="nav-link" href="{{ path('listeSubClient') }}"><i class="fe fe-calendar nav-icon"></i>My
                                         Subscriptions
                                     </a>
                                 </li>
  
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-file nav-icon"></i>Sub History
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('ListeOrder') }}"><i class="fe fe-shopping-bag nav-icon"></i>Orders
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{{ path('subhistory') }}"><i class="fe fe-calendar nav-icon"></i>Sub History
                                     </a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-calendar nav-icon"></i>Planning list</a>
+                                    <a class="nav-link" href="billing-info.html"><i class="fe fe-credit-card nav-icon"></i>Planning list</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
-                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-file-text nav-icon"></i>Diet</a>
+                                    <a class="nav-link" href="payment-method.html"><i class="fe fe-credit-card nav-icon"></i>Diet</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('showDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Doctors liste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-minus nav-icon"></i>Coach liste</a>
+                                    <a class="nav-link" href="{{ path('showCoach') }}" ><i class="fe fe-clipboard nav-icon"></i>Coach liste</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('rendezVousListe') }}"><i class="fe fe-list nav-icon"></i>Rendez-vous liste</a>
+                                    <a class="nav-link"  href="{{ path('rendezVousListe') }}"><i class="fe fe-clipboard nav-icon"></i>Rendez-vous liste</a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="invoice.html"><i class="fe fe-clipboard nav-icon"></i>Ordenance liste</a>
+                                </li>
                                 {% if is_granted('ROLE_MEDCIN') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('listeRendezVousForDoctor') }}"><i class="fe fe-monitor nav-icon"></i>Your Dashboard</a>
+                                    <a class="nav-link" href="{{ path('listeRendezVousForDoctor') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
                                 </li>
                                 {% endif %}
                                 {% if is_granted('ROLE_COACH') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-monitor nav-icon"></i>Your Dashboard</a>
+                                    <a class="nav-link" href="{{ path('activityListe') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
                                 </li>
                                 {% endif %}
                                 {% if is_granted('ROLE_ADMIN') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('admindash') }}"><i class="fe fe-monitor nav-icon"></i>Your Dashboard</a>
+                                    <a class="nav-link" href="{{ path('admindash') }}"><i class="fe fe-clipboard nav-icon"></i>Your Dashboard</a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -112,20 +110,14 @@
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
-                                <li class="nav-item">
+                                <li class="nav-item ">
                                     <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fe fe-user nav-icon"></i>Security</a>
-                                    </li>
-                                    
-                                        <!-- Nav item -->
                                    
-                                 
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{path('ticketAdd')}}"><i class="fe fe-archive nav-icon"></i>Ticket</a>
-                                      </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="{{path('ticketAdd')}}"><i class="fe fe-archive nav-icon"></i>Ticket</a>
+                                  </li>
                                 
                                     <!-- Nav item -->
                                 <li class="nav-item">
@@ -143,76 +135,57 @@
             </div>
             <div class="col-lg-9 col-md-8 col-12">
                 <!-- Card -->
-                <div class="card mb-4">
-                    <!-- Card header -->
-                    <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Sub History</h3>
-                        <span> Sub History Dashboard is a quick overview of all current
-                            Sub History.</span>
-                    </div>
-                    <!-- Table -->
-                    <div class="table-responsive border-0">
-                        <table class="table mb-0 text-nowrap">
-                            <thead>
-                                <tr>
-                                    
-                                    <th scope="col" class="border-0">Ref</th>
-                                    <th scope="col" class="border-0">date sub</th>
-                                    <th scope="col" class="border-0">date expired</th>
-                                    <th scope="col" class="border-0">type</th>
-                                    <th scope="col" class="border-0">state</th>
-                                    <th scope="col" class="border-0">paiement method</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for sub in user.getSubscriptions() %}
-                                <tr>
-                                    <td class="align-middle border-top-0">
-                                        <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                                {{ sub.id }}
-                                            </a>
-                                        </h5>
-                                    </td>
-                                    <td class="align-middle border-top-0">    {{ sub.dateSub|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">{{ sub.dateExpire|date('d-m-Y') }}</td>
-                                    <td class="align-middle border-top-0">   {% if sub.type == 1 %}
-                                        <h5 class="mb-0">
-                                        1 Month
-                                      </h5>
-                                     {% endif %}
-                                     {% if sub.type ==2 %}
-                                     <h5 class="mb-0">
-                                     3 Months
-                                   </h5>
-                                  {% endif %}
-                                  {% if sub.type == 3 %}
-                                  <h5 class="mb-0">
-                                6 Months
-                                </h5>
-                               {% endif %}</td>
-                                    <td class="align-middle border-top-0"> 
-                                        {% if sub.state == "Confirmed" %}
-                                        <span class="badge badge-success ml-2">
-                                            Confirmed</span>
-                                       
-                                        {% elseif sub.state == "Cancel"  %}
-                                        <span class="badge badge-danger ml-2">
-                                            Cancel</span>
-                                            {% else %}
-                                        <span class="badge badge-warning ml-2">
-                                            Suspanded</span>
-                                            {% endif %}
-                                        </td>
-                                            <td class="align-middle border-top-0">
-                                                {{ sub.paiementType }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+               <!-- Card -->
+               <div class="card ">
+                <!-- Card Header -->
+                <div class="card-header">
+                  <h3 class="mb-0 ">Ticket</h3>
+                   {% if data is not empty %}
+          <div class="alert alert-danger"><strong>{{ data }} </strong></div>
+          {% endif %}
+            {% if data is empty %}
+          <div class="alert alert-info"><strong>Add with Success </strong></div>
+          {% endif %}
                 </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="d-lg-flex align-items-center justify-content-between">
+                  
+                {{ form_start(form , {'attr':{class: 'row' , novalidate: 'novalidate'}} ) }}
+                
+                  </div>
+        
+                  <div>
+                
+                   <!-- Form -->
+                       
+                              <div class="form-group col-12 col-md-12 col-lg-6">
+            {{ form_label(form.Titre,"Titre" )}}
+ 
+            {{ form_widget(form.Titre , {'attr' : {'class' : 'form-control' , 'placeholder':'Titre'}})}}
+
+            {{ form_errors(form.Titre )}}
+                              </div>
+                              <div class="form-group col-12 col-md-12 col-lg-6">
+                         {{ form_label(form.message,"message" )}}
+ 
+            {{ form_widget(form.message , {'attr' : {'class' : 'form-control' , 'placeholder':'message'}})}}
+
+            {{ form_errors(form.message )}}
+      
+                              </div>
+                  
+                           
+                              <div class="col-12 col-md-12 col-lg-6">
+                                {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+                                 <a href="{{path('listeSubClient')}}" class="btn btn-outline-white">
+                                 Cancel
+                                 </a>
+                              </div>
+                              {{ form_end(form)}}
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
     </div>

@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -121,6 +119,9 @@ class User implements UserInterface
 
      #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class)]
      private Collection $orders;
+     
+     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Ticket::class)]
+     private Collection $tickets;
 
      public function __construct()
      {
@@ -130,6 +131,7 @@ class User implements UserInterface
          $this->rdvdoctor = new ArrayCollection();
          $this->plannings = new ArrayCollection();
          $this->orders = new ArrayCollection();
+         $this->tickets = new ArrayCollection();
      }
 
     public function __toString()
@@ -487,6 +489,23 @@ class User implements UserInterface
 
         return $this;
     }
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setOwner($this);
+        }
+
+        return $this;
+    }
 
     public function removeOrder(Order $order): self
     {
@@ -494,6 +513,17 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($order->getClient() === $this) {
                 $order->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getOwner() === $this) {
+                $ticket->setOwner(null);
             }
         }
 

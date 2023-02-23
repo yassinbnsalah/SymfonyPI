@@ -18,7 +18,9 @@ class RendezVousType extends AbstractType
            // ->add('DateRV', DateType::class, [
            //     'widget' => 'single_text',
           //  ])
-           ->add('note',TextareaType::class)
+           ->add('note',TextareaType::class, [
+            'empty_data' => ''
+        ])
             // ->add('DatePassageRV')
             // ->add('HourPassageRV')
             // ->add('State')

@@ -184,7 +184,11 @@
                                                 <td class="align-middle border-top-0">
                                                     <span class="badge badge-warning">{{  ligne.getQunatite() }}</span>
                                                 </td>
-                                                <td class="align-middle border-top-0">happy </td>
+                                                <td class="align-middle border-top-0">   {% if  ligne.getMedicament().getQuantite() > 0 %}
+                                                    <span class="badge badge-success"> available </span> 
+                                                    {% else %} 
+                                                    <span class="badge badge-danger "> Not available </span>  
+                                                    {% endif %} </td>
                                             </tr>
                                         {% endfor %}
                                     {%endif %}
