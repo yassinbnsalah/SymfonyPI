@@ -39,7 +39,8 @@ class OrderController extends AbstractController
         $user = $this->getUser() ; 
 
         if($form->isSubmitted()){
-            $order->setReference("firstOrder") ; 
+            $date = new \DateTime() ;
+            $order->setReference(strtoupper($user->getName()).$date->format('Y-m-d-H:i')) ; 
             $order->setState("inconfirmed"); 
             $order->setPrice($total) ; 
             $order->setPaiementmethod("cash on delivry"); 

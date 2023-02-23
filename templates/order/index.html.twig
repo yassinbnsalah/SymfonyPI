@@ -108,29 +108,42 @@
                           </td>
                        
                         <td class="align-middle border-top-0">
-                          {{ order.getPrice() }}
+                          {{ order.getPrice() }}<sup> dt </sup>
                         </td>
                          <td class="align-middle border-top-0">
-                          {{ order.getState() }}
+                          {% if order.getState() == "Confirmed" %}
+                         <span class="badge badge-success"> {{ order.getState() }}</span>
+                          {% elseif order.getState() == "Shipped" %}
+                          <span class="badge badge-info"> {{ order.getState() }}</span>
+                          {% elseif  order.getState() == "Cancel"%}
+                          <span class="badge badge-danger"> {{ order.getState() }}</span>
+                          {% elseif  order.getState() == "ready To Ship"%}
+                          <span class="badge badge-warning">  {{ order.getState() }}</span>
+                          {% elseif order.getState() == "inconfirmed" %}
+                          <span class="badge badge-secondary"> {{ order.getState() }}</span>
+                          {% endif %}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <div class="form-group">
-                          
-                            <select id="selectOne" class="form-control">
-                               <option> {{ order.getState() }}</option>
-                               <a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Confirmed'} ) }}">Confirme</a>
-                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Shipped'} ) }}"> Shipped</a></option>
-                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Cancel'} ) }}"> Cancel</a></option>
-                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'ready To Ship'} ) }}"> ready To Ship</a></option>
-                            </select>
-                         </div>
-
-
+                          <a class="btn btn-light-danger" href="{{ path('DeleteOrder' , {'id' : order.id  } ) }}" ><i class="fe fe-x-circle dropdown-item-icon"></i>Delete</a> 
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                      
-                          <a class="btn btn-white" href="{{ path('DeleteOrder' , {'id' : order.id  } ) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Delete</a> 
-                         
+                          <span class="dropdown">
+                            <a class="text-decoration-none" href="#!" role="button" id="courseDropdown1"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fe fe-more-vertical"></i>
+                            </a>
+                            <span class="dropdown-menu" aria-labelledby="courseDropdown1">
+                            <span class="dropdown-header">Settings</span>
+                            <a  class="dropdown-item" href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Confirmed'} ) }}">
+                              <i class="fe fe-check-circle dropdown-item-icon"></i>Confirme</a>
+                            <a class="dropdown-item" href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Shipped'} ) }}">
+                              <i class="fe fe-truck dropdown-item-icon"></i>Shipped</a>
+                            <a class="dropdown-item" href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Cancel'} ) }}"> 
+                              <i class="fe fe-x-circle dropdown-item-icon"></i>Cancel</a>
+                            <a class="dropdown-item" href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'ready To Ship'} ) }}">
+                              <i class="fe fe-bookmark dropdown-item-icon"></i> ready To Ship</a>
+                            </span>
+                            </span>
                          </td>
                
                       </tr>
