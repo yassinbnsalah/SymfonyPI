@@ -5,13 +5,15 @@ namespace App\Controller;
 use DateInterval;
 use App\Entity\User;
 use App\Form\addType;
+use App\Entity\Ticket;
+use App\Form\TicketType;
 use App\Form\ProfileType;
 use App\Entity\Subscription;
 use App\Entity\Disponibility;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
 use App\Repository\UserRepository;
-use DateTime;
+use App\Repository\TicketRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,16 @@ class UserController extends AbstractController
             'User_admin' => $User_admin
         ]);
     }
-
+    #[Route('/allticket', name: 'allticket')]
+    public function allticket(TicketRepository $repo): Response
+    {
+        $allticket = $repo->findAll();
+        // dd($allsub);
+        return $this->render('user/client/listticket.html.twig', [
+            'controller_name' => 'UserController',
+            'allticket' => $allticket
+        ]);
+    }
     #[Route('/client/showClient', name: 'showClient')]
     public function showClient(UserRepository $userRepository)
     {
@@ -319,7 +330,7 @@ class UserController extends AbstractController
                     $sb->setDateExpire($date);
                 } else {
                     $interval = new DateInterval('P180D');
-                    $date->add($interval);
+                     $date->add($interval);
                     $sb->setDateExpire($date);
                 }
 
@@ -674,4 +685,41 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }   
+    #[Route('/dashboard/client/ticket', name: 'ticketAdd')]
+    public function ticketAdd(Request $req,ManagerRegistry $em): Response
+    {
+        $ticket = new Ticket() ; 
+        $ticket->setDateTicket(new \DateTime()); 
+        $form = $this->createForm(TicketType::class, $ticket);
+        $form->handleRequest($req) ; 
+        $user = $this->getUser();
+        $data = null ; 
+        if($form->isSubmitted()){
+            if($form->isValid()){
+            $ticket->setOwner($user);
+            $em = $em->getManager(); 
+            $em->persist($ticket);
+            $em->flush() ; 
+            return $this->redirectToRoute('ticketAdd');
+        }
+        else{
+            $data = "Failed to add new Ticket ";
+            // $response = new JsonResponse($data);
+            return $this->render('user/client/clientticket.html.twig', [
+                'controller_name' => 'UserController',
+                'user' => $user,
+                'data' =>  $data,
+                'form' => $form->createView()
+            ]);
+        }
+        }
+     
+        return $this->render('user/client/clientticket.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user,
+            'data' =>  $data,
+            'form' => $form->createView()
+        ]);
+    }
+
 }

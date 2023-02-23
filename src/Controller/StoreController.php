@@ -84,7 +84,7 @@ class StoreController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
 
-            // if($imageFile){
+            if($imageFile){
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
             try {
@@ -99,7 +99,7 @@ class StoreController extends AbstractController
             $manager->persist($produit);
             $manager->flush();
             return $this->redirectToRoute('produitListe');
-        }
+        }}
         return $this->render('store/product/listeProduit.html.twig', [
             'controller_name' => 'StoreController',
             'produitt' => $produitt,

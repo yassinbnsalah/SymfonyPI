@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -119,6 +117,9 @@ class User implements UserInterface
      #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Planning::class)]
      private Collection $plannings;
 
+     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Ticket::class)]
+     private Collection $tickets;
+
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
@@ -126,6 +127,7 @@ class User implements UserInterface
          $this->rendezVouses = new ArrayCollection();
          $this->rdvdoctor = new ArrayCollection();
          $this->plannings = new ArrayCollection();
+         $this->tickets = new ArrayCollection();
      }
 
     public function __toString()
@@ -460,6 +462,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($planning->getCoach() === $this) {
                 $planning->setCoach(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getOwner() === $this) {
+                $ticket->setOwner(null);
             }
         }
 

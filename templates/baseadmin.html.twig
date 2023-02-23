@@ -127,9 +127,14 @@
                     <li class="nav-item ">
                       <a class="nav-link" href="forget-password.html"> Commandes</a>
                     </li>
+                    
                   </ul>
                 </div>
-               
+                  <li class="nav-item">
+                <a class="nav-link "  href="{{ path('allticket') }}">
+                  <i class="nav-icon fe fe-user mr-2"></i>Go To Ticket
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link "  href="{{ path('listeSubClient') }}">
                   <i class="nav-icon fe fe-user mr-2"></i>Go To ClientDASH
@@ -226,8 +231,8 @@
                             <img alt="avatar" src="/uploads/{{ app.user.image }}" class="rounded-circle">
                           </div>
                           <div class="ml-3 lh-1">
-                            <h5 class="mb-1">Annette Black</h5>
-                            <p class="mb-0 text-muted">annette@geeksui.com</p>
+                            <h5 class="mb-1">{{ app.user.name }}</h5>
+                            <p class="mb-0 text-muted">{{ app.user.Email }}</p>
                           </div>
                         </div>
                       </div>
