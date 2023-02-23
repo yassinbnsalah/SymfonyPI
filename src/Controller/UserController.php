@@ -129,8 +129,6 @@ class UserController extends AbstractController
     public function listeSubClient(): Response
     {
         $user = $this->getUser();
-
-        //dd($this->getUser()); 
         return $this->render('user/client/clientdashsub.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user

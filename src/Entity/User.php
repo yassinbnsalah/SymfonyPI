@@ -119,6 +119,9 @@ class User implements UserInterface
      #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Planning::class)]
      private Collection $plannings;
 
+     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class)]
+     private Collection $orders;
+
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
@@ -126,6 +129,7 @@ class User implements UserInterface
          $this->rendezVouses = new ArrayCollection();
          $this->rdvdoctor = new ArrayCollection();
          $this->plannings = new ArrayCollection();
+         $this->orders = new ArrayCollection();
      }
 
     public function __toString()
@@ -460,6 +464,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($planning->getCoach() === $this) {
                 $planning->setCoach(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getClient() === $this) {
+                $order->setClient(null);
             }
         }
 

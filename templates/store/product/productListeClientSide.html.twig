@@ -1,0 +1,175 @@
+{% extends 'mainbase.html.twig' %}
+
+
+{% block body %}  
+  
+  
+  <!-- Page header -->
+  <div class="bg-primary py-4 py-lg-6">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <div>
+            <h1 class="mb-0 text-white display-4">Filter Page</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="py-6">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
+          <div class="row d-lg-flex justify-content-between align-items-center">
+            <div class="col-md-6 col-lg-8 col-xl-9 ">
+              <h4 class="mb-3 mb-lg-0">Displaying all Products </h4>
+            </div>
+            <div class="d-inline-flex col-md-6 col-lg-4 col-xl-3 ">
+              <div class="mr-2">
+                <!-- Nav -->
+                <div class="nav btn-group flex-nowrap" role="tablist">
+                  <button class="btn btn-outline-white active" data-toggle="tab" data-target="#tabPaneGrid" role="tab"
+                    aria-controls="tabPaneGrid" aria-selected="true">
+                    <span class="fe fe-grid"></span>
+                  </button>
+                  <button class="btn btn-outline-white" data-toggle="tab" data-target="#tabPaneList" role="tab"
+                    aria-controls="tabPaneList" aria-selected="false">
+                    <span class="fe fe-list"></span>
+                  </button>
+                </div>
+              </div>
+              <!-- List  -->
+              <select class="selectpicker" data-width="100%">
+                <option value="">Sort by</option>
+                <option value="Newest">Newest</option>
+                <option value="Free">Free</option>
+                <option value="Most Popular">Most Popular</option>
+                <option value="Highest Rated">Highest Rated</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-12 mb-4 mb-lg-0">
+          <!-- Card -->
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+              <h4 class="mb-0">Filter</h4>
+            </div>
+            <!-- Card body -->
+            <div class="card-body">
+              <span class="dropdown-header px-0 mb-2"> Category</span>
+                {% for category in categorys%}
+              <!-- Checkbox -->
+              <div class="custom-control custom-checkbox mb-1">
+                <input type="checkbox" class="custom-control-input" id="reactCheck" >
+                <label class="custom-control-label" for="reactCheck">{{ category.name }}</label>
+              </div>
+              {% endfor %}
+            </div>
+          
+          </div>
+        </div>
+        <!-- Tab content -->
+        <div class="col-xl-9 col-lg-9 col-md-8 col-12">
+          <div class="tab-content">
+            <!-- Tab pane -->
+            <div class="tab-pane fade show active pb-4 " id="tabPaneGrid" role="tabpanel" aria-labelledby="tabPaneGrid">
+              <div class="row">
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6 col-12">
+                  <!-- Card -->
+                  <div class="card  mb-4 card-hover">
+                    <a href="course-single.html" class="card-img-top"><img  src="/uploads/{{ product.image }}" alt=""
+                        width="216px" height="210px"
+                        class="card-img-top rounded-top"></a>
+                    <!-- Card body -->
+                    <div class="card-body">
+                      <h4 class="mb-2 text-truncate-line-2 "><a href="course-single.html" class="text-inherit">{{ product.name }} </a>
+                      </h4>
+                       <!-- List inline -->
+                      <ul class="mb-3 list-inline">
+                        <li class="list-inline-item"><i class="far fa-clock mr-1"></i>{{ product.category }}
+                        </li>
+                     
+                        
+                      </ul>
+                      <div class="lh-1">
+                      
+                        <span class="font-size-xs text-muted">  {{ product.sellprice }}</span>
+                      </div>
+                    </div>
+                    <!-- Card footer -->
+                    <div class="card-footer">
+                       <!-- Row -->
+                      <div class="row align-items-center no-gutters">
+                        <div class="col-auto">
+                          <img src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle avatar-xs" alt="">
+                        </div>
+                        <div class="col ml-2">
+                          <span>Fit-health Store</span>
+                        </div>
+                        <div class="col-auto">
+                         <a href="#!" class="text-muted bookmark">
+                    <i class="fe fe-shopping-bag "></i>
+                  </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <!-- Tab pane -->
+            <div class="tab-pane fade pb-4" id="tabPaneList" role="tabpanel" aria-labelledby="tabPaneList">
+                {% for product in products %}
+              <!-- Card -->
+              <div class="card mb-4 card-hover">
+                <div class="row no-gutters">
+                  <a class="col-12 col-md-12 col-xl-3 col-lg-3 bg-cover img-left-rounded"
+                    style="background-image: url(/uploads/{{ product.image }});" href="#!">
+                    <img src="/uploads/{{ product.image }}" alt="..." class="img-fluid d-lg-none invisible">
+                  </a>
+                  <div class="col-lg-9 col-md-12 col-12">
+                    <!-- Card body -->
+                    <div class="card-body">
+                      <h3 class="mb-2 text-truncate-line-2 "><a href="#!" class="text-inherit">{{ product.name }}</a></h3>
+                           <!-- List inline -->
+                      <ul class="mb-5 list-inline">
+                        <li class="list-inline-item"><i class="far fa-clock mr-1"></i>{{ product.category }}
+                        </li>
+                    
+                        <li class="list-inline-item">
+                          <span class="font-size-xs text-muted">{{ product.sellprice }}</span></li>
+                      </ul>
+                       <!-- Row -->
+                      <div class="row align-items-center no-gutters">
+                        <div class="col-auto">
+                          <img src="../assets/images/avatar/avatar-3.jpg" class="rounded-circle avatar-xs" alt="">
+                        </div>
+                        <div class="col ml-2">
+                          <span>Fit-health Store</span>
+                        </div>
+                        <div class="col-auto">
+                         <a href="#!" class="text-muted bookmark">
+                    <i class="fe fe-shopping-bag  "></i>
+                  </a>
+                        </div>
+                          </div>
+                        <div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}

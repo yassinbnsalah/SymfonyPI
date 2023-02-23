@@ -1,0 +1,267 @@
+{% extends 'mainbase.html.twig' %}
+
+
+{% block body %}
+  <!-- Page header-->
+  <div class="py-4 py-lg-6 bg-primary">
+    <div class="container">
+      <div class="row">
+        <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
+          <div class="d-lg-flex align-items-center justify-content-between">
+            <!-- Content -->
+            <div class="mb-4 mb-lg-0">
+              <h1 class="text-white mb-1">Add New Order</h1>
+              <p class="mb-0 text-white lead">
+                Just fill the form and create your Order.
+              </p>
+            </div>
+            <div>
+              <a href="instructor-courses.html" class="btn btn-white ">Back to Home</a>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content -->
+  <div class="pb-12">
+    <div class="container">
+      <div id="courseForm" class="bs-stepper">
+        <div class="row">
+          <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
+            <!-- Stepper Button -->
+            <div class="bs-stepper-header shadow-sm" role="tablist">
+              <div class="step" data-target="#test-l-1">
+                <button type="button" class="step-trigger" role="tab" id="courseFormtrigger1" aria-controls="test-l-1">
+                  <span class="bs-stepper-circle">1</span>
+                  <span class="bs-stepper-label">Basic Information</span>
+                </button>
+              </div>
+              <div class="bs-stepper-line"></div>
+              <div class="step" data-target="#test-l-2">
+                <button type="button" class="step-trigger" role="tab" id="courseFormtrigger2" aria-controls="test-l-2">
+                  <span class="bs-stepper-circle">2</span>
+                  <span class="bs-stepper-label">Panier</span>
+                </button>
+              </div>
+              <div class="bs-stepper-line"></div>
+              <div class="step" data-target="#test-l-3">
+                <button type="button" class="step-trigger" role="tab" id="courseFormtrigger3" aria-controls="test-l-3">
+                  <span class="bs-stepper-circle">3</span>
+                  <span class="bs-stepper-label">Paiement method</span>
+                </button>
+              </div>
+              <div class="bs-stepper-line"></div>
+              <div class="step" data-target="#test-l-4">
+                <button type="button" class="step-trigger" role="tab" id="courseFormtrigger4" aria-controls="test-l-4">
+                  <span class="bs-stepper-circle">4</span>
+                  <span class="bs-stepper-label">Note</span>
+                </button>
+              </div>
+            </div>
+            <!-- Stepper content -->
+            <div class="bs-stepper-content mt-5">
+                {{ form_start(form , {'attr':{ novalidate: 'novalidate'}} ) }}
+                <!-- Content one -->
+                <div id="test-l-1" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger1">
+                  <!-- Card -->
+                  <div class="card mb-3 ">
+                    <div class="card-header border-bottom px-4 py-3">
+                      <h4 class="mb-0">Basic Information</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Name</label>
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" value={{user.getName()}} disabled/>
+                      
+                      </div>
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Email</label>
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" value={{user.getEmail()}} disabled />
+                     
+                      </div>
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Phone</label> 
+                        <input id="courseTitle" class="form-control" type="text" placeholder="Course Title" value={{user.getNumero()}}  disabled />
+                       
+                      </div>
+                     
+                      <div class="form-group">
+                        <label for="courseTitle" class="form-label">Shipping Adresse</label>
+                        {{ form_widget(form.shippingadress , {'attr' : {'class' : 'form-control ', 'placeholder':'Shipping Adresse'}})}}
+                    
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Button -->
+                  <a  class="btn btn-primary" onclick="courseForm.next()">
+                    Next
+                  </a >
+                </div>
+                <!-- Content two -->
+                <div id="test-l-2" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger2">
+                  <!-- Card -->
+                  <div class="card mb-3  border-0">
+                    <div class="card-header border-bottom px-4 py-3">
+                      <h4 class="mb-0">Panier</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Prix</th>
+                                    <th>Quantité</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                                {% for element in dataPanier %}
+                                    <tr>
+                                        <td> <div class="d-lg-flex align-items-center">
+                                                <div>
+                                                  <img src="/uploads/{{ element.produit.image }}" alt="" class="img-4by3-lg rounded" />
+                                                </div>
+                                                <div class="ml-lg-3 mt-2 mt-lg-0">
+                                                  <h4 class="mb-1 text-primary-hover">
+                                                    {{ element.produit.name }} # {{element.produit.id }}
+                                                  </h4>
+                                                </div>
+                                              </div>
+                                        </td>
+                                        <td class="text-end">{{ element.produit.sellprice }} €</td>
+                                        <td>{{ element.quantite }}</td>
+                                        <td class="text-end">{{ element.quantite * element.produit.sellprice }} €</td>
+                                        <td>
+                                            <a href="{{path("cart_add", {id: element.produit.id})}}" class="btn btn-light-success btn-sm"> +
+                                            </a>
+                                            <a href="{{path("cart_remove", {id: element.produit.id})}}" class="btn btn-light-warning btn-sm">
+                                              -
+                                            </a>
+                                            <a href="{{path("cart_delete", {id: element.produit.id})}}" class="btn btn-light-danger btn-sm">
+                                                delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Votre panier est vide</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">Total</td>
+                                    <td class="text-end"><span class="badge badge-light-success">{{ total }} € </span></td>
+                                    <td>
+                                        <a href="{{path("cart_delete_all")}}" class="btn btn-light-danger btn-sm">
+                                            <i class="fe fe-trash dropdown-item-icon "></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                  </div>
+                  <!-- Button -->
+                  <div class="d-flex justify-content-between">
+                    <a  class="btn btn-secondary" onclick="courseForm.previous()">
+                      Previous
+                    </a >
+                    <a  class="btn btn-primary" onclick="courseForm.next()">
+                      Next
+                    </a >
+                  </div>
+                </div>
+                <!-- Content three -->
+                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger3">
+                  <!-- Card -->
+                  <div class="card mb-3  border-0">
+                    <div class="card-header border-bottom px-4 py-3">
+                      <h4 class="mb-0">Paiement</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body ">
+                        <div class="card mb-4 ">
+                            <!-- Card Header -->
+                            <div class="card-header  d-flex align-items-center justify-content-between">
+                               <h4 class="mb-0">Stripe</h4>
+                               <div class="custom-control custom-switch">
+                                  <input type="checkbox" class="custom-control-input" id="stripeSwitch1" disabled name="AA">
+                                  <label class="custom-control-label" for="stripeSwitch1"></label>
+                               </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                               <img src="../assets/images/brand/stripe.svg" alt="" class="mb-2">
+                               <p class="mb-4">Connect your Geeks to your stripe account for faster payouts.</p>
+                               <!-- Form -->
+                              
+                                  <div class="form-group">
+                                     <label for="stripeEmail" class="form-label">Stripe Email Address
+                                     </label>
+                                     <input class="form-control" id="stripeEmail" placeholder="your@example.com" type="email" required="" disabled>
+                                  </div>
+                                  <button class="btn btn-primary" type="submit" disabled>
+                                  Save
+                                  </button>
+                              
+                            </div>
+                         </div>
+                         <div class="card mb-4 ">
+                            <!-- Card Header -->
+                            <div class="card-header  d-flex align-items-center justify-content-between">
+                               <h4 class="mb-0">Cash On delivrey</h4>
+                               <div class="custom-control custom-switch">
+                                  <input type="checkbox" class="custom-control-input" id="stripeSwitch2" name="AA">
+                                  <label class="custom-control-label" for="stripeSwitch2"></label>
+                               </div>
+                            </div>
+                            <!-- Card Body -->
+                  
+                         </div>
+                    </div>
+                  </div>
+                  <!-- Button -->
+                  <div class="d-flex justify-content-between">
+                    <a  class="btn btn-secondary" onclick="courseForm.previous()">
+                      Previous
+                    </a >
+                    <a  class="btn btn-primary" onclick="courseForm.next()">
+                      Next
+                    </a >
+                  </div>
+                </div>
+                <!-- Content four -->
+                <div id="test-l-4" role="tabpanel" class="bs-stepper-pane fade" aria-labelledby="courseFormtrigger4">
+                  <!-- Card -->
+                  <div class="card mb-3  border-0">
+                    <div class="card-header border-bottom px-4 py-3">
+                      <h4 class="mb-0">Note</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        {{ form_widget(form.note , {'attr' : {'class' : 'form-control ', 'placeholder':'Note'}})}}
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between mb-22">
+                    <!-- Button -->
+                    <a class="btn btn-secondary mt-5" onclick="courseForm.previous()">
+                      Previous
+                    </a>
+                    {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary mt-5' }})}}
+                  </div>
+                </div>
+                {{ form_end(form)}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

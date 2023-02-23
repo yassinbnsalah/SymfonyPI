@@ -67,7 +67,7 @@
                             </li>
                                 <!-- Nav item -->
                             <li class="nav-item active">
-                                <a class="nav-link " href="{{ path('seanceListe') }}"><i class="fe fe-credit-card nav-icon"></i>Seance</a>
+                                <a class="nav-link " href="{{ path('listeSeance') }}"><i class="fe fe-credit-card nav-icon"></i>Seance</a>
                             </li>
                                 <!-- Nav item -->
                             <li class="nav-item ">
@@ -114,6 +114,9 @@
                         <span> Seance liste Dashboard is a quick overview of all current
                             Seance liste.</span>
                     </div>
+                    <div>
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">add seance </a>
+                    </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
@@ -122,28 +125,31 @@
                                     <th scope="col" class="border-0">ID</th>
                                     <th scope="col" class="border-0">Libelle</th>
                                     <th scope="col" class="border-0">description</th>
+                                    <th scope="col" class="border-0">Niveau</th>
                                     <th scope="col" class="border-0">Durée</th>
                                     <th scope="col" class="border-0">Action</th>
                                   
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {% for seance in seances %}
                                 <tr>
                                     <td class="align-middle border-top-0">
                                         <h5 class="mb-0">
                                             <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #IDACTIVITY
+                                             #{{seance.id}}
                                             </a>
                                         </h5>
                                     </td>
-                                    <td class="align-middle border-top-0">SQUAD</td>
-                                    <td class="align-middle border-top-0">description</td>
-                                    <td class="align-middle border-top-0">1H</td>
-                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm">edit</a><a href="#" class="btn btn-white btn-sm">remove</a></td>
+                                    <td class="align-middle border-top-0">{{ seance.name }}</td>
+                                    <td class="align-middle border-top-0">{{ seance.description }}</td>
+                                    <td class="align-middle border-top-0">{{ seance.niveau }}</td>
+                                    <td class="align-middle border-top-0">{{ seance.duree }}</td>
+                                    <td class="align-middle border-top-0"><a href="{{ path('Update_Seance', {'id' : seance.id  })}}" class="btn btn-white btn-sm">edit</a>
+                                        <a href="{{ path('DeleteSeance', {'id' : seance.id  })}}" class="btn btn-white btn-sm">remove</a></td>
                                   
                                 </tr>
-                            
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -153,4 +159,66 @@
     </div>
 </div>
 
+<div class="modal fade" id="newCatgory" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0" id="newCatgoryLabel">
+        Activity
+      </h4>
+      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fe fe-x-circle"></i></span>
+    </button>
+    </div>
+    <div class="modal-body">
+      {{ form_start(form , {'attr':{novalidate: 'novalidate'}} ) }}
+       
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">nom<span class="text-danger">*</span></label>
+       
+          {{ form_widget(form.name , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
+          <small>Field must contain a unique value</small>
+    
+         
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label" for="title">description<span class="text-danger">*</span></label><br>
+     
+         
+          {{ form_widget(form.description , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
+          <small>Field must contain a unique value</small>
+        
+        </div>
+        <div class="form-group mb-2">
+            <label class="form-label" for="title">duree<span class="text-danger">*</span></label><br>
+       
+           
+            {{ form_widget(form.duree , {'attr' : {'class' : 'form-control', 'placeholder':'nom'}})}}
+            <small>Field must contain a unique value</small>
+          
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label" for="title">niveau<span class="text-danger">*</span></label><br>
+       
+           
+            {{ form_widget(form.niveau , {'attr' : {'class' : 'form-control', 'placeholder':'niveau'}})}}
+            <small>Field must contain a unique value</small>
+          
+          </div>
+       
+       
+        <div>
+
+          {{ form_widget(form.save , {'attr' : {'class' : 'btn btn-primary' }})}}
+       
+          <button type="button" class="btn btn-outline-white" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+        {{ form_end(form)}}
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}

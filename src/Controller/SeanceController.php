@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Seance;
+use App\Form\SeanceType;
 use App\Repository\SeanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,11 +21,11 @@ class SeanceController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/coach/seance', name: 'seanceListe')]
-    public function activityListe(SeanceRepository $repo,Request $req,ManagerRegistry $em): Response
+    #[Route('/dashboard/coach/seance', name: 'listeSeance')]
+    public function seanceListe(SeanceRepository $repo,Request $req,ManagerRegistry $em): Response
     {
         $user = $this->getUser();
-        $act = $repo->findAll();
+        $seances = $repo->findAll();
         $seance = new Seance();
         $form = $this->createForm(SeanceType::class,$seance);
         $form->handleRequest($req);
@@ -33,12 +34,12 @@ class SeanceController extends AbstractController
             $em = $em->getManager(); 
             $em->persist($seance);
             $em->flush() ;
-            return $this->redirectToRoute('seanceListe'); 
+            return $this->redirectToRoute('listeSeance'); 
         }
         return $this->render('user/coach/seanceList.html.twig', [
             'controller_name' => 'SeanceController',
             'user' => $user,
-            'activites' => $act,
+            'seances' => $seances,
             'form' => $form->createView()
         ]);
     }
@@ -57,7 +58,7 @@ class SeanceController extends AbstractController
             $em = $em->getManager(); 
             $em->persist($seance);
             $em->flush() ; 
-            return $this->redirectToRoute('seanceListe'); 
+            return $this->redirectToRoute('listeSeance'); 
         }
         return $this->render('user/coach/updateSeance.html.twig', [
             'controller_name' => 'SeanceController',
@@ -66,13 +67,13 @@ class SeanceController extends AbstractController
         ]);
     }
 
-    #[Route('/dashboard/coach/disponibility/delete/{id}', name: 'DeleteSeance')]
+    #[Route('/dashboard/coach/seance/delete/{id}', name: 'DeleteSeance')]
     public function DeleteActivity($id ,ManagerRegistry $em, SeanceRepository $repo): Response
     {
             $seance = $repo->find($id) ; 
             $em = $em->getManager(); 
             $em->remove($seance);
             $em->flush() ; 
-            return $this->redirectToRoute('seanceListe');
+            return $this->redirectToRoute('listeSeance');
     }
 }

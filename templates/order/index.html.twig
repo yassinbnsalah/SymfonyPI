@@ -1,0 +1,174 @@
+{% extends 'baseadmin.html.twig' %}
+
+
+{% block body %}
+
+<div class="container-fluid p-4">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-lg-12 col-md-12 col-12">
+        <div class="border-bottom pb-4 mb-4 d-lg-flex align-items-center justify-content-between">
+          <div class="mb-2 mb-lg-0">
+            <h1 class="mb-1 h2 font-weight-bold">All Orders </h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{{ path('admindash') }}">Dashboard</a>
+                </li>
+                
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{{ path('listeClient') }}">Orders</a>
+                </li>
+              </ol>
+            </nav>
+    
+          </div>
+     
+         
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-12">
+        <!-- Card -->
+        <div class="card rounded-lg">
+          <!-- Card Header -->
+          <div class="card-header border-bottom-0 p-0">
+            <ul class="nav nav-lb-tab" id="tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="all-post-tab" data-toggle="pill" href="#all-post" role="tab"
+                  aria-controls="all-post" aria-selected="true">All</a>
+              </li>
+           
+            </ul>
+          </div>
+          <div class="p-4 row">
+            <!-- Form -->
+            <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
+               <span class="position-absolute pl-3 search-icon">
+                <i class="fe fe-search"></i>
+              </span>
+              <input type="search" class="form-control pl-6" placeholder="Search Client" />
+            </form>
+          </div>
+          <div>
+            <div class="tab-content" id="tabContent">
+              <!-- Tab -->
+              <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
+                <div class="table-responsive border-0">
+                  <!-- Table -->
+              
+                  <table class="table mb-0 text-nowrap">
+                    <!-- Table Head -->
+                    <thead>
+                      <tr>
+                   
+                        <th scope="col" class="border-0">REFERENCE</th>
+                        <th scope="col" class="border-0">Client Name </th>
+                        <th scope="col" class="border-0">Email</th>
+                        
+                        <th scope="col" class="border-0">phone</th>
+                        <th scope="col" class="border-0">Price </th>
+                        <th scope="col" class="border-0">state </th>
+                        <th scope="col" class="border-0">change State</th>
+                        <th scope="col" class="border-0">delete</th>
+                      </tr>
+                    </thead>
+                        {% for order in  orders %}
+                    <tbody>
+                      <!-- Table body -->
+                
+                      <tr>
+                   
+                        <td class="align-middle border-top-0">
+                          <h5 class="mb-0">
+                            <a href="{{ path('OrderByIDDashboard' , {'id' : order.id  } ) }}" class="text-inherit">
+                              {{ order.reference }}
+                            </a>
+                          </h5>
+                        </td>
+                        <td class="align-middle border-top-0">
+                          <div class="d-flex align-items-center">
+                            <a href="{{ path('clientDetails',{'id':order.getClient().id}) }}" class="text-inherit">
+                              <img src="/uploads/{{ order.getClient().image }}"  alt=""
+                                class="rounded-circle avatar-xs mr-2" />
+                           {{ order.getClient().getName() }}
+                            </a>
+                            </div>
+                          </td>
+                   
+                       
+                      <td class="align-middle border-top-0">
+                        
+                         {{ order.getClient().Email }}
+                      
+                        </td>
+                        <td class="align-middle border-top-0">
+                          {{ order.getClient().Numero }}
+                          </td>
+                       
+                        <td class="align-middle border-top-0">
+                          {{ order.getPrice() }}
+                        </td>
+                         <td class="align-middle border-top-0">
+                          {{ order.getState() }}
+                        </td>
+                        <td class="text-muted align-middle border-top-0">
+                          <div class="form-group">
+                          
+                            <select id="selectOne" class="form-control">
+                               <option> {{ order.getState() }}</option>
+                               <a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Confirmed'} ) }}">Confirme</a>
+                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Shipped'} ) }}"> Shipped</a></option>
+                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'Cancel'} ) }}"> Cancel</a></option>
+                               <option><a href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'ready To Ship'} ) }}"> ready To Ship</a></option>
+                            </select>
+                         </div>
+
+
+                        </td>
+                        <td class="text-muted align-middle border-top-0">
+                      
+                          <a class="btn btn-white" href="{{ path('DeleteOrder' , {'id' : order.id  } ) }}" ><i class="fe fe-edit dropdown-item-icon"></i>Delete</a> 
+                         
+                         </td>
+               
+                      </tr>
+                  
+                    </tbody>
+                      {% endfor %}
+                  </table>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!-- Card Footer -->
+          <div class="card-footer">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
+                      class="mdi mdi-chevron-left"></i></a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link mx-1 rounded" href="#!">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!">2</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!">3</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

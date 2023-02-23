@@ -15,7 +15,7 @@
             <p class="text-white-50 mb-4 lead">
               Hand-picked Instructor and expertly crafted courses, designed for the modern students and entrepreneur.
             </p>
-            <a href="pages/course-filter-list.html" class="btn btn-success">Browse Courses</a>
+            <a  href="{{ path('produitListeClient') }}" class="btn btn-success">Browse Products </a>
             
           </div>
         </div>
@@ -112,7 +112,7 @@
                     <span>Fit-health Store</span>
                   </div>
                   <div class="col-auto">
-                         <a href="{{path("cart_add", {id: produit.id})}}" class="btn btn-success">
+                         <a href="{{path("cart_add", {id: produit.id})}}" >
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                   </div>

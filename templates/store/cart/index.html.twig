@@ -1,68 +1,118 @@
-{% extends 'baseadmin.html.twig' %}
+{% extends 'mainbase.html.twig' %}
 
 {% block title %}Votre panier{% endblock %}
 
 {% block body %}
-    <section class="bg-light p-3">
-        <h1>Votre panier</h1>
-    </section>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Produit</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total</th>
-                <th>Actions</th>
-            </tr>
-        </thead> 
-        <tbody>
-            {% for element in dataPanier %}
-                <tr>
-                    <td> <div class="d-lg-flex align-items-center">
-                            <div>
-                              <img src="/uploads/{{ element.produit.image }}" alt="" class="img-4by3-lg rounded" />
-                            </div>
-                            <div class="ml-lg-3 mt-2 mt-lg-0">
-                              <h4 class="mb-1 text-primary-hover">
-                                {{ element.produit.name }} # {{element.produit.id }}
-                              </h4>
-                            </div>
-                          </div>
-                    </td>
-                    <td class="text-end">{{ element.produit.sellprice }} €</td>
-                    <td>{{ element.quantite }}</td>
-                    <td class="text-end">{{ element.quantite * element.produit.sellprice }} €</td>
-                    <td>
-                        <a href="{{path("cart_add", {id: element.produit.id})}}" class="btn btn-success">
-         +
-                        </a>
-                        <a href="{{path("cart_remove", {id: element.produit.id})}}" class="btn btn-warning">
-                          -
-                        </a>
-                        <a href="{{path("cart_delete", {id: element.produit.id})}}" class="btn btn-danger">
-                            delete
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">Votre panier est vide</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3">Total</td>
-                <td class="text-end">{{ total }} €</td>
-                <td>
-                    <a href="{{path("cart_delete_all")}}" class="btn btn-danger">
-                        <i class="fe fe-trash dropdown-item-icon "></i>
-                    </a>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+   <!-- Page header-->
+   <div class="py-4 py-lg-6 bg-primary">
+    <div class="container">
+      <div class="row">
+        <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
+          <div class="d-lg-flex align-items-center justify-content-between">
+            <!-- Content -->
+            <div class="mb-4 mb-lg-0">
+              <h1 class="text-white mb-1">Panier</h1>
+              <p class="mb-0 text-white lead">
+               Here is your panier 
+              </p>
+            </div>
+            <div>
+              <a href="{{ path('homepageVisitor') }}" class="btn btn-white ">Back to Home</a>
+          
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content -->
+  <div class="pb-12">
+    <div class="container">
+      <div id="courseForm" class="bs-stepper">
+        <div class="row">
+          <div class="offset-lg-1 col-lg-10 col-md-12 col-12">
+            
+            <!-- Stepper content -->
+            <div class="bs-stepper-content mt-5">
+              <form onSubmit="return">
+                <!-- Content one -->
+                <div id="test-l-1"  >
+                  <!-- Card -->
+                  <div class="card mb-3 ">
+                    <div class="card-header border-bottom px-4 py-3">
+                      <h4 class="mb-0">Shopping Cart</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Prix</th>
+                                    <th>Quantité</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                                {% for element in dataPanier %}
+                                    <tr>
+                                        <td> <div class="d-lg-flex align-items-center">
+                                                <div>
+                                                  <img src="/uploads/{{ element.produit.image }}" alt=""   class="rounded-circle avatar-xs mr-2"/>
+                                                </div>
+                                                <div class="ml-lg-3 mt-2 mt-lg-0">
+                                                  <h4 class="mb-1 text-primary-hover">
+                                                    {{ element.produit.name }}
+                                                  </h4>
+                                                </div>
+                                              </div>
+                                        </td>
+                                        <td class="text-end">{{ element.produit.sellprice }} €</td>
+                                        <td>{{ element.quantite }}</td>
+                                        <td class="text-end">{{ element.quantite * element.produit.sellprice }} €</td>
+                                        <td>
+                                            <a href="{{path("cart_add", {id: element.produit.id})}}" class="btn btn-light-success btn-sm"> +
+                                            </a>
+                                            <a href="{{path("cart_remove", {id: element.produit.id})}}" class="btn btn-light-warning btn-sm">
+                                              -
+                                            </a>
+                                            <a href="{{path("cart_delete", {id: element.produit.id})}}" class="btn btn-light-danger btn-sm">
+                                                delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Votre panier est vide</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">Total</td>
+                                    <td class="text-end">{{ total }} €</td>
+                                    <td>
+                                        <a href="{{path("cart_delete_all")}}" class="btn btn-light-danger btn-sm">
+                                            <i class="fe fe-trash dropdown-item-icon "></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div> <a href="{{path("AddOrder")}}" class="btn btn-success"> checkout </a></div>
+                    </div>
+                  </div>
+                
+                </div>
+             
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     
 {% endblock %}

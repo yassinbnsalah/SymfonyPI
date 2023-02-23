@@ -22,10 +22,10 @@ class SubController extends AbstractController
     }
 
     #[Route('/dashboard/client/subhistory', name: 'subhistory')]
-    public function subhistory(SubscriptionRepository $repo): Response
+    public function subhistory(): Response
     {
         $user = $this->getUser();
-        // dd($allsub);
+     
         return $this->render('user/client/clientsubhistory.html.twig', [
             'controller_name' => 'SubController',
             'user' => $user

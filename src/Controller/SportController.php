@@ -61,15 +61,15 @@ class SportController extends AbstractController
     }
 
     
-    #[Route('/dashboard/coach/seances', name: 'seanceListe')]
-    public function seanceListe(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('user/coach/seanceList.html.twig', [
-            'controller_name' => 'SportController',
-            'user' => $user
-        ]);
-    }
+    // #[Route('/dashboard/coach/seances', name: 'seanceListe')]
+    // public function seanceListe(): Response
+    // {
+    //     $user = $this->getUser();
+    //     return $this->render('user/coach/seanceList.html.twig', [
+    //         'controller_name' => 'SportController',
+    //         'user' => $user
+    //     ]);
+    // }
 
      
     #[Route('/dashboard/coach/planning', name: 'planningListe')]

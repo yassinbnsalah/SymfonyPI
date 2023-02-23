@@ -15,12 +15,12 @@ class HomeController extends AbstractController
     #[Route('/', name: 'homepageVisitor')]
     public function homepageVisitor(ProduitRepository $Rep): Response
     {   
-        $produitt = $Rep->findAll();
+        $produits = $Rep->findAll();
         if($this->getUser()){
             return $this->render('home/home.html.twig', [
                 'controller_name' => 'HomeController',
                 'user' => $this->getUser(),
-                'produits' => $produitt 
+                'produits' => $produits 
             ]);
         }
         return $this->render('home/index.html.twig', [

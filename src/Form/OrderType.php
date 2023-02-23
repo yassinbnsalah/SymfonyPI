@@ -2,28 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Seance;
+use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SeanceType extends AbstractType
+class OrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('duree')
-            ->add('niveau', ChoiceType::class, [
-                'choices'  => [
-                    'starter' => "starter",
-                    'medium' => "medium",
-                    'harder' => "harder",
-                ],
-            ])
+            // ->add('reference')
+            // ->add('state')
+            // ->add('price')
+            ->add('shippingadress')
+            // ->add('dateOrder')
+            ->add('note')
+            // ->add('client')
             ->add('save' , SubmitType::class)
         ;
     }
@@ -31,7 +27,7 @@ class SeanceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Seance::class,
+            'data_class' => Order::class,
         ]);
     }
 }

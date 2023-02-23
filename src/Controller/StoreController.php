@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Entity\Category;
+use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Form\CategoryType;
 use App\Repository\ProduitRepository;
@@ -73,12 +73,24 @@ class StoreController extends AbstractController
         ]);
     }
 
+    #[Route('/produit/liste', name: 'produitListeClient')]
+    public function produitListeClient(ProduitRepository $Rep , CategoryRepository $catRepo)
+    {
+        $produits = $Rep->findAll();
+        $category = $catRepo->findAll() ; 
+        return $this->render('store/product/productListeClientSide.html.twig', [
+            'controller_name' => 'StoreController',
+            'products' => $produits,
+            'categorys' => $category
+           
+        ]);
+    }
     #[Route('/store/produit', name: 'produitListe')]
     public function produitListe(ProduitRepository $Rep, Request $request, EntityManagerInterface $manager)
     {
         $produitt = $Rep->findAll();
-        $produit = new Produit();
-        $form = $this->createForm(ProduitType::class, $produit);
+        $product = new Produit();
+        $form = $this->createForm(ProduitType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -95,8 +107,8 @@ class StoreController extends AbstractController
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
-            $produit->setImage($newFilename);
-            $manager->persist($produit);
+            $product->setImage($newFilename);
+            $manager->persist($product);
             $manager->flush();
             return $this->redirectToRoute('produitListe');
         }
@@ -120,8 +132,8 @@ class StoreController extends AbstractController
     #[Route('/dashboard/produit/update/{id}', name: 'UpdateProduitDashboard')]
     public function UpdateProduitDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
     {
-        $produit = $doctrine->getRepository(Produit::class)->find($id);
-        $form = $this->createForm(ProduitType::class, $produit);
+        $produitbyID = $doctrine->getRepository(Produit::class)->find($id);
+        $form = $this->createForm(ProduitType::class, $produitbyID);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->get('image')->getData()) {
@@ -140,7 +152,7 @@ class StoreController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                $produit->setImage($newFilename);
+                $produitbyID->setImage($newFilename);
             }
 
             $em = $doctrine->getManager();

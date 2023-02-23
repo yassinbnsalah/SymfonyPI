@@ -197,6 +197,47 @@
             </table>
           </div>
         </div>
+
+        <div class="card mb-4">
+          <!-- Card header -->
+          <div
+            class="card-header d-flex justify-content-between align-items-center border-bottom-0 card-header-height">
+            <h4 class="mb-0">Recent Orders</h4>
+           
+          </div>
+          <!-- Table -->
+          <div class="table-responsive border-0 overflow-y-hidden">
+            <table class="table mb-0 text-nowrap">
+              <thead>
+                <tr>
+                  <th scope="col" class="border-0">REFERENCE</th>
+                  <th scope="col" class="border-0">date Order</th>
+                  <th scope="col" class="border-0">Shipping Adresse</th>
+                  <th scope="col" class="border-0">State</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in client.getOrders() %}
+               
+                <tr>
+                    <td class="align-middle border-top-0">
+                        <h5 class="mb-0">
+                            <a href="{{ path('OrderByIDDashboard' , {'id' : order.id  } ) }}" class="text-inherit"  >
+                             {{ order.reference }}
+                            </a>
+                        </h5>
+                    </td>
+                    <td class="align-middle border-top-0">     {{ order.dateOrder|date('d-m-Y') }}</td>
+                    <td class="align-middle border-top-0">  {{ order.shippingadress }}</td>
+                    <td class="align-middle border-top-0">    {{ order.state }}</td>
+                 
+                </tr>
+        
+           {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
