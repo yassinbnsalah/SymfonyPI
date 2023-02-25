@@ -45,6 +45,9 @@ class Order
     #[ORM\Column(length: 125, nullable: true)]
     private ?string $paiementmethod = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $Invoiced = null;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
@@ -177,6 +180,18 @@ class Order
     public function setPaiementmethod(?string $paiementmethod): self
     {
         $this->paiementmethod = $paiementmethod;
+
+        return $this;
+    }
+
+    public function isInvoiced(): ?bool
+    {
+        return $this->Invoiced;
+    }
+
+    public function setInvoiced(?bool $Invoiced): self
+    {
+        $this->Invoiced = $Invoiced;
 
         return $this;
     }

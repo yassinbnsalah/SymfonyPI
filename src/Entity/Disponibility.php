@@ -22,12 +22,10 @@ class Disponibility
     private ?\DateTimeInterface $dateDispo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Assert\NotBlank(message:"heureStart required")]
-
     private ?\DateTimeInterface $heureStart = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Assert\NotBlank(message:"heureEnd required")]
+
     private ?\DateTimeInterface $heureEnd = null;
 
     #[ORM\Column(length: 255)]

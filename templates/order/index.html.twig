@@ -124,7 +124,7 @@
                           {% endif %}
                         </td>
                         <td class="text-muted align-middle border-top-0">
-                          <a class="btn btn-light-danger" href="{{ path('DeleteOrder' , {'id' : order.id  } ) }}" ><i class="fe fe-x-circle dropdown-item-icon"></i>Delete</a> 
+                          <a class="btn btn-light-danger btn-sm" href="{{ path('DeleteOrder' , {'id' : order.id  } ) }}" ><i class="fe fe-x-circle dropdown-item-icon"></i>Delete</a> 
                         </td>
                         <td class="text-muted align-middle border-top-0">
                           <span class="dropdown">
@@ -142,6 +142,10 @@
                               <i class="fe fe-x-circle dropdown-item-icon"></i>Cancel</a>
                             <a class="dropdown-item" href="{{ path('UpdateStateOrder' , {'id' : order.id , 'state':'ready To Ship'} ) }}">
                               <i class="fe fe-bookmark dropdown-item-icon"></i> ready To Ship</a>
+                              {% if order.getState() != "inconfirmed" %}
+                              <a class="dropdown-item" href="{{ path('generateInvoice' , {'id' : order.id}) }}">
+                                <i class="fe fe-file dropdown-item-icon"></i> Generate Invoice</a>
+                                {% endif %}
                             </span>
                             </span>
                          </td>

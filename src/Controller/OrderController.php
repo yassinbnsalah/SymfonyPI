@@ -86,6 +86,30 @@ class OrderController extends AbstractController
    );
     }
     
+    #[Route('/order/generateInvoice/{id}', name: 'generateInvoice')]
+    public function generateInvoice($id , OrderRepository $orderRepo): Response
+    {
+        $user = $this->getUser(); 
+
+        $order = $orderRepo->find($id); 
+        $order->setInvoiced(true) ; 
+        $orderRepo->save($order) ; 
+        return $this->redirectToRoute('listeOrderDashboard'); 
+
+    }
+
+    #[Route('/facture/{id}', name: 'SeeFacture')]
+    public function SeeFacture($id , OrderRepository $orderRepo): Response
+    {
+       
+
+        $order = $orderRepo->find($id); 
+       
+        return $this->render('/order/facture.html.twig', [
+            'order' => $order
+        ]);
+
+    }
 
     #[Route('/dashboard/order/liste', name: 'listeOrderDashboard')]
     public function listeOrderDashboard(OrderRepository $orderRepo): Response

@@ -28,10 +28,10 @@ class HomeController extends AbstractController
         ]);
     }
    
-    #[Route('/pharmacien', name: 'app_pharmacien')]
+    #[Route('/facture', name: 'facture')]
     public function pharmacien(): Response
     {
-        return $this->render('home/pharmacien.html.twig', [
+        return $this->render('/facture.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

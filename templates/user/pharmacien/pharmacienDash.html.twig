@@ -123,7 +123,7 @@
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                            <h5 class="mb-0">{{ ordonnance.dateordenance}}</h5>
+                            <h5 class="mb-0">{{ ordonnance.dateordenance|date('d-m-Y')}}</h5>
                         </td>
                         <td class="align-middle border-top-0">
                             <div class="d-flex align-items-center">
@@ -131,7 +131,7 @@
                             </div>
                         </td>
                         <td class="align-middle border-top-0">
-                           {{ ordonnance.getRendezVous }}
+                           {{ ordonnance.getRendezVous().id }}
                         </td>
                         <td class="align-middle border-top-0">
                             fffff

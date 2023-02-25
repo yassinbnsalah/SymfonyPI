@@ -411,6 +411,9 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted()) {
             if($form->isValid()){
+                $dispo->setHeureStart(new \DateTime($req->request->get('HeureStart'))); 
+                
+                $dispo->setHeureEnd(new \DateTime($req->request->get('HeureEnd'))); 
                 $dispo->setDoctor($Doctor);
                 $em = $em->getManager();
                 $em->persist($dispo);

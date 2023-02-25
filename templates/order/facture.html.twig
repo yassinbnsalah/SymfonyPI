@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	
+
+		<!-- Favicon -->
+		<link rel="icon" href="./images/favicon.png" type="image/x-icon" />
+
+		<!-- Invoice styling -->
+		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}" media="print">
+		<link href="{{asset('assets/fonts/feather/feather.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/dragula/dist/dragula.min.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/@mdi/font/css/materialdesignicons.min.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/prismjs/themes/prism.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/dropzone/dist/dropzone.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/magnific-popup/dist/magnific-popup.css')}}" rel="stylesheet" />
+		<link href="{{asset('assets/libs/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/libs/@yaireo/tagify/dist/tagify.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/libs/tiny-slider/dist/tiny-slider.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/libs/tippy.js/dist/tippy.css')}}" rel="stylesheet">
+	</head>
+
+	<body>
+		<h1>FIT-HEALTH INVOICE</h1>
+		<h3> ID INVOICE : #{{order.reference}}.</h3>
+		<br /><br />
+		<button class="button1"  onClick="imprimer()" id="btn"> print </button>
+		<br /><br />
+
+		<div class="invoice-box">
+			<table>
+				<tr class="top">
+					<td colspan="4">
+						<table>
+							<tr>
+								<td class="title">
+									<img src="{{asset('assets/images/brand/logo/pilogo.png')}}"   style="width: 100%; max-width: 300px" />
+								</td>
+								
+								<td>
+									Invoice #:<strong>{{order.reference}}</strong><br />
+									Created:{{order.getDateOrder()|date('d-m-Y')}}<br />
+									State:<span class="badge badge-primary">{{order.state}}</span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="4">
+						<table>
+							<tr>
+								<td>
+									{{order.getClient().getName()}}.<br />
+									{{order.getClient().getAdresse()}}<br />
+									{{order.getClient().getEmail()}}
+								</td>
+								
+								<td>
+									{{order.getClient().getName()}}.<br />
+									{{order.shippingadress}}<br />
+									{{order.dateOrder()|date('d-m-Y')}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="heading">
+					<td>Payment Method</td>
+					<td></td>
+					<td class="check">Check #</td>
+				</tr>
+
+				<tr class="details">
+					<td>{{order.paiementmethod}}</td>
+					<td></td>
+					<td class="check">{{order.getPrice()}}<sup>DT</sup></td>
+				</tr>
+
+				<tr class="heading">
+					<td>Item</td>
+					<td>quantity</td>
+					<td class="check">Price</td>
+				</tr>
+				{% for orderline in order.getOrderLines() %}
+				<tr class="item">
+					<td class="righitha">{{ orderline.getProduct().getName() }}</td>
+					<td>{{ orderline.quantity }}</td>
+					<td class="check">{{ orderline.getProduct().getSellprice() }}<sup>DT</sup></td>
+				</tr>
+				{% endfor %}
+
+			
+
+
+				<tr class="total">
+					<td></td>
+					<td></td>
+					<td class="check">Total: {{ order.price }} <sup> DT</sup></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+	<script>
+	function imprimer() {
+	 document.getElementById('btn').hidden =true ; 
+	 window.print();     
+	 
+	 }
+  </script>
+</html>

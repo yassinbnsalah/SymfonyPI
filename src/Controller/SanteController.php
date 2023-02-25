@@ -35,60 +35,57 @@ class SanteController extends AbstractController
     public function rendezVousListe(RendezVousRepository $repo): Response
     {
         $usercurrent = $this->getUser();
-        $rendezvous = $repo->findAll() ; 
+        $rendezvous = $repo->findAll();
         return $this->render('user/client/listerendezvousclient.html.twig', [
             'controller_name' => 'UserController',
-            'user' => $usercurrent ,
+            'user' => $usercurrent,
             'rendezvous' => $rendezvous
         ]);
     }
 
     // HNEEE YE AMIRA AHAYAY
     #[Route('/sante/rendezvous/add/{id}', name: 'addRendezVous')]
-    
-    public function addRendezVous(Request $request,$id,ManagerRegistry $em): Response
+
+    public function addRendezVous(Request $request, $id, ManagerRegistry $em): Response
     {
-        $DoctorByID = $em->getRepository(User::class)->find($id) ;
-        if($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN'){
+        $DoctorByID = $em->getRepository(User::class)->find($id);
+        if ($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN') {
             $rendezvous = new RendezVous();
             $user = $this->getUser();
-            $data = null  ; 
+            $data = null;
             $form = $this->createForm(RendezVousType::class, $rendezvous);
             $form->handleRequest($request);
             $rendezvous->setFromuser($user);
-            if($form->isSubmitted()){
-                if ($request->request->get('radio')){
-                    $rendezvous->setDateRV(new \DateTime($request->request->get('radio'))) ;
-                    $rendezvous->setState('inconfirmed') ; 
-                    $rendezvous->setDatePassageRV(new \DateTime()) ;
+            if ($form->isSubmitted()) {
+                if ($request->request->get('radio')) {
+                    $rendezvous->setDateRV(new \DateTime($request->request->get('radio')));
+                    $rendezvous->setState('inconfirmed');
+                    $rendezvous->setDatePassageRV(new \DateTime());
                     $rendezvous->setHourRV(new \DateTime());
                     $rendezvous->setHourPassageRV(new \DateTime());
                     $rendezvous->setFromuser($user);
-                    $rendezvous->setTodoctor($DoctorByID) ;
-                    $em=$em->getManager(); 
+                    $rendezvous->setTodoctor($DoctorByID);
+                    $em = $em->getManager();
                     $em->persist($rendezvous);
-                    $em->flush() ;
+                    $em->flush();
                     return $this->redirectToRoute('rendezVousListe');
-                }else{
-                    $data = "please pick a date with doctor" ; 
+                } else {
+                    $data = "please pick a date with doctor";
                     return $this->render('sante/addrendezvous.html.twig', [
                         'form' => $form->createView(),
-                        'data' => $data , 
+                        'data' => $data,
                         'doctor' => $DoctorByID,
                     ]);
                 }
-             
             }
             return $this->render('sante/addrendezvous.html.twig', [
                 'form' => $form->createView(),
-                'data' => $data , 
+                'data' => $data,
                 'doctor' => $DoctorByID,
             ]);
-        }
-        else{
+        } else {
             return $this->redirectToRoute('app_error');
         }
-       
     }
 
 
@@ -97,24 +94,23 @@ class SanteController extends AbstractController
     {
 
         $usercurrent = $this->getUser();
-        $rendezvous = $repo->findAll() ; 
-        if($usercurrent->getRoles()[0] == 'ROLE_ADMIN'){
+        $rendezvous = $repo->findAll();
+        if ($usercurrent->getRoles()[0] == 'ROLE_ADMIN') {
             return $this->render('sante/rendezvous/listerendezvous.html.twig', [
                 'controller_name' => 'SanteController',
-                'user' => $usercurrent ,
+                'user' => $usercurrent,
                 'rendezvous' => $rendezvous
             ]);
-        }else{
+        } else {
             return $this->render('user/doctor/Dashboarddoctor.html.twig', [
                 'controller_name' => 'SanteController',
-                'user' => $usercurrent ,
+                'user' => $usercurrent,
                 'rendezvous' => $rendezvous
             ]);
         }
-    
     }
 
-    
+
     #[Route('/dashboard/doctor/clientliste', name: 'ListeClientByDoctor')]
     public function ListeClientByDoctor(UserRepository $userRepository): Response
     {
@@ -127,32 +123,38 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/dashboard/doctor/disponibilityliste', name: 'ListeDisponibility')]
-    public function ListeDisponibility(Request $req,ManagerRegistry $em): Response
+    public function ListeDisponibility(Request $req, ManagerRegistry $em): Response
     {
-        $dispo = new Disponibility() ; 
-        $dispo->setDateDispo(new \DateTime()); 
+        $dispo = new Disponibility();
+        $dispo->setDateDispo(new \DateTime());
         $form = $this->createForm(DisponibilityType::class, $dispo);
-        $form->handleRequest($req) ; 
+        $form->handleRequest($req);
 
         $user = $this->getUser();
-        $data = null ; 
-        if($form->isSubmitted()){
-            if($form->isValid()){
-            $dispo->setDoctor($user);
-            $em = $em->getManager(); 
-            $em->persist($dispo);
-            $em->flush() ; 
-        }
-        else{
-            $data = "Failed to add new Disponibility Slote  please click in ";
-            // $response = new JsonResponse($data);
-            return $this->render('user/doctor/DisponibilityListe.html.twig', [
-                'controller_name' => 'SanteController',
-                'user' => $user,
-                'data' =>  $data,
-                'form' => $form->createView()
-            ]);
-        }
+        $data = null;
+        if ($form->isSubmitted()) {
+            $dataF = $form->getData();
+
+            if ($form->isValid()) {
+
+                $dispo->setHeureStart(new \DateTime($req->request->get('HeureStart')));
+
+                $dispo->setHeureEnd(new \DateTime($req->request->get('HeureEnd')));
+                $dispo->setDoctor($user);
+
+                $em = $em->getManager();
+                $em->persist($dispo);
+                $em->flush();
+            } else {
+                $data = "Failed to add new Disponibility Slote  please click in ";
+                // $response = new JsonResponse($data);
+                return $this->render('user/doctor/DisponibilityListe.html.twig', [
+                    'controller_name' => 'SanteController',
+                    'user' => $user,
+                    'data' =>  $data,
+                    'form' => $form->createView()
+                ]);
+            }
         }
         return $this->render('user/doctor/DisponibilityListe.html.twig', [
             'controller_name' => 'SanteController',
@@ -164,105 +166,106 @@ class SanteController extends AbstractController
 
 
     #[Route('/dashboard/doctor/disponibility/update/{id}', name: 'UpdateDisponibility')]
-    public function UpdateDisponibility($id , Request $req,ManagerRegistry $em, DisponibilityRepository $repo): Response
+    public function UpdateDisponibility($id, Request $req, ManagerRegistry $em, DisponibilityRepository $repo): Response
     {
-        $dispo = $repo->find($id) ; 
+        $dispo = $repo->find($id);
         $form = $this->createForm(DisponibilityType::class, $dispo);
-        $form->handleRequest($req) ; 
+        $form->handleRequest($req);
 
         $user = $this->getUser();
-        $data = null ; 
-        if($form->isSubmitted()){
-            if($form->isValid()){
-            $dispo->setDoctor($user);
-            $em = $em->getManager(); 
-            $em->persist($dispo);
-            $em->flush() ; 
-            return $this->redirectToRoute('ListeDisponibility'); 
+        $data = null;
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $dispo->setHeureStart(new \DateTime($req->request->get('HeureStart')));
+
+                $dispo->setHeureEnd(new \DateTime($req->request->get('HeureEnd')));
+                $dispo->setDoctor($user);
+                $em = $em->getManager();
+                $em->persist($dispo);
+                $em->flush();
+                return $this->redirectToRoute('ListeDisponibility');
+            } else {
+                $data = "Failed to add new Disponibility Slote to this Doctor please click in ";
+                // $response = new JsonResponse($data);
+                return $this->render('user/doctor/updateDisponibility.html.twig', [
+                    'controller_name' => 'SanteController',
+                    'user' => $user,
+                    'data' =>  $data,
+                    'form' => $form->createView()
+                ]);
+            }
         }
-        else{
-            $data = "Failed to add new Disponibility Slote to this Doctor please click in ";
-            // $response = new JsonResponse($data);
-            return $this->render('user/doctor/updateDisponibility.html.twig', [
-                'controller_name' => 'SanteController',
-                'user' => $user,
-                'data' =>  $data,
-                'form' => $form->createView()
-            ]);
-        }
-        } 
         return $this->render('user/doctor/updateDisponibility.html.twig', [
             'controller_name' => 'SanteController',
             'user' => $user,
             'data' =>  $data,
+            'dispo' => $dispo,
             'form' => $form->createView()
         ]);
     }
 
 
     #[Route('/dashboard/doctor/disponibility/delete/{id}', name: 'DeleteDisponibility')]
-    public function DeleteDisponibility($id ,ManagerRegistry $em, DisponibilityRepository $repo): Response
+    public function DeleteDisponibility($id, ManagerRegistry $em, DisponibilityRepository $repo): Response
     {
-            $dispo = $repo->find($id) ; 
-            $user = $dispo->getDoctor(); 
-            $em = $em->getManager(); 
-            $em->remove($dispo);
-            $em->flush() ; 
-          
-            $userConnected = $this->getUser(); 
-            if ($userConnected->getRoles()[0] == 'ROLE_ADMIN'){
-                return $this->redirectToRoute('DoctorDetails', array('id' => $user->getId())); 
-            }
-            return $this->redirectToRoute('ListeDisponibility'); 
-       
+        $dispo = $repo->find($id);
+        $user = $dispo->getDoctor();
+        $em = $em->getManager();
+        $em->remove($dispo);
+        $em->flush();
+
+        $userConnected = $this->getUser();
+        if ($userConnected->getRoles()[0] == 'ROLE_ADMIN') {
+            return $this->redirectToRoute('DoctorDetails', array('id' => $user->getId()));
+        }
+        return $this->redirectToRoute('ListeDisponibility');
     }
 
 
-    
+
     #[Route('/dashboard/pharmacien/ordenance', name: 'ListeOrdenance')]
-    public function ListeOrdenance( ): Response
+    public function ListeOrdenance(): Response
     {
-        $userConnected = $this->getUser(); 
+        $userConnected = $this->getUser();
         return $this->render('user/pharmacien/pharmacienDash.html.twig', [
             'controller_name' => 'HomeController',
             'user' => $userConnected,
         ]);
-       
     }
 
     #[Route('/dashboard/pharmacien/medicament', name: 'ListeMedicament')]
     public function ListeMedicament(MedicamentRepository $repo, Request $req): Response
     {
         $Medicament = $repo->findAll();
-        $userConnected = $this->getUser(); 
+        $userConnected = $this->getUser();
 
         $MedicamentToadd = new Medicament();
         $form = $this->createForm(AddMedicamentType::class, $MedicamentToadd);
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-            $repo->save($MedicamentToadd, true);
-            return $this->redirectToRoute('ListeMedicament'); 
-        } else {
-            $data = "Failed to add new Medicament  please click in ";
-            $response = new JsonResponse($data);
-            return $this->render('user/pharmacien/listemedicament.html.twig', [
-                'controller_name' => 'HomeController',
-                'user' => $userConnected,
-                'Medicaments' => $Medicament,
-                'data' => $response->getContent(),
-                'form' => $form->createView()
+                $repo->save($MedicamentToadd, true);
+                return $this->redirectToRoute('ListeMedicament');
+            } else {
+                $data = "Failed to add new Medicament  please click in ";
+                $response = new JsonResponse($data);
+                return $this->render('user/pharmacien/listemedicament.html.twig', [
+                    'controller_name' => 'HomeController',
+                    'user' => $userConnected,
+                    'Medicaments' => $Medicament,
+                    'data' => $response->getContent(),
+                    'form' => $form->createView()
 
-            ]);
+                ]);
+            }
         }
+        return $this->render('user/pharmacien/listemedicament.html.twig', [
+            'controller_name' => 'HomeController',
+            'user' => $userConnected,
+            'Medicaments' => $Medicament,
+            'data' => "",
+            'form' => $form->createView()
+
+        ]);
     }
-    return $this->render('user/pharmacien/listemedicament.html.twig', [
-        'controller_name' => 'HomeController',
-        'user' => $userConnected,
-        'Medicaments' => $Medicament,
-        'data' => "",
-        'form' => $form->createView()
-      
-    ]);
-    
-}}
+}
