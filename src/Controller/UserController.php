@@ -30,11 +30,12 @@ class UserController extends AbstractController
 {
     #[Route('/admin', name: 'admindash')]
     public function index(UserRepository $userRepository)
-    {
+    {   $env = $_ENV['APP_ENV'] ; 
         $User_admin = $userRepository->findByRole('["ROLE_ADMIN"]');
         return $this->render('user/admin.html.twig', [
             'controller_name' => 'UserController',
-            'User_admin' => $User_admin
+            'User_admin' => $User_admin,
+            'env' => $env
         ]);
     }
     #[Route('/allticket', name: 'allticket')]
