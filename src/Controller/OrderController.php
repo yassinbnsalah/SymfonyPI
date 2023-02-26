@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
-{       
+{
     #[Route('/order', name: 'AddOrder')]
     public function index(
         Request $request,
@@ -47,58 +47,55 @@ class OrderController extends AbstractController
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         $user = $this->getUser();
-        $order->setPrice($total);
-        $intentSecret = $payementManager->intentSecret($order);
        
-        // if ($form->isSubmitted()) {
-        //     if ($form->isValid()) {
-            if($request->getMethod() === "POST") {
-                
+        if ($request->getMethod() === "POST") {
+            
+            if ($request->request->get('Paiement') == 'Stripe') {
+            
+                $order->setPrice($total);
                 $resource = $payementManager->stripe($_POST, $order);
+                $order->setPaiementmethod("Card");
+            } else if ($request->request->get('Paiement') == 'CashOnDelivrey') {
                
-               
-                    $date = new \DateTime();
-                    $order->setShippingadress($request->request->get('shippingadress'));
-                    $order->setNote($request->request->get('note')) ; 
-                    $order->setReference(strtoupper($user->getName()) . $date->format('Y-m-d-H:i'));
-                    $order->setState("inconfirmed");
-                    $order->setPrice($total);
-                    $order->setPaiementmethod("cash on delivry");
-                    $order->setDateOrder(new \DateTime());
-                    $order->setClient($user);
-                    // $order->setBrandStripe($resource['stripeBrand']);
-                    // $order->setLast4Stripe($resource['stripeLast4']);
-                    // $order->setIdChargeStripe($resource['stripeId']);
-                    // $order->setStripeToken($resource['stripeToken']);
-                    // $order->setStatusStripe($resource['stripeStatus']);
-                    $orderRepo->save($order);
-                    foreach ($panier as $id => $quantite) {
-                        $product = $productsRepository->find($id);
-                        $orderline = new OrderLine();
-                        $orderline->setProduct($product);
-                        $orderline->setQuantity($quantite);
-                        $orderline->setPrice($product->getSellprice() * $quantite);
-                        $orderline->setRelatedOrder($order);
-                        $orderLineRepository->save($orderline);
-                    }
-                    $session->remove('panier');
-                    return $this->redirectToRoute('homepageVisitor');
-                
+                $order->setPrice($total);
+                $order->setPaiementmethod("CashOndelivrey");
+            } else {
+                $data = "no paiement method checked";
+                return $this->render(
+                    'order/addOrder.html.twig',
+                    compact('dataPanier', 'total', 'user', 'data', 'intentSecret')
+                );
             }
-            // } else {
-            //     $data = "error while creating order";
-            //     $form = $form->createView();
-            //     return $this->render(
-            //         'order/addOrder.html.twig',
-            //         compact('dataPanier', 'total', 'user', 'form', 'data', 'intentSecret')
-            //     );
-            // }
-        //}
-       // $form = $form->createView();
-        return $this->render(
-            'order/addOrder.html.twig',
-            compact('dataPanier', 'total', 'user' , 'data','intentSecret')
-        );
+
+            $date = new \DateTime();
+            $order->setShippingadress($request->request->get('shippingadress'));
+            $order->setNote($request->request->get('note'));
+            $order->setReference(strtoupper($user->getName()) . $date->format('Y-m-d-H:i'));
+            $order->setState("inconfirmed");
+            $order->setDateOrder(new \DateTime());
+            $order->setClient($user);
+            $orderRepo->save($order);
+            foreach ($panier as $id => $quantite) {
+                $product = $productsRepository->find($id);
+                $orderline = new OrderLine();
+                $orderline->setProduct($product);
+                $orderline->setQuantity($quantite);
+                $orderline->setPrice($product->getSellprice() * $quantite);
+                $orderline->setRelatedOrder($order);
+                $orderLineRepository->save($orderline);
+            }
+            $session->remove('panier');
+            return $this->redirectToRoute('homepageVisitor');
+        }else{
+            $order->setPrice($total);
+            $intentSecret = $payementManager->intentSecret($order);
+            return $this->render(
+                'order/addOrder.html.twig',
+                compact('dataPanier', 'total', 'user', 'data', 'intentSecret')
+            );
+        }
+
+       
     }
 
     #[Route('/order/liste', name: 'ListeOrder')]

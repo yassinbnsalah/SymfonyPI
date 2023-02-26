@@ -36,7 +36,7 @@ class PayementManger
     public function intentSecret(Order $order)
     {
         $intent = $this->stripeService->paymentIntent($order);
-
+        
         return $intent['client_secret'] ?? null;
     }
 

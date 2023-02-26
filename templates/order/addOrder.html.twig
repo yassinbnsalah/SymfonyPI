@@ -23,6 +23,7 @@
 <link href="{{asset('assets/libs/tiny-slider/dist/tiny-slider.css')}}" rel="stylesheet">
 <link href="{{asset('assets/libs/tippy.js/dist/tippy.css')}}" rel="stylesheet">
 
+  <script src="https://js.stripe.com/v3/"></script>
 
 <!-- Theme CSS -->
 <link rel="stylesheet" href="{{asset('assets/css/theme.min.css')}}">
@@ -457,8 +458,8 @@
                             <div class="card-header  d-flex align-items-center justify-content-between">
                                <h4 class="mb-0">Stripe</h4>
                                <div class="custom-control custom-switch">
-                                  <input type="checkbox" class="custom-control-input" id="stripeSwitch1" disabled name="AA">
-                                  <label class="custom-control-label" for="stripeSwitch1"></label>
+                                  <input type="radio" class="custom-control-input" id="Stripe" name="Paiement" value="Stripe">
+                                  <label class="custom-control-label" for="Stripe"></label>
                                </div>
                             </div>
                             <!-- Card Body -->
@@ -467,24 +468,22 @@
                                <p class="mb-4">Connect your Geeks to your stripe account for faster payouts.</p>
                                <!-- Form -->
                              
-                                  <div class="form-group">
+                                  
                                     <div id="card-elements"></div>
-
-                              
-
+                                  
                                 <div id="card-errors" role="alert"></div>
                                   </div>
                                
                               
-                            </div>
+                            
                          </div>
                          <div class="card mb-4 ">
                             <!-- Card Header -->
                             <div class="card-header  d-flex align-items-center justify-content-between">
                                <h4 class="mb-0">Cash On delivrey</h4>
                                <div class="custom-control custom-switch">
-                                  <input type="checkbox" class="custom-control-input" id="stripeSwitch2" name="AA">
-                                  <label class="custom-control-label" for="stripeSwitch2"></label>
+                                  <input type="radio" class="custom-control-input" id="CashOnDelivrey" name="Paiement" value="CashOnDelivrey">
+                                  <label class="custom-control-label" for="CashOnDelivrey"></label>
                                </div>
                             </div>
                             <!-- Card Body -->
@@ -585,6 +584,7 @@
         {% block javascripts %}
     <!-- Scripts -->
     <!-- Libs JS -->
+   
     <script src="{{asset('assets/libs/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('assets/libs/odometer/odometer.min.js')}}"></script>
@@ -607,19 +607,22 @@
     <script src="{{asset('assets/libs/@popperjs/core/dist/umd/popper.min.js')}}"></script>
     <script src="{{asset('assets/libs/tippy.js/dist/tippy-bundle.umd.min.js')}}"></script>
     <script src="{{asset('assets/libs/typed.js/lib/typed.min.js')}}"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    
     <!-- clipboard -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
     
     
     <!-- Theme JS -->
     <script src="{{asset('assets/js/theme.min.js')}}"></script>
+   
    <script> 
+    
     {% if app_environement == 'dev' %}
         var stripeToken = "{{ stripe_public_key_test }}";
     {% endif %}
     console.log('stripeToken',stripeToken);
     var stripe = Stripe(stripeToken);
+    console.log('stripeToken',stripe);
     var elements = stripe.elements();
    
     var clientSecret = "{{ intentSecret }}";
@@ -663,8 +666,13 @@
         ).then((result) => {
           if(result.error) {
             // Display error
-
-            console.log('eror');
+            if(document.getElementById("CashOnDelivrey").checked){
+              console.log('checked cash'); 
+              form.submit();
+            }else if (document.getElementById("Stripe").checked){
+              console.log('eror');
+            }
+           
             } else if('paymentIntent' in result) {
             console.log('Result : ',result);
             stripeTokenHandler(result.paymentIntent);
