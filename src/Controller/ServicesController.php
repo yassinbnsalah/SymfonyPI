@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoryRepository;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
+
+use Symfony\Component\Mailer\Mailer;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\Bridge\Google\Transport\GmailSmtpTransport;
+
 class ServicesController extends AbstractController
 {
     #[Route('/services', name: 'app_services')]
@@ -27,8 +28,8 @@ class ServicesController extends AbstractController
     public function sendmail()
     {
         $email = (new Email())
-            ->from('contact.fithealth23@gmail.com')
-            ->to('yacinbnsalh@gmail.com')
+            ->from('contact.fithealth23@gmail.com') 
+            ->to('haelkyll@gmail.com')
             ->subject('firstmail')
             ->text('hello ma men'); 
             $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com','qavkrnciihzjmtkp');
