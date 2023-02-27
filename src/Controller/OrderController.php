@@ -5,17 +5,23 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderLine;
 use App\Form\OrderType;
+use Symfony\Component\Mailer\Mailer;
 
 use App\Manager\PayementManger;
 use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProduitRepository;
 use App\Services\StripeService;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\Bridge\Google\Transport\GmailSmtpTransport;
+use Symfony\Component\Mime\Email;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class OrderController extends AbstractController
 {
@@ -85,6 +91,20 @@ class OrderController extends AbstractController
                 $orderLineRepository->save($orderline);
             }
             $session->remove('panier');
+            $loader = new FilesystemLoader('../templates');
+            $twig = new Environment($loader);
+            $html = $twig->render('email/confirmeOrder.html.twig', [
+              'user' => 'yessine',
+              'order' => $order,
+          ]);
+            $email = (new Email())
+            ->from('contact.fithealth23@gmail.com')
+            ->to('yacinbnsalh@gmail.com')
+            ->subject('Order Confirmation')
+            ->html($html);
+            $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com','qavkrnciihzjmtkp');
+            $mailer = new Mailer($transport);
+            $mailer->send($email); 
             return $this->redirectToRoute('homepageVisitor');
         }else{
             $order->setPrice($total);
@@ -194,9 +214,17 @@ class OrderController extends AbstractController
     public function UpdateStateOrder($id, $state, OrderRepository $orderRepo): Response
     {
 
+
+
         $order = $orderRepo->find($id);
         $order->setState($state);
         $orderRepo->save($order);
-        return $this->redirectToRoute('listeOrderDashboard');
+        $user = $this->getUser(); 
+        if ($user->getRoles()[0] == 'ROLE_ADMIN') {
+            return $this->redirectToRoute('listeOrderDashboard');
+        } else {
+            return $this->redirectToRoute('ListeOrder');
+        }
+        
     }
 }
