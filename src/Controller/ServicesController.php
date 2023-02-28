@@ -32,16 +32,16 @@ class ServicesController extends AbstractController
     {
         $loader = new FilesystemLoader('../templates');
         $twig = new Environment($loader);
-        $html = $twig->render('email/test.html.twig', [
+        $html = $twig->render('email/confirmeCompte.html.twig', [
           'user' => 'yessine',
           'message' => 'Please click the following link to reset your password: <a href="#">Reset Password</a>',
       ]);
       
-        $name ="yessine" ;
+        $name ="yessine" ; 
         $username="yessine" ;
         $email = (new Email())
         ->from('contact.fithealth23@gmail.com')
-        ->to('yacinbnsalh@gmail.com')
+        ->to('haelkyll@gmail.com')
         ->subject('Order Confirmation')
         ->html($html);
         $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com','qavkrnciihzjmtkp');
