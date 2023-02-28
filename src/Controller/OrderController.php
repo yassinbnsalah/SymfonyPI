@@ -149,7 +149,7 @@ class OrderController extends AbstractController
 
 
         $order = $orderRepo->find($id);
-
+        
         return $this->render('/order/facture.html.twig', [
             'order' => $order
         ]);

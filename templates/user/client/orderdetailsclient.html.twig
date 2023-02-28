@@ -141,20 +141,40 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header">
+                        <div>
                         <h3 class="mb-0">Order details </h3> 
                         <p class="mb-0">
-                            Order Dashboard is a quick overview of all Order details <a class="badge badge-primary"> imprimer </a>
+                            Order Dashboard is a quick overview of all Order details 
+                          
                         </p>
-                        
+                    </div>
+                    
+                        {% if order.isInvoiced() %}
+                        <div> <a href="{{ path('SeeFacture' , {'id' : order.id}) }}" class="badge badge-primary"> see the invoice </a></div>
+                        {% endif %}
+                    
                     </div>
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="alert bg-light-danger text-dark alert-dismissible fade show" role="alert">
-                            <strong>Order REFERENCE : # {{ order.reference }} </strong> <span class="badge badge-info">{{ order.state }} </span>
+                            <strong>Order REFERENCE : # {{ order.reference }} </strong>
+                            {% if order.getState() == "Confirmed" %}
+                            <span class="badge badge-success"> {{ order.getState() }}</span>
+                             {% elseif order.getState() == "Shipped" %}
+                             <span class="badge badge-info"> {{ order.getState() }}</span>
+                             {% elseif  order.getState() == "Cancel"%}
+                             <span class="badge badge-danger"> {{ order.getState() }}</span>
+                             {% elseif  order.getState() == "ready To Ship"%}
+                             <span class="badge badge-warning">  {{ order.getState() }}</span>
+                             {% elseif order.getState() == "inconfirmed" %}
+                             <span class="badge badge-secondary"> {{ order.getState() }}</span>
+                             {% endif %}
                             <p class="mb-0">
                               Client Name :<strong> {{ order.getClient().getName() }}</strong><br>
                                Shipping Adresse <strong>{{ order.shippingadress }} </strong><br>
-                               Date Order :    <strong>{{ order.dateOrder|date('d-m-Y')  }} </strong>
+                               Date Order :    <strong>{{ order.dateOrder|date('d-m-Y')  }} </strong><br>
+                               Paiement method : <strong>{{order.paiementmethod }} </strong><br>
+                               Total price : <strong> {{ order.getPrice() }} <sup> dt </sup></strong>
                             </p>
                                 <!-- Button -->
                           
@@ -186,12 +206,16 @@
                             <tbody>
                                 {% for orderline in order.getOrderLines() %}
                                     <tr>
-                                    <td class="align-middle border-top-0">{{ orderline.getProduct().name}}</td>
-                                    <td class="align-middle border-top-0">{{ orderline.getProduct().sellprice}}</td>
                                     <td class="align-middle border-top-0">
-                                        <span class="badge badge-warning">{{ orderline.getQuantity()}}</span>
+                                        <img src="/uploads/{{ orderline.getProduct().image }}"  alt=""
+                                        class="rounded-circle avatar-xs mr-2" />
+                                        {{ orderline.getProduct().name}}</td>
+                                    <td class="align-middle border-top-0">{{ orderline.getProduct().sellprice}}<sup> dt </sup></td>
+                                    <td class="align-middle border-top-0">
+                                      {{ orderline.getQuantity()}}
                                     </td>
-                                    <td class="align-middle border-top-0">{{ orderline.getPrice()}}</td>
+                                    <td class="align-middle border-top-0">
+                                        <span class="badge badge-danger">{{ orderline.getPrice()}} <sup> dt </sup><span></td>
                                    
                                     
                                 </tr>

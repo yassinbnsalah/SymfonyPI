@@ -54,7 +54,7 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route("/oubli_pass", name:"forgotten_password")]
+    #[Route("/forgetpassword", name:"forgotten_password")]
      
     public function forgottenPass(Request $request, UserRepository $usersRepo, TokenGeneratorInterface $tokenGenerator){
         // On crée le formulaire
@@ -118,7 +118,7 @@ class SecurityController extends AbstractController
 
 
      
-      #[Route("/reset_pass/{token}", name:"app_reset_password") ]
+      #[Route("/reset-password/{token}", name:"app_reset_password") ]
      
     public function resetPassword($token, Request $request, ManagerRegistry $doctrine){
         // On cherche l'utilisateur avec le token fourni
