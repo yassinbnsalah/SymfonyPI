@@ -80,6 +80,7 @@ $(document).ready(function(){
                         
                         <th scope="col" class="border-0">message</th>
                         <th scope="col" class="border-0">dateTicket </th>
+                       <th scope="col" class="border-0">State </th>
                       </tr>
                     </thead>
                         {% for T in  allticket %}
@@ -111,7 +112,32 @@ $(document).ready(function(){
                         <td class="align-middle border-top-0">
                            {{ T.dateTicket |date('d-m-Y')}}
                           </td>
+                           <td class="align-middle border-top-0">
+                    {% if T.state == "En Attend" %}
+                                        <span class="badge badge-warning ml-2">
+                                            En Attend</span>
+                                        {% elseif  T.state == "Cancel" %}
+                                        <span class="badge badge-success ml-2">
+                                          Confirmed</span>
+                                          {%else%}
+                                        <span class="badge badge-warning ml-2">
+                                            Suspanded</span>
+                                            {% endif %}
+                  </td>
+                          <td class="align-middle border-top-0">
+                    {% if T.state == "En Attend" %}
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-pause dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-x-circle dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+                    {% endif %}
+                    {% if T.state == "En Cours" %}
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-play dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-x-circle dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+                    {% endif %}
                        
+                    
+                  </td>
                      
                       
                     

@@ -63,7 +63,7 @@
               <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
                 <div class="table-responsive border-0">
                   <!-- Table -->
-                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
               <script>
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
@@ -73,7 +73,7 @@ $(document).ready(function(){
     });
   });
 });
-</script>
+</script> 
                   <table class="table mb-0 text-nowrap">
                     <!-- Table Head -->
                     <thead>
@@ -176,27 +176,10 @@ $(document).ready(function(){
             </div>
           </div>
           <!-- Card Footer -->
-          <div class="card-footer">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
-                      class="mdi mdi-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link mx-1 rounded" href="#!">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
+           <div class="card-footer">
+         
+            {{    knp_pagination_render(User_client, '/order/paginator.html.twig') }}
+          
           </div>
         </div>
       </div>

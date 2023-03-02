@@ -13,11 +13,12 @@ use App\Entity\Disponibility;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
 use App\Repository\UserRepository;
-use App\Repository\OrdennanceRepository;
-
 use App\Repository\TicketRepository;
+
+use App\Repository\OrdennanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -100,13 +101,17 @@ class UserController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
     #[Route('/client/liste', name: 'listeClient')]
-    public function listeClient(UserRepository $userRepository, Request $request, EntityManagerInterface $manager)
+    public function listeClient(UserRepository $userRepository,PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
     {
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-
+        $clients = $paginator->paginate(
+            $User_client, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user->setRoles(['ROLE_CLIENT']);
@@ -123,16 +128,16 @@ class UserController extends AbstractController
                 $response = new JsonResponse($data);
                 return $this->render('user/client/listeClient.html.twig', [
                     'controller_name' => 'UserController',
-                    'User_client' => $User_client,
                     'data' => $response->getContent(),
+                    'User_client' => $clients,
                     'form' => $form->createView()
                 ]);
             }
         }
         return $this->render('user/client/listeClient.html.twig', [
             'controller_name' => 'UserController',
-            'User_client' => $User_client,
             'data' => "",
+            'User_client' => $clients,
             'form' => $form->createView()
         ]);
     }
@@ -335,12 +340,12 @@ class UserController extends AbstractController
                      $date->add($interval);
                     $sb->setDateExpire($date);
                 }
-
+ 
                 $sb->setUser($ClientByID);
                 $sb->setState("Confirmed");
                 $em = $em->getManager();
                 $em->persist($sb);
-                $em->flush();
+                $em->flush(); 
             } else {
                 $data = "Failed to add new Sub to this client please click in ";
                 // $response = new JsonResponse($data);
@@ -361,13 +366,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/doctor/liste', name: 'listeDoctor')]
-    public function listeDoctor(UserRepository $userRepository, Request $request, EntityManagerInterface $manager)
+    public function listeDoctor(UserRepository $userRepository,PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
     {
         $User_medcin = $userRepository->findByRole('["ROLE_MEDCIN"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-
+        $doctors = $paginator->paginate(
+            $User_medcin, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         if($form->isSubmitted() ){
             if($form->isValid()){
                 $user->setRoles(['ROLE_MEDCIN']);
@@ -384,14 +393,14 @@ class UserController extends AbstractController
                 $response = new JsonResponse($data);
                 return $this->render('user/doctor/listeDoctor.html.twig', [
                     'controller_name' => 'UserController',
-                    'User_medcin' => $User_medcin,
+                    'User_medcin' => $doctors,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
               }}
               return $this->render('user/doctor/listeDoctor.html.twig', [
                 'controller_name' => 'UserController',
-                'User_medcin' => $User_medcin,
+                'User_medcin' => $doctors,
                 'data'=>"",
                 'form' => $form->createView()
             ]);
@@ -441,13 +450,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/pharmacien/liste', name: 'listePharmaciens')]
-    public function listePharmaciens(UserRepository $userRepository, Request $request, EntityManagerInterface $manager)
+    public function listePharmaciens(UserRepository $userRepository, PaginatorInterface $paginator,Request $request, EntityManagerInterface $manager)
     {
         $User_pharmacien = $userRepository->findByRole('["ROLE_PHARMACIEN"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-
+        $pharmaciens = $paginator->paginate(
+            $User_pharmacien, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         if($form->isSubmitted() ){
             if($form->isValid()){
                 $user->setRoles(['ROLE_PHARMACIEN']);
@@ -464,14 +477,14 @@ class UserController extends AbstractController
                 $response = new JsonResponse($data);
                 return $this->render('user/pharmacien/listePharmacien.html.twig', [
                     'controller_name' => 'UserController',
-                    'User_pharmacien' => $User_pharmacien,
+                    'User_pharmacien' => $pharmaciens,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
               }}
               return $this->render('user/pharmacien/listePharmacien.html.twig', [
                 'controller_name' => 'UserController',
-                'User_pharmacien' => $User_pharmacien,
+                'User_pharmacien' => $pharmaciens,
                 'data'=>"",
                 'form' => $form->createView()
             ]);
@@ -481,13 +494,17 @@ class UserController extends AbstractController
 
 
     #[Route('/coach/liste', name: 'listecoachs')]
-    public function listecoachs(UserRepository $userRepository, Request $request, EntityManagerInterface $manager)
+    public function listecoachs(UserRepository $userRepository,PaginatorInterface $paginator ,Request $request, EntityManagerInterface $manager)
     {
         $User_coach = $userRepository->findByRole('["ROLE_COACH"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
-
+        $coachs = $paginator->paginate(
+            $User_coach, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         if($form->isSubmitted() ){
             if($form->isValid()){
                 $user->setRoles(['ROLE_COACH']);
@@ -504,15 +521,15 @@ class UserController extends AbstractController
                 $response = new JsonResponse($data);
                 return $this->render('user/coach/listeCoach.html.twig', [
                     'controller_name' => 'UserController',
-                    'User_coach' => $User_coach,
+                    'User_coach' => $coachs,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
               }}
               return $this->render('user/coach/listeCoach.html.twig', [
                 'controller_name' => 'UserController',
-                'User_coach' => $User_coach,
                 'data'=>"",
+                'User_coach' => $coachs,
                 'form' => $form->createView()
             ]);
         }
@@ -702,6 +719,7 @@ class UserController extends AbstractController
         if($form->isSubmitted()){
             if($form->isValid()){
             $ticket->setOwner($user);
+            $ticket->setState("En Attend");
             $em = $em->getManager(); 
             $em->persist($ticket);
             $em->flush() ; 
@@ -727,4 +745,7 @@ class UserController extends AbstractController
         ]);
     }
 
+
+
+   
 }
