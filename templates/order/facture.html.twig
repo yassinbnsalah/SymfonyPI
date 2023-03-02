@@ -12,13 +12,15 @@
 		<!-- Invoice styling -->
 		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}" media="print">
+	
 	</head>
 
 	<body>
 		<h1>FIT-HEALTH INVOICE</h1>
 		<h3> ID INVOICE : #{{order.reference}}.</h3>
 		<br /><br />
-		<button class="button1"  onClick="imprimer()" id="btn"> print </button>
+		
+		
 		<br /><br />
 
 		<div class="invoice-box">
@@ -95,7 +97,10 @@
 					<td class="check">Total: {{ order.price }} <sup> DT</sup></td>
 				</tr>
 			</table>
+		
 		</div>
+
+		<a  onClick="imprimer()" id="btn"  role="button">click here to print this invoice  </a>
 	</body>
 	<script>
 	function imprimer() {

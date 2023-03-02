@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SubscriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
@@ -19,18 +20,22 @@ class Subscription
     #[Assert\NotBlank(message:"Date is required")]
     #[Assert\GreaterThanOrEqual("today",
     message:"Date must be higher than today")]  
+    #[Groups("subscribers")]
     // #[Assert\Date(message :"le date ne doit etre ")]
     private ?\DateTimeInterface $dateSub = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("subscribers")]
     private ?\DateTimeInterface $dateExpire = null;
 
     #[ORM\Column(length: 125)]
     #[Assert\NotBlank(message:"Type is required")]
+    #[Groups("subscribers")]
     private ?string $type = null;
 
     #[ORM\Column(length: 125)]
     #[Assert\NotBlank(message:"Paiment method is required")]
+    #[Groups("subscribers")]
     private ?string $paiementType = null;
 
     #[ORM\Column]
@@ -46,6 +51,7 @@ class Subscription
     private ?User $user = null;
 
     #[ORM\Column(length: 125)]
+    #[Groups("subscribers")]
     private ?string $state = null;
 
     public function getId(): ?int

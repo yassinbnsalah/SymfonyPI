@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\SubscriptionRepository;
+use DateInterval;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,8 +61,14 @@ class SubController extends AbstractController
     #[Route('/subscription/insuspend/{id}', name: 'insuspendSub')]
     public function insuspandSubscription($id, SubscriptionRepository $repo, ManagerRegistry $em): Response
     {
+        
         $subtosuspend = $repo->find($id);
+       
+
+
+        
         $subtosuspend->setState("Confirmed");
+        
         $subtosuspend->setDateExpire(new \DateTime());
         $em = $em->getManager();
         $em->persist($subtosuspend);

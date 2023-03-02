@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -18,28 +19,35 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups("order")]
     private ?string $reference = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups("order")]
     private ?string $state = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("order")]
     private ?float $price = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     #[Assert\NotBlank(message:"Shipping Adress is required")]
+    #[Groups("order")]
     private ?string $shippingadress = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups("order")]
     private ?\DateTimeInterface $dateOrder = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("order")]
     private ?string $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?User $client = null;
 
     #[ORM\OneToMany(mappedBy: 'relatedOrder', targetEntity: OrderLine::class)]
+    #[Groups("order")]
     private Collection $orderLines;
 
     #[ORM\Column(length: 125, nullable: true)]

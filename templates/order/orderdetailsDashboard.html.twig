@@ -20,7 +20,7 @@
             </nav>
           </div>
           {% if order.isInvoiced() %}
-            <div> <a href="{{ path('SeeFacture' , {'id' : order.id}) }}" class="badge badge-primary"> SEE </a></div>
+            <div> <a href="{{ path('SeeFacture' , {'id' : order.id}) }}" class="btn btn-primary btn-sm"> Invoice </a></div>
             {% endif %}
           <div>
             <div class="alert alert-danger"> {{ order.note }}</div>
