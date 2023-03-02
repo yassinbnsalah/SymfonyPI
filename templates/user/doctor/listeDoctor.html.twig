@@ -52,7 +52,7 @@
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
-              <input type="search" class="form-control pl-6" placeholder="Search Doctors" />
+                <input type="search" id="myInput" class="form-control pl-6" placeholder="Search Doctors" />
             </form>
           </div>
           <div>
@@ -61,7 +61,17 @@
               <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
                 <div class="table-responsive border-0">
                   <!-- Table -->
-              
+                       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+              <script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
                   <table class="table mb-0 text-nowrap">
                     <!-- Table Head -->
                     <thead>
@@ -77,9 +87,10 @@
                         <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
-                    <tbody>
+                     {%  for u in  User_medcin %}
+                    <tbody id="myTable">
                       <!-- Table body -->
-                      {%  for u in  User_medcin %}
+                     
                       <tr>
                   
                         <td class="align-middle border-top-0">
@@ -153,8 +164,9 @@
                                     </div>
                                     </div>
                       </tr>
-                    {% endfor %}
+                    
                     </tbody>
+                    {% endfor %}
                   </table>
                 </div>
               </div>

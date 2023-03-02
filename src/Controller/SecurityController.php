@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Twig\Environment;
 use App\Form\ResetPassType;
 use App\Form\ResetPasswordType;
 use App\Form\ForgotPasswordType;
 use Symfony\Component\Mime\Email;
-use App\Repository\UserRepository;
 
+use Twig\Loader\FilesystemLoader;
+use App\Repository\UserRepository;
 use Symfony\Component\Mailer\Mailer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,14 +96,16 @@ class SecurityController extends AbstractController
 
             // On génère l'URL de réinitialisation de mot de passe
             $url = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+            $loader = new FilesystemLoader('../templates');
+            $twig = new Environment($loader);
+            $html = $twig->render('email/confirmResetPassword.html.twig', [
+              'url' => $url,
+          ]);
             $email = (new Email())
             ->from('contact.fithealth23@gmail.com') 
             ->to($user->getEmail())
             ->subject('Mot de passe oublié')
-            ->html(
-                "<p>Bonjour,</p><p>Une demande de réinitialisation de mot de passe a été effectuée pour le site Travel Me. Veuillez cliquer sur le lien suivant : " . $url .'</p>',
-                'text/html'
-                ); 
+            ->html($html); 
             $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com','qavkrnciihzjmtkp');
             $mailer = new Mailer($transport);
             $mailer->send($email); 
@@ -109,7 +113,7 @@ class SecurityController extends AbstractController
             // On crée le message flash
             $this->addFlash('message', 'Un e-mail de réinitialisation de mot de passe vous a été envoyé');
 
-            return $this->redirectToRoute('app_login');
+         
         }
 
         // On envoie vers la page de demande de l'e-mail
