@@ -54,6 +54,9 @@ class Subscription
     #[Groups("subscribers")]
     private ?string $state = null;
 
+    #[ORM\Column(length: 125, nullable: true)]
+    private ?string $reference = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,6 +142,18 @@ class Subscription
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

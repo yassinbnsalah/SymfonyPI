@@ -321,6 +321,8 @@ class UserController extends AbstractController
         $ClientByID = $em->getRepository(User::class)->find($id);
         $sb = new Subscription();
         $sb->setDateSub(new \DateTime());
+        $date = new \DateTime();
+        $sb->setReference("SUB-". strtoupper($ClientByID->getName()) .$date->format('-Y-m-d'));
         $form = $this->createForm(SubscriptionType::class, $sb);
         $form->handleRequest($req);
         $data = null ; 
