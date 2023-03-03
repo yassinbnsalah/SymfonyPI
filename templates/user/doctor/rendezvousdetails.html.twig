@@ -111,8 +111,6 @@
                         </p>
                      
                         {% if  rendezVous.getOrdennance() %}
-                        <a class="btn btn-primary btn-sm" href="{{ path('UpdateOrdenance',{'id':rendezVous.id}) }}"> Update Ordenance </a>
-                        {% else %}
                         <a class="btn btn-primary btn-sm" href="{{ path('GenerateOrdenance',{'id':rendezVous.id}) }}"> Generate Ordenance </a>
                         {% endif %}
                 

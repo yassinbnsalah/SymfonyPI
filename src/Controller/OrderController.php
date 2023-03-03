@@ -183,7 +183,7 @@ class OrderController extends AbstractController
         );
     }
 
-    #[Route('/dashboard/order/{id}', name: 'OrderByIDDashboard')]
+    #[Route('/dashboard/id}', name: 'OrderByIDDashboard')]
     public function OrderByIDDashboard($id, OrderRepository $orderRepo): Response
     {
         $user = $this->getUser();

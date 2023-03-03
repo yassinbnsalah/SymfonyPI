@@ -6,6 +6,7 @@ use App\Repository\OrdennanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrdennanceRepository::class)]
@@ -17,9 +18,15 @@ class Ordennance
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"date is required")]
     private ?\DateTimeInterface $dateordenance = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"description is required")]
+    #[Assert\GreaterThan(
+        value: 0,
+        message:"Amount must be possitive"
+    )]
     private ?float $amount = null;
 
     #[ORM\OneToMany(mappedBy: 'ordennance', targetEntity: OrdennanceLigne::class)]
