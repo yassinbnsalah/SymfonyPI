@@ -18,6 +18,7 @@ use App\Repository\TicketRepository;
 use App\Repository\OrdennanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\SubscriptionRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,12 +31,24 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     #[Route('/admin', name: 'admindash')]
-    public function index(UserRepository $userRepository)
+    public function index(UserRepository $userRepository,SubscriptionRepository $subscriptionRepository)
     {   $env = $_ENV['APP_ENV'] ; 
         $User_admin = $userRepository->findByRole('["ROLE_ADMIN"]');
+        $countSubscriptions = $subscriptionRepository->countSubscriptions();
+        $Count_admin = $userRepository->countUserByRole('ROLE_ADMIN');
+        $Count_medcin = $userRepository->countUserByRole('ROLE_MEDCIN');
+        $Count_client = $userRepository->countUserByRole('ROLE_CLIENT');
+        $Count_coach = $userRepository->countUserByRole('ROLE_COACH');
+        $countSubscribers = $subscriptionRepository->countSubscribers();
         return $this->render('user/admin.html.twig', [
             'controller_name' => 'UserController',
             'User_admin' => $User_admin,
+            'Count_admin' => $Count_admin,
+            'Count_medcin' => $Count_medcin,
+            'Count_client' => $Count_client,
+            'Count_coach' => $Count_coach,
+            'countSubscribers' => $countSubscribers,
+            'countSubscriptions' => $countSubscriptions,
             'env' => $env
         ]);
     }

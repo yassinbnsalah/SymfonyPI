@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repository;
-
+use App\Doctrine\Month;
 use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,7 +38,22 @@ class SubscriptionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function countSubscriptions()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    public function countSubscribers()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
 
+        $queryBuilder->select('COUNT(s.id)')
+            ->where('MONTH(s.dateSub) = MONTH(CURRENT_DATE())');
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
+    }
 //    /**
 //     * @return Subscription[] Returns an array of Subscription objects
 //     */
