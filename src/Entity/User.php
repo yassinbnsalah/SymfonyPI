@@ -123,6 +123,9 @@ class User implements UserInterface
      #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Ticket::class)]
      private Collection $tickets;
 
+     #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Notification::class)]
+     private Collection $notifications;
+
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
@@ -132,6 +135,7 @@ class User implements UserInterface
          $this->plannings = new ArrayCollection();
          $this->orders = new ArrayCollection();
          $this->tickets = new ArrayCollection();
+         $this->notifications = new ArrayCollection();
      }
 
     public function __toString()
@@ -524,6 +528,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($ticket->getOwner() === $this) {
                 $ticket->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setToUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getToUser() === $this) {
+                $notification->setToUser(null);
             }
         }
 

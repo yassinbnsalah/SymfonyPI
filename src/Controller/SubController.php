@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\NotificationRepository;
 use App\Repository\SubscriptionRepository;
 use DateInterval;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,13 +24,14 @@ class SubController extends AbstractController
     }
 
     #[Route('/dashboard/client/subhistory', name: 'subhistory')]
-    public function subhistory(): Response
+    public function subhistory(NotificationRepository $notificationRepository): Response
     {
         $user = $this->getUser();
-     
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         return $this->render('user/client/clientsubhistory.html.twig', [
             'controller_name' => 'SubController',
-            'user' => $user
+            'user' => $user,
+            'notifications' => $notifications
         ]);
     }
 

@@ -15,7 +15,7 @@ use App\Repository\MedicamentRepository;
 use App\Repository\RendezVousRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\DisponibilityRepository;
-
+use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,14 +32,16 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/rendezvous/liste', name: 'rendezVousListe')]
-    public function rendezVousListe(RendezVousRepository $repo): Response
+    public function rendezVousListe(RendezVousRepository $repo ,NotificationRepository $notificationRepository): Response
     {
         $usercurrent = $this->getUser();
         $rendezvous = $repo->findAll();
+        $notifications = $notificationRepository->findBy(array('toUser' => $usercurrent));
         return $this->render('user/client/listerendezvousclient.html.twig', [
             'controller_name' => 'UserController',
             'user' => $usercurrent,
-            'rendezvous' => $rendezvous
+            'rendezvous' => $rendezvous,
+            'notifications' => $notifications
         ]);
     }
 

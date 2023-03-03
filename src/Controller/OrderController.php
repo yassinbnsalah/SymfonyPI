@@ -8,6 +8,7 @@ use App\Form\OrderType;
 use Symfony\Component\Mailer\Mailer;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Manager\PayementManger;
+use App\Repository\NotificationRepository;
 use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProduitRepository;
@@ -113,14 +114,17 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/liste', name: 'ListeOrder')]
-    public function ListeOrder(OrderRepository $orderRepo): Response
+    public function ListeOrder(OrderRepository $orderRepo,NotificationRepository $notificationRepository): Response
     {
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
+
         $order = $orderRepo->findBy(array('client' => $user));
         return $this->render(
             'user/client/clientOrderList.html.twig',
             [
                 'user' => $user,
+                'notifications' => $notifications,
                 'orders' => $order
             ]
         );

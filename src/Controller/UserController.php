@@ -10,8 +10,10 @@ use App\Form\TicketType;
 use App\Form\ProfileType;
 use App\Entity\Subscription;
 use App\Entity\Disponibility;
+use App\Entity\Notification;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Repository\TicketRepository;
 
@@ -61,25 +63,30 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/coach/showCoach', name: 'showCoach')]
-    public function showCoach(UserRepository $userRepository)
+    public function showCoach(UserRepository $userRepository,
+    NotificationRepository $notificationRepository
+)
     {
         $User_coach = $userRepository->findByRole('["ROLE_COACH"]');
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         return $this->render('user/coach/showCoach.html.twig', [
             'controller_name' => 'UserController',
             'User_coach' => $User_coach,
+            'notifications' => $notifications,
             'user' => $user
         ]);
     }
     #[Route('/doctor/showDoctor', name: 'showDoctor')]
-    public function showDoctor(UserRepository $userRepository)
+    public function showDoctor(UserRepository $userRepository,NotificationRepository $notificationRepository)
     {
         $User_doctor = $userRepository->findByRole('["ROLE_MEDCIN"]');
         $user = $this->getUser();
-
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         return $this->render('user/doctor/showDoctor.html.twig', [
             'controller_name' => 'UserController',
             'User_doctor' => $User_doctor,
+            'notifications' => $notifications,
             'user' => $user
         ]);
     }
@@ -145,12 +152,18 @@ class UserController extends AbstractController
 
 
     #[Route('/client/listesub', name: 'listeSubClient')]
-    public function listeSubClient(): Response
+    public function listeSubClient(NotificationRepository $notificationRepository
+    ): Response
     {
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
+
+        
         return $this->render('user/client/clientdashsub.html.twig', [
             'controller_name' => 'UserController',
-            'user' => $user
+            'user' => $user,
+            'notifications' => $notifications
+
         ]);
     }
     #[Route('/pharmacien/dashboard', name: 'dashPharmacien')]
@@ -167,11 +180,13 @@ class UserController extends AbstractController
     }
 
     #[Route('/client/update/{id}', name: 'UpdateClientData')]
-    public function UpdateClientData($id, ManagerRegistry $doctrine,Request  $request): Response
+    public function UpdateClientData($id, ManagerRegistry $doctrine,Request  $request,
+    NotificationRepository $notificationRepository): Response
     {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         if ($form->isSubmitted()) {
        
             /** @var UploadedFile $imageFile */
@@ -200,6 +215,7 @@ class UserController extends AbstractController
     'controller_name' => 'UserController',
     'user' =>$user,
     'data' => "",
+    'notifications' => $notifications,
     'form' => $form->createView()
         ]);
 }
@@ -316,7 +332,8 @@ class UserController extends AbstractController
             ]);
         }
     #[Route('/client/{id}', name: 'clientDetails')]
-    public function clientDetails(Request $req, $id, ManagerRegistry $em): Response
+    public function clientDetails(Request $req, $id, ManagerRegistry $em,
+    NotificationRepository $notificationRepository): Response
     {
         $ClientByID = $em->getRepository(User::class)->find($id);
         $sb = new Subscription();
@@ -348,6 +365,13 @@ class UserController extends AbstractController
                 $em = $em->getManager();
                 $em->persist($sb);
                 $em->flush(); 
+                $notification = new Notification() ; 
+                $notification->setDateNotification(new \DateTime()); 
+                $notification->setMessage('you have approved new sub') ; 
+                $notification->setToUser($ClientByID) ;
+                $notification->setPath("sub") ;
+                $notification->setSeen(false);
+                $notificationRepository->save($notification); 
             } else {
                 $data = "Failed to add new Sub to this client please click in ";
                 // $response = new JsonResponse($data);
@@ -710,7 +734,7 @@ class UserController extends AbstractController
         ]);
     }   
     #[Route('/dashboard/client/ticket', name: 'ticketAdd')]
-    public function ticketAdd(Request $req,ManagerRegistry $em): Response
+    public function ticketAdd(Request $req,ManagerRegistry $em,NotificationRepository $notificationRepository): Response
     {
         $ticket = new Ticket() ; 
         $ticket->setDateTicket(new \DateTime()); 
@@ -718,6 +742,7 @@ class UserController extends AbstractController
         $form->handleRequest($req) ; 
         $user = $this->getUser();
         $data = null ; 
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         if($form->isSubmitted()){
             if($form->isValid()){
             $ticket->setOwner($user);
@@ -734,6 +759,7 @@ class UserController extends AbstractController
                 'controller_name' => 'UserController',
                 'user' => $user,
                 'data' =>  $data,
+                'notifications' => $notifications,
                 'form' => $form->createView()
             ]);
         }
@@ -743,6 +769,7 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
             'user' => $user,
             'data' =>  $data,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }

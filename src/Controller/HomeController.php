@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\NotificationRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,14 +11,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
   
-    
+    #[Route('/updatenotification', name: 'updatenotification')]
+    public function updatenotification(NotificationRepository $notificationRepository) 
+    {   
+       $user = $this->getUser(); 
+       $notifications = $notificationRepository->findby(array('toUser'=> $user)); 
+       foreach ($notifications as $notification) {
+        $notification->setSeen(true) ; 
+        $notificationRepository->save($notification) ;
+        }
+        return $this->redirectToRoute('homepageVisitor');
+
+    }
 
     #[Route('/', name: 'homepageVisitor')]
-    public function homepageVisitor(ProduitRepository $Rep): Response
+    public function homepageVisitor(ProduitRepository $Rep, NotificationRepository $notificationRepository): Response
     {   
         $produits = $Rep->findAll();
         if($this->getUser()){
+            $user = $this->getUser() ; 
+            $notifications = $notificationRepository->findBy(array('toUser' => $user));
             return $this->render('home/home.html.twig', [
+                'notifications' => $notifications,
                 'controller_name' => 'HomeController',
                 'user' => $this->getUser(),
                 'produits' => $produits 
