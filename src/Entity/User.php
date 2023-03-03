@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -17,12 +18,14 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("notification")]
     private ?int $id = null;
 
     
     #[ORM\Column]
     #[Assert\NotBlank(message:"Cin is required")]
     #[Assert\PositiveOrZero]
+    #[Groups("notification")]
     private ?int $CIN = null;
 
 
@@ -31,7 +34,7 @@ class User implements UserInterface
      #[Assert\NotBlank(message:"Name is required")]
      #[Assert\Length(min : 4,max : 20,minMessage : "Votre Nom doit être au moins {{ limit }} characters long",maxMessage : "Votre Nom ne peut pas dépasser {{ limit }} characters")]
 
-    
+     #[Groups("notification")]
     private ?string $Name= null;
 
     
@@ -51,7 +54,7 @@ class User implements UserInterface
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:"Email is required")]
     #[Assert\Email(message : "The email '{{ value }}' is not a valid email.")]
-   
+    #[Groups("notification")]
     
     private ?string $Email = null;
 

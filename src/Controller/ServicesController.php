@@ -114,5 +114,15 @@ class ServicesController extends AbstractController
         $json = json_encode($SubNormilizer);
         return new Response($json);
     }
+
+    #[Route('/addSubClient', name: 'addSubClient')]
+    public function addSubClient(NormalizerInterface $normalizer): Response
+    {
+        $user = $this->getUser(); 
+   //    $order = $user->getOrders() ; 
+        $SubNormilizer = $normalizer->normalize($user , 'json', ['groups' => "order"]);
+        $json = json_encode($SubNormilizer);
+        return new Response($json);
+    }
     
 }

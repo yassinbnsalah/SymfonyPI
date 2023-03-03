@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Repository\NotificationRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,7 +17,7 @@ class CartController extends AbstractController
 
     #[Route('/', name: 'ShoppingCart')]
 
-    public function index(SessionInterface $session, ProduitRepository $productsRepository)
+    public function index(SessionInterface $session, ProduitRepository $productsRepository,NotificationRepository $notificationRepository)
     {
         $panier = $session->get("panier", []);
 
@@ -32,8 +33,9 @@ class CartController extends AbstractController
             ];
             $total += $product->getSellprice() * $quantite;
         }
-
-        return $this->render('store/cart/index.html.twig', compact('dataPanier', 'total'));
+        $user = $this->getUser(); 
+        $notifications = $notificationRepository->findBy(array('toUser' => $this->getUser()));
+        return $this->render('store/cart/index.html.twig', compact('user','dataPanier', 'total','notifications'));
     }
 
 

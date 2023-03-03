@@ -13,6 +13,7 @@ use App\Entity\Disponibility;
 use App\Entity\Notification;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
+use App\Manager\RealTimeManager;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Repository\TicketRepository;
@@ -27,7 +28,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserController extends AbstractController
 {
@@ -69,8 +73,7 @@ class UserController extends AbstractController
     {
         $User_coach = $userRepository->findByRole('["ROLE_COACH"]');
         $user = $this->getUser();
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-        return $this->render('user/coach/showCoach.html.twig', [
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));        return $this->render('user/coach/showCoach.html.twig', [
             'controller_name' => 'UserController',
             'User_coach' => $User_coach,
             'notifications' => $notifications,
@@ -82,8 +85,7 @@ class UserController extends AbstractController
     {
         $User_doctor = $userRepository->findByRole('["ROLE_MEDCIN"]');
         $user = $this->getUser();
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-        return $this->render('user/doctor/showDoctor.html.twig', [
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));        return $this->render('user/doctor/showDoctor.html.twig', [
             'controller_name' => 'UserController',
             'User_doctor' => $User_doctor,
             'notifications' => $notifications,
@@ -156,8 +158,7 @@ class UserController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         
         return $this->render('user/client/clientdashsub.html.twig', [
             'controller_name' => 'UserController',
@@ -186,8 +187,7 @@ class UserController extends AbstractController
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-        if ($form->isSubmitted()) {
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));        if ($form->isSubmitted()) {
        
             /** @var UploadedFile $imageFile */
        
@@ -333,7 +333,8 @@ class UserController extends AbstractController
         }
     #[Route('/client/{id}', name: 'clientDetails')]
     public function clientDetails(Request $req, $id, ManagerRegistry $em,
-    NotificationRepository $notificationRepository): Response
+    NotificationRepository $notificationRepository,HubInterface $hub,
+    NormalizerInterface $normalizer,RealTimeManager $realTimeManager): Response
     {
         $ClientByID = $em->getRepository(User::class)->find($id);
         $sb = new Subscription();
@@ -372,6 +373,10 @@ class UserController extends AbstractController
                 $notification->setPath("sub") ;
                 $notification->setSeen(false);
                 $notificationRepository->save($notification); 
+                $notificationJSON = $normalizer->normalize($notification  , 'json', ['groups' => "notification"]);
+                $json = json_encode($notificationJSON);
+                $realTimeManager->Walker($json,$hub);
+               
             } else {
                 $data = "Failed to add new Sub to this client please click in ";
                 // $response = new JsonResponse($data);
@@ -742,8 +747,7 @@ class UserController extends AbstractController
         $form->handleRequest($req) ; 
         $user = $this->getUser();
         $data = null ; 
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-        if($form->isSubmitted()){
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));        if($form->isSubmitted()){
             if($form->isValid()){
             $ticket->setOwner($user);
             $ticket->setState("En Attend");

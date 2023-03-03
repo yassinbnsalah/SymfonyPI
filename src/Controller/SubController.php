@@ -27,8 +27,7 @@ class SubController extends AbstractController
     public function subhistory(NotificationRepository $notificationRepository): Response
     {
         $user = $this->getUser();
-        $notifications = $notificationRepository->findBy(array('toUser' => $user));
-        return $this->render('user/client/clientsubhistory.html.twig', [
+              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));        return $this->render('user/client/clientsubhistory.html.twig', [
             'controller_name' => 'SubController',
             'user' => $user,
             'notifications' => $notifications
