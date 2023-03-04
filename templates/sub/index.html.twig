@@ -103,14 +103,14 @@ $(document).ready(function(){
                         </td>
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
-                            <a href="#!" class="text-inherit">
+                            <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
                               {{ sub.id }}
                             </a>
                           </h5>
                         </td>
                         <td class="align-middle border-top-0">
-                          <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
-                          {{ sub.getUser().getName() }}</a>
+                          <a href="#" class="text-inherit">
+                          {{ sub.getUser().Name }}</a>
                         </td>
                       
                         <td class="align-middle border-top-0">

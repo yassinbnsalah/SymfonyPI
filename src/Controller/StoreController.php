@@ -8,6 +8,7 @@ use App\Form\ProduitType;
 use App\Form\CategoryType;
 use App\Repository\ProduitRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,14 +75,19 @@ class StoreController extends AbstractController
     }
 
     #[Route('/produit/liste', name: 'produitListeClient')]
-    public function produitListeClient(ProduitRepository $Rep , CategoryRepository $catRepo)
+    public function produitListeClient(ProduitRepository $Rep , CategoryRepository $catRepo,
+    NotificationRepository $notificationRepository)
     {
         $produits = $Rep->findAll();
         $category = $catRepo->findAll() ; 
+        $user = $this->getUser() ; 
+        $notifications = $notificationRepository->findBy(array('toUser' => $user));
         return $this->render('store/product/productListeClientSide.html.twig', [
             'controller_name' => 'StoreController',
             'products' => $produits,
-            'categorys' => $category
+            'categorys' => $category,
+            'notifications' => $notifications,
+            'user' => $user
            
         ]);
     }

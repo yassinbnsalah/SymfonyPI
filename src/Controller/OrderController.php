@@ -15,7 +15,6 @@ use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProduitRepository;
 use App\Services\StripeService;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
