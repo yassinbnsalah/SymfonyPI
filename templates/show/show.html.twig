@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+ 
+
+{% block body %}
+<!-- Page Content -->
+<div class="pt-5 pb-5">
+    <div class="container">
+        <!-- User info -->
+        <div class="row align-items-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <!-- Bg -->
+                <div class="pt-16 rounded-top" style="
+                            background: url(../assets/images/background/profile-bg.jpg) no-repeat;
+                            background-size: cover;
+                        "></div>
+                <div
+                    class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5">
+                            <img src="{{picture}}" class="avatar-xl rounded-circle border-width-4 border-white"
+                                alt="" />
+                        </div>
+                        <div class="lh-1">
+                            <h2 class="mb-0">
+                               {{nom}}
+                                <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
+                                        <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9"></rect>
+                                        <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
+                                    </svg>
+                                </a>
+                            </h2>
+                            <p class="mb-0 d-block">{{ email }}</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+<!-- Content -->
+
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-4 col-12">
+                <!-- Side navbar -->
+                <nav class="navbar navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav">
+                        <!-- Menu -->
+                    <a class="d-xl-none d-lg-none d-md-none text-inherit font-weight-bold" href="#!">Menu</a>
+                        <!-- Button -->
+                    <button class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary text-light" type="button"
+                        data-toggle="collapse" data-target="#sidenav" aria-controls="sidenav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="fe fe-menu"></span>
+                    </button>
+                        <!-- Collapse navbar -->
+                    <div class="collapse navbar-collapse" id="sidenav">
+                        <div class="navbar-nav flex-column">
+                            <span class="navbar-header">Subscription</span>
+                            <ul class="list-unstyled ml-n2 mb-4">
+                                    <!-- Nav item -->
+                                <li class="nav-item active">
+                                    <a class="nav-link" href=""><i class="fe fe-airplay nav-icon"></i>My
+                                        Subscriptions
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-file nav-icon"></i>Sub History
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-shopping-bag  nav-icon"></i>Orders
+                                    </a>
+                                </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-calendar nav-icon"></i>Planning list</a>
+                                </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-file-text nav-icon"></i>Diet</a>
+                                </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-activity nav-icon"></i>Doctors liste</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="" ><i class="fe fe-minus nav-icon"></i>Coach liste</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-list nav-icon"></i>Rendez-vous liste</a>
+                                </li>
+                              
+                            
+                            </ul>
+                                <!-- Navbar header -->
+                            <span class="navbar-header">Account Settings</span>
+                            <ul class="list-unstyled ml-n2 mb-0">
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
+                                </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fe fe-user nav-icon"></i>Security</a>
+                              
+                                </li>
+                                     
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-user nav-icon"></i>Ticket</a>
+                              </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fe fe-trash nav-icon"></i>Delete
+                                        Profile</a>
+                                </li>
+                                    <!-- Nav item -->
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fe fe-power nav-icon"></i>Sign Out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-9 col-md-8 col-12">
+                <!-- Card -->
+                <div class="card border-0">
+                    <!-- Card header -->
+                    <div class="card-header d-lg-flex justify-content-between align-items-center">
+                        <div class="mb-3 mb-lg-0">
+                            <h3 class="mb-0">My Subscriptions</h3>
+                            <p class="mb-0">
+                                Here is list of package/product that you have subscribed. 
+                            </p>
+                        </div>
+                        <div>
+                            <a href="pricing.html" class="btn btn-success btn-sm" disabled >Pay enligne</a>
+                        </div>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

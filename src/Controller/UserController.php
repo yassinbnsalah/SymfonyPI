@@ -53,13 +53,17 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/allticket', name: 'allticket')]
-    public function allticket(TicketRepository $repo): Response
+    public function allticket(TicketRepository $repo,PaginatorInterface $paginator,Request $request): Response
     {
         $allticket = $repo->findAll();
-        // dd($allsub);
+        $tickets = $paginator->paginate(
+            $allticket, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            6 // Nombre de résultats par page
+        );
         return $this->render('user/client/listticket.html.twig', [
             'controller_name' => 'UserController',
-            'allticket' => $allticket
+            'allticket' => $tickets
         ]);
     }
     #[Route('/client/showClient', name: 'showClient')]
@@ -67,6 +71,7 @@ class UserController extends AbstractController
     {
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
+    
         return $this->render('user/client/showClient.html.twig', [
             'controller_name' => 'UserController',
             'User_client' => $User_client,
@@ -160,11 +165,26 @@ class UserController extends AbstractController
     #[Route('/client/listesub', name: 'listeSubClient')]
     public function listeSubClient(): Response
     {
-        $user = $this->getUser();
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
+
+		/** @var User $user */
+		$user = $this->getUser();
+        if($user->getRoles()[0] == 'ROLE_CLIENT'){
+        return match ($user->isVerified()) {
+			true => $this->render('user/client/clientdashsub.html.twig', [
+                'controller_name' => 'UserController',
+                'user' => $user
+            ]),
+			false => $this->render("user/client/please-verify-email.html.twig"),
+		};
+    }
+    else{
         return $this->render('user/client/clientdashsub.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user
         ]);
+    }
+
     }
     #[Route('/pharmacien/dashboard', name: 'dashPharmacien')]
     public function dashPharmacien(OrdennanceRepository $repo): Response
@@ -732,7 +752,7 @@ class UserController extends AbstractController
         if($form->isSubmitted()){
             if($form->isValid()){
             $ticket->setOwner($user);
-            $ticket->setState("En Attend");
+            $ticket->setState("Pending");
             $em = $em->getManager(); 
             $em->persist($ticket);
             $em->flush() ; 
@@ -758,6 +778,49 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/updateVerif/{id}', name: 'UpdateUserVerif')]
+    public function UpdateUserVerif($id, UserRepository $userRepo): Response
+    {
+        $user = $userRepo->find($id);
+        $user->setIsVerified(true);
+        $userRepo->save($user);
+        return $this->redirectToRoute('listeSubClient');
+    }
+
+
+    #[Route('/ticket/delete/{id}', name: 'deleteTicket')]
+    public function deleteTicket($id, TicketRepository $repo, ManagerRegistry $em): Response
+    {
+        $tickettodelete = $repo->find($id);
+        $em = $em->getManager();
+        $result = $em->remove($tickettodelete);
+        $em->flush();
+        // dd($allsub);
+        return $this->redirectToRoute('allticket');
+    }
+ 
+    #[Route('/ticket/progress/{id}', name: 'progressTicket')]
+    public function progressTicket($id, TicketRepository $repo, ManagerRegistry $em): Response
+    {
+        $progressTicket = $repo->find($id);
+        $progressTicket->setState("In progress");
+        $em = $em->getManager();
+        $em->persist($progressTicket);
+        $em->flush();
+        return $this->redirectToRoute('allticket');
+    }
+
+    #[Route('/ticket/confirmed/{id}', name: 'ConfirmedTicket')]
+    public function ConfirmedTicket($id, TicketRepository $repo, ManagerRegistry $em): Response
+    {
+        
+        $ConfirmedTicket = $repo->find($id);
+        $ConfirmedTicket->setState("Confirmed");
+        $em = $em->getManager();
+        $em->persist($ConfirmedTicket);
+        $em->flush();
+        return $this->redirectToRoute('allticket');
+    }
 
 
    

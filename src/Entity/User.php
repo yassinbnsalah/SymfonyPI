@@ -95,6 +95,9 @@ class User implements UserInterface
      
     private $reset_token;
 
+    #[ORM\Column(type: 'boolean')]
+    
+    private $isVerified = false;
     
      #[ORM\Column(type:"string", length:255, nullable:true)]
      #[Assert\Image(mimeTypesMessage : "Veuillez télécharger une image valide (JPG, JPEG, PNG, GIF)")]
@@ -529,5 +532,15 @@ class User implements UserInterface
 
         return $this;
     }
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
 
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
 }

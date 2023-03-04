@@ -106,8 +106,14 @@ $(document).ready(function(){
                        
                        <td class="align-middle border-top-0">
                         <div class="d-flex align-items-center">
+                              {% if u.image %}
+                       
                             <img src="/uploads/{{ u.image }}"  alt=""
                               class="rounded-circle avatar-xs mr-2" />
+                               {% else %}
+                                <img src="{{asset('assets/images/avatar/avatar.jpg')}}"  alt=""
+                                   class="rounded-circle avatar-xs mr-2" />
+                               {% endif %}
                          {{ u.Name }}
                           </div>
                         </td>
