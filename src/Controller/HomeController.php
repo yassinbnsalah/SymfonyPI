@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\NotificationRepository;
+
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,7 @@ class HomeController extends AbstractController
         return $this->redirectToRoute('homepageVisitor');
 
     }
-
+     
     #[Route('/', name: 'homepageVisitor')]
     public function homepageVisitor(ProduitRepository $Rep, NotificationRepository $notificationRepository): Response
     {   

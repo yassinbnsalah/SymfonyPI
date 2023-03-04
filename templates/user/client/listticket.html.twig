@@ -113,27 +113,25 @@ $(document).ready(function(){
                            {{ T.dateTicket |date('d-m-Y')}}
                           </td>
                            <td class="align-middle border-top-0">
-                    {% if T.state == "En Attend" %}
+                    {% if T.state == "Pending" %}
                                         <span class="badge badge-warning ml-2">
-                                            En Attend</span>
-                                        {% elseif  T.state == "Cancel" %}
-                                        <span class="badge badge-success ml-2">
-                                          Confirmed</span>
+                                            Pending</span>
+                                        {% elseif  T.state == "In progress" %}
+                                        <span class="badge badge-warning ml-2">
+                                          In progress</span>
                                           {%else%}
-                                        <span class="badge badge-warning ml-2">
-                                            Suspanded</span>
+                                        <span class="badge badge-success ml-2">
+                                            Confirmed</span>
                                             {% endif %}
-                  </td>
-                          <td class="align-middle border-top-0">
-                    {% if T.state == "En Attend" %}
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-pause dropdown-item-icon "></i></a>
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-x-circle dropdown-item-icon "></i></a>
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+              
+        
+                    {% if T.state == "Pending" %}
+                        <a class="btn btn-white btn-sm" href="{{ path('progressTicket' , {'id' : T.id  }) }}"><i class="fe fe-pause dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('deleteTicket' , {'id' : T.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
                     {% endif %}
-                    {% if T.state == "En Cours" %}
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-play dropdown-item-icon "></i></a>
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-x-circle dropdown-item-icon "></i></a>
-                        <a class="btn btn-white btn-sm" href=""><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
+                    {% if T.state == "In progress" %}
+                        <a class="btn btn-white btn-sm" href="{{ path('ConfirmedTicket' , {'id' : T.id  }) }}"><i class="fe fe-play dropdown-item-icon "></i></a>
+                        <a class="btn btn-white btn-sm" href="{{ path('deleteTicket' , {'id' : T.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
                     {% endif %}
                        
                     
@@ -155,26 +153,7 @@ $(document).ready(function(){
           </div>
           <!-- Card Footer -->
           <div class="card-footer">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
-                      class="mdi mdi-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link mx-1 rounded" href="#!">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
+            {{    knp_pagination_render(allticket, '/order/paginator.html.twig') }}
           </div>
         </div>
       </div>

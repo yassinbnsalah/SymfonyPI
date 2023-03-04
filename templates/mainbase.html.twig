@@ -335,8 +335,9 @@
     <!-- Theme JS -->
     <script src="{{asset('assets/js/theme.min.js')}}"></script>
     <script>
-      const eventSource = new EventSource("{{ mercure('https://walker.yessine.com/walker/1')|escape('js') }}");
+      const eventSource = new EventSource("{{ mercure('https://walkeryessine.com/walker/1')|escape('js') }}");
       eventSource.onmessage = event => {  
+         console.log("test");
           // Will be called every time an update is published by the server
           var user = "{{ user.id }}";
           console.log(user);

@@ -11,7 +11,7 @@ class RealTimeManager
   
     public function Walker($data , $hub){
         $update = new Update(
-            'https://walker.yessine.com/walker/1',
+            'https://walkeryessine.com/walker/1',
             json_encode([$data])
         );
 

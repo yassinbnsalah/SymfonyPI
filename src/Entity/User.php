@@ -18,14 +18,14 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("notification")]
+    #[Groups(["notification","user"])]
     private ?int $id = null;
 
     
     #[ORM\Column]
     #[Assert\NotBlank(message:"Cin is required")]
     #[Assert\PositiveOrZero]
-    #[Groups("notification")]
+    #[Groups(["notification","user"])]
     private ?int $CIN = null;
 
 
@@ -34,7 +34,7 @@ class User implements UserInterface
      #[Assert\NotBlank(message:"Name is required")]
      #[Assert\Length(min : 4,max : 20,minMessage : "Votre Nom doit être au moins {{ limit }} characters long",maxMessage : "Votre Nom ne peut pas dépasser {{ limit }} characters")]
 
-     #[Groups("notification")]
+     #[Groups(["notification","user"])]
     private ?string $Name= null;
 
     
@@ -42,26 +42,26 @@ class User implements UserInterface
      #[Assert\NotBlank(message:"Numero Telephone is required")]
      #[Assert\Positive]
      #[Assert\Length(min :4,max : 8,minMessage :"Votre Numero doit être au moins {{ limit }} characters long",maxMessage : "Votre Numero ne peut pas dépasser {{ limit }} characters")]
-
+     #[Groups(["notification","user"])]
      private ?int $Numero  = null;
 
      #[ORM\Column]
      #[Assert\NotBlank(message:"Age is required")]
      #[Assert\Positive]
-     
+     #[Groups(["notification","user"])]
      private ?int $Age  = null;
 
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:"Email is required")]
     #[Assert\Email(message : "The email '{{ value }}' is not a valid email.")]
-    #[Groups("notification")]
+    #[Groups(["notification","user"])]
     
     private ?string $Email = null;
 
     
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:"Adresse is required")]
-
+    #[Groups(["notification","user"])]
    
     private ?string $Adresse = null;
     
@@ -72,18 +72,19 @@ class User implements UserInterface
      #[ORM\Column]
      #[Assert\NotBlank]
      #[Assert\Length(min : "8", minMessage:"Votre mot de passe doit faire minimum 8 carractéres")]
-     
+     #[Groups(["user"])]
      private ?string $Password = null;
 
 
     #[Assert\EqualTo(propertyPath:"Password", message:"Vous n'avez pas tapé le méme mot de passe")]
     #[Assert\NotBlank]
+    #[Groups(["user"])]
     public $confirm_password = null;
 
     
     #[ORM\Column(type:"json", nullable:true)]
 
-    
+    #[Groups(["user"])]
     private $roles = [];
 
    
@@ -98,10 +99,13 @@ class User implements UserInterface
      
     private $reset_token;
 
+    #[ORM\Column(type: 'boolean')]
+    
+    private $isVerified = false;
     
      #[ORM\Column(type:"string", length:255, nullable:true)]
      #[Assert\Image(mimeTypesMessage : "Veuillez télécharger une image valide (JPG, JPEG, PNG, GIF)")]
-     
+     #[Groups(["notification","user"])]
     private $Image;
 
      #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
@@ -536,6 +540,10 @@ class User implements UserInterface
 
         return $this;
     }
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
 
     /**
      * @return Collection<int, Notification>
@@ -567,4 +575,10 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
 }

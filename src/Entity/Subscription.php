@@ -55,6 +55,7 @@ class Subscription
     private ?string $state = null;
 
     #[ORM\Column(length: 125, nullable: true)]
+    #[Groups("subscribers")]
     private ?string $reference = null;
 
     public function getId(): ?int

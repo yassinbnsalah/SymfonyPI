@@ -28,27 +28,30 @@
         <!-- Card -->
         <div class="card mb-4">
           <!-- Card body -->
+          <a class="nav-link " href="{{ path('listeClient') }}">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
               <div>
-                <span class="font-size-xs text-uppercase font-weight-semi-bold">Sales</span>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Client</span>
               </div>
               <div>
                 <span class="fe fe-shopping-bag font-size-lg text-primary"></span>
               </div>
             </div>
             <h2 class="font-weight-bold mb-1">
-              $10,800
+              {{Count_client}}
             </h2>
-            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+20.9$</span>
-            <span class="ml-1 font-weight-medium">Number of sales</span>
+          
+            <span class="ml-1 font-weight-medium">Number of client</span>
           </div>
         </div>
+        </a>
       </div>
       <div class="col-xl-3 col-lg-6 col-md-12 col-12">
         <!-- Card -->
         <div class="card mb-4">
           <!-- Card body -->
+           <a class="nav-link"  href="{{ path('all_sub') }}">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
               <div>
@@ -59,38 +62,42 @@
               </div>
             </div>
             <h2 class="font-weight-bold mb-1">
-              2,456
+              {{countSubscriptions}}
             </h2>
-            <span class="text-danger font-weight-semi-bold">120+</span>
+            <span class="text-danger font-weight-semi-bold">{{countSubscribers}}</span>
             <span class="ml-1 font-weight-medium">this Month</span>
           </div>
         </div>
+        </a>
       </div>
       <div class="col-xl-3 col-lg-6 col-md-12 col-12">
         <!-- Card -->
         <div class="card mb-4">
           <!-- Card body -->
+          <a class="nav-link" href="{{ path('listeDoctor') }}">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
               <div>
-                <span class="font-size-xs text-uppercase font-weight-semi-bold">Client</span>
+                <span class="font-size-xs text-uppercase font-weight-semi-bold">Doctor</span>
               </div>
               <div>
                 <span class=" fe fe-users font-size-lg text-primary"></span>
               </div>
             </div>
             <h2 class="font-weight-bold mb-1">
-              1,22,456
+              {{Count_medcin}}
             </h2>
-            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+1200</span>
-            <span class="ml-1 font-weight-medium">Doctors</span>
+      
+              <span class="ml-1 font-weight-medium">Number of Doctors</span>
           </div>
         </div>
+        </a>
       </div>
       <div class="col-xl-3 col-lg-6 col-md-12 col-12">
         <!-- Card -->
         <div class="card mb-4">
           <!-- Card body -->
+          <a class="nav-link" href="{{ path('listecoachs') }}">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-3 lh-1">
               <div>
@@ -101,19 +108,20 @@
               </div>
             </div>
             <h2 class="font-weight-bold mb-1">
-              22,786
+            {{Count_coach}}
             </h2>
-            <span class="text-success font-weight-semi-bold"><i class="fe fe-trending-up mr-1"></i>+200</span>
-            <span class="ml-1 font-weight-medium">Pharmacien</span>
+        
+                <span class="ml-1 font-weight-medium">Number of Coachs</span>
           </div>
         </div>
       </div>
+      </a>
     </div>
    
     <div class="row">
       <div class="col-xl-4 col-lg-6 col-md-12 col-12 mb-4">
         <!-- Card -->
-        <div class="card h-100">
+        <div class="card h-100"> 
           <!-- Card header -->
           <div class="card-header d-flex align-items-center
                         justify-content-between card-header-height">

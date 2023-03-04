@@ -3,6 +3,8 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+
+
  <section class="section register ">
             {% for message  in app.flashes('message') %}
                 <div class="alert alert-danger">
@@ -71,21 +73,11 @@
               <hr class="my-4">
               <div class="mt-4 text-center">
                 <!--Facebook-->
-                <a href="#!" class="btn-social btn-social-outline btn-facebook">
+              
+                <a href="{{path('fcb_login')}}" class="btn-social btn-social-outline btn-facebook">
                   <i class="fab fa-facebook"></i>
                 </a>
-                <!--Twitter-->
-                <a href="#!" class="btn-social btn-social-outline btn-twitter">
-                  <i class="fab fa-twitter"></i>
-                </a>
-                <!--LinkedIn-->
-                <a href="#!" class="btn-social btn-social-outline btn-linkedin">
-                  <i class="fab fa-linkedin"></i>
-                </a>
-                <!--GitHub-->
-                <a href="#!" class="btn-social btn-social-outline btn-github">
-                  <i class="fab fa-github"></i>
-                </a>
+              
               </div>
             </form>
           </div>

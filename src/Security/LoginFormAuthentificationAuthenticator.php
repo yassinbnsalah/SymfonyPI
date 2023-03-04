@@ -2,7 +2,11 @@
 
 namespace App\Security;
 
+use Twig\Environment;
+use Symfony\Component\Mime\Email;
+use Twig\Loader\FilesystemLoader;
 use App\Repository\UserRepository;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Mailer\Bridge\Google\Transport\GmailSmtpTransport;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -55,7 +60,24 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
         if (in_array('ROLE_ADMIN',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('admindash'));
         }elseif(in_array('ROLE_CLIENT',$user->getRoles())) {
+            if($user->isVerified()==false){
+            $loader = new FilesystemLoader('../templates');
+            $twig = new Environment($loader);
+            $html = $twig->render('email/confirmeCompte.html.twig', [
+                'user' => $user,
+            ]);
+            $email = (new Email())
+                ->from('contact.fithealth23@gmail.com')
+                ->to('haelkyll@gmail.com')
+                ->subject('Email Confirmation')
+                ->html($html);
+            $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');
+            $mailer = new Mailer($transport);
+            $mailer->send($email);
             return new RedirectResponse($this->urlGenerator->generate('listeSubClient'));
+        }elseif($user->isVerified()==true){
+            return new RedirectResponse($this->urlGenerator->generate('listeSubClient'));
+        }
         }elseif(in_array('ROLE_MEDCIN',$user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('listeRendezVousForDoctor'));
         }elseif(in_array('ROLE_COACH',$user->getRoles())) {
@@ -73,4 +95,5 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
 }
