@@ -8,31 +8,34 @@ use App\Form\addType;
 use App\Entity\Ticket;
 use App\Form\TicketType;
 use App\Form\ProfileType;
+use App\Entity\Notification;
 use App\Entity\Subscription;
 use App\Entity\Disponibility;
-use App\Entity\Notification;
 use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
 use App\Manager\RealTimeManager;
-use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use App\Repository\TicketRepository;
+use Symfony\Component\Mercure\Update;
 
 use App\Repository\OrdennanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\NotificationRepository;
 use App\Repository\SubscriptionRepository;
+
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserController extends AbstractController
 {
