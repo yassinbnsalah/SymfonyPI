@@ -18,14 +18,14 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["notification","user"])]
+    #[Groups(["notification","user","subscribers"])]
     private ?int $id = null;
 
     
     #[ORM\Column]
     #[Assert\NotBlank(message:"Cin is required")]
     #[Assert\PositiveOrZero]
-    #[Groups(["notification","user"])]
+    #[Groups(["notification","user","subscribers"])]
     private ?int $CIN = null;
 
 
@@ -34,7 +34,7 @@ class User implements UserInterface
      #[Assert\NotBlank(message:"Name is required")]
      #[Assert\Length(min : 4,max : 20,minMessage : "Votre Nom doit être au moins {{ limit }} characters long",maxMessage : "Votre Nom ne peut pas dépasser {{ limit }} characters")]
 
-     #[Groups(["notification","user"])]
+     #[Groups(["notification","user","subscribers"])]
     private ?string $Name= null;
 
     
@@ -42,26 +42,26 @@ class User implements UserInterface
      #[Assert\NotBlank(message:"Numero Telephone is required")]
      #[Assert\Positive]
      #[Assert\Length(min :4,max : 8,minMessage :"Votre Numero doit être au moins {{ limit }} characters long",maxMessage : "Votre Numero ne peut pas dépasser {{ limit }} characters")]
-     #[Groups(["notification","user"])]
+     #[Groups(["notification","user","subscribers"])]
      private ?int $Numero  = null;
 
      #[ORM\Column]
      #[Assert\NotBlank(message:"Age is required")]
      #[Assert\Positive]
-     #[Groups(["notification","user"])]
+     #[Groups(["notification","user","subscribers"])]
      private ?int $Age  = null;
 
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:"Email is required")]
     #[Assert\Email(message : "The email '{{ value }}' is not a valid email.")]
-    #[Groups(["notification","user"])]
+    #[Groups(["notification","user","subscribers"])]
     
     private ?string $Email = null;
 
     
     #[ORM\Column(length:255)]
     #[Assert\NotBlank(message:"Adresse is required")]
-    #[Groups(["notification","user"])]
+    #[Groups(["notification","user","subscribers"])]
    
     private ?string $Adresse = null;
     
@@ -72,7 +72,7 @@ class User implements UserInterface
      #[ORM\Column]
      #[Assert\NotBlank]
      #[Assert\Length(min : "8", minMessage:"Votre mot de passe doit faire minimum 8 carractéres")]
-     #[Groups(["user"])]
+     #[Groups(["user","subscribers"])]
      private ?string $Password = null;
 
 

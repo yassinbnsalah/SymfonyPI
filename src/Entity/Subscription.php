@@ -14,6 +14,7 @@ class Subscription
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("subscribers")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -47,7 +48,7 @@ class Subscription
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
-    
+    #[Groups("subscribers")]
     private ?User $user = null;
 
     #[ORM\Column(length: 125)]

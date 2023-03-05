@@ -8,8 +8,10 @@ use App\Entity\Medicament;
 use App\Entity\RendezVous;
 use App\Form\RendezVousType;
 use App\Entity\Disponibility;
+use App\Entity\Notification;
 use App\Form\AddMedicamentType;
 use App\Form\DisponibilityType;
+use App\Manager\RealTimeManager;
 use App\Repository\UserRepository;
 use App\Repository\MedicamentRepository;
 use App\Repository\RendezVousRepository;
@@ -21,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class SanteController extends AbstractController
 {
@@ -48,12 +52,17 @@ class SanteController extends AbstractController
     // HNEEE YE AMIRA AHAYAY
     #[Route('/sante/rendezvous/add/{id}', name: 'addRendezVous')]
 
-    public function addRendezVous(Request $request, $id, ManagerRegistry $em): Response
+    public function addRendezVous(Request $request, $id, ManagerRegistry $em, RealTimeManager $realTimeManager,
+    NotificationRepository $notificationRepository,
+    NormalizerInterface $normalizer, HubInterface $hub
+    ): Response
     {
         $DoctorByID = $em->getRepository(User::class)->find($id);
+        
         if ($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN') {
             $rendezvous = new RendezVous();
             $user = $this->getUser();
+            $notifications = $notificationRepository->findBy(array('toUser' => $user));
             $data = null;
             $form = $this->createForm(RendezVousType::class, $rendezvous);
             $form->handleRequest($request);
@@ -70,12 +79,24 @@ class SanteController extends AbstractController
                     $em = $em->getManager();
                     $em->persist($rendezvous);
                     $em->flush();
+                    $notification = new Notification() ; 
+                    $notification->setDateNotification(new \DateTime()); 
+                    $notification->setMessage('your rendez vous with'.$DoctorByID->getName()) ; 
+                    $notification->setToUser($user) ;
+                    $notification->setPath("rdv") ;
+                    $notification->setSeen(false);
+                    $notificationRepository->save($notification); 
+                    $notificationJSON = $normalizer->normalize($notification  , 'json', ['groups' => "notification"]);
+                    $json = json_encode($notificationJSON);
+                    $realTimeManager->Walker($json,$hub);
                     return $this->redirectToRoute('rendezVousListe');
                 } else {
                     $data = "please pick a date with doctor";
                     return $this->render('sante/addrendezvous.html.twig', [
                         'form' => $form->createView(),
                         'data' => $data,
+                        'user' => $user ,
+                        'notifications' => $notifications,
                         'doctor' => $DoctorByID,
                     ]);
                 }
@@ -83,6 +104,8 @@ class SanteController extends AbstractController
             return $this->render('sante/addrendezvous.html.twig', [
                 'form' => $form->createView(),
                 'data' => $data,
+                'user' => $user ,
+                'notifications' => $notifications,
                 'doctor' => $DoctorByID,
             ]);
         } else {

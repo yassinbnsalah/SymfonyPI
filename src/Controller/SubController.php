@@ -6,17 +6,24 @@ use App\Repository\NotificationRepository;
 use App\Repository\SubscriptionRepository;
 use DateInterval;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SubController extends AbstractController
 {
     #[Route('/subscribers', name: 'all_sub')]
-    public function index(SubscriptionRepository $repo): Response
+    public function index(SubscriptionRepository $repo, PaginatorInterface $paginator,Request $request): Response
     {
-        $allsub = $repo->findAll();
-        // dd($allsub);
+        $data = $repo->findBy(array(), array('dateSub' => 'DESC'));
+        $allsub = $paginator->paginate(
+            $data, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            12 // Nombre de résultats par page
+        );
+    
         return $this->render('sub/index.html.twig', [
             'controller_name' => 'SubController',
             'Subscriptions' => $allsub

@@ -11,6 +11,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SubscriptionRepository;
 use App\Repository\UserRepository;
+use DateInterval;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,21 +79,21 @@ class ServicesController extends AbstractController
         $loader = new FilesystemLoader('../templates');
         $twig = new Environment($loader);
         $html = $twig->render('email/test.html.twig', [
-          'user' => 'yessine',
-          'message' => 'Please click the following link to reset your password: <a href="#">Reset Password</a>',
-      ]);
-      
-        $name ="yessine" ;
-        $username="yessine" ;
+            'user' => 'yessine',
+            'message' => 'Please click the following link to reset your password: <a href="#">Reset Password</a>',
+        ]);
+
+        $name = "yessine";
+        $username = "yessine";
         $email = (new Email())
-        ->from('contact.fithealth23@gmail.com')
-        ->to('yacinbnsalh@gmail.com')
-        ->subject('Order Confirmation')
-        ->html($html);
-        $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com','qavkrnciihzjmtkp');
+            ->from('contact.fithealth23@gmail.com')
+            ->to('yacinbnsalh@gmail.com')
+            ->subject('Order Confirmation')
+            ->html($html);
+        $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');
         $mailer = new Mailer($transport);
-        $mailer->send($email); 
-            dd('done'); 
+        $mailer->send($email);
+        dd('done');
     }
 
 
@@ -105,6 +106,15 @@ class ServicesController extends AbstractController
         $id = $request->query->get("id");
         $user = $userRepository->find($id);
         $subscription =  $user->getSubscriptions();
+        $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
+        return new JsonResponse($SubNormilizer);
+    }
+
+    #[Route('/listesubservice', name: 'listesubservice')]
+    public function listesubservice(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer): Response
+    {
+       
+        $subscription =  $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC')); 
         $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
         return new JsonResponse($SubNormilizer);
     }
@@ -123,22 +133,37 @@ class ServicesController extends AbstractController
         $amount = $request->query->get("amount");
 
         $subscription = new Subscription();
-        $subscription->setDateSub(new \DateTime());
-        $subscription->setDateExpire(new \DateTime());
+        $subscription->setDateSub(new \DateTime( $dateSub ));
+        $dateSubER = new \DateTime( $dateSub );
+        $date = new \DateTime( $dateSub );
+        if ($type == '1') {
+            $interval = new DateInterval('P30D');
+            $date->add($interval);
+            $subscription->setDateExpire($date);
+        } else if ($type == '2') {
+            $interval = new DateInterval('P90D');
+            $date->add($interval);
+            $subscription->setDateExpire($date);
+        } else {
+            $interval = new DateInterval('P180D');
+             $date->add($interval);
+            $subscription->setDateExpire($date);
+        }
+     //   $subscription->setDateExpire(new \DateTime());
         $subscription->setType($type);
         $subscription->setPaiementType($paiementType);
         $subscription->setAmount((int)$amount);
         $subscription->setUser($user);
         $subscription->setState("confirmed");
-        $subscription->setReference("referenceCODENAME12");
+      
+        $subscription->setReference("SUB-". strtoupper($user->getName()) .$dateSubER->format('-Y-m-d'));
+      //$subscriptionRepository->save($subscription);
 
-    $subscriptionRepository->save($subscription);
 
 
-    
         $subscription =  $user->getSubscriptions();
         $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
-        return new JsonResponse($SubNormilizer,200);
+        return new JsonResponse($SubNormilizer, 200);
     }
 
     #[Route('/updatesubstate', name: 'updateSubState')]
@@ -176,10 +201,9 @@ class ServicesController extends AbstractController
         $user = $userRepository->find($id);
         $order = $user->getOrders();
         $SubNormilizer = $normalizer->normalize($order, 'json', ['groups' => "order"]);
-       // $json = json_encode($SubNormilizer);
+        // $json = json_encode($SubNormilizer);
         return new JsonResponse($SubNormilizer);
     }
 
-  
-
+ 
 }

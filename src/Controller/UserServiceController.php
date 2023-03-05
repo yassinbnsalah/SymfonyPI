@@ -16,9 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class UserServiceController extends AbstractController
 {
 
-
-    #[Route("user/signup", name: "app_service_register")]
-
+    #[Route("/user/signup", name: "app_service_register")]
     public function signupAction(Request $request)
     {
         $CIN = $request->query->get("CIN");
@@ -40,12 +38,12 @@ class UserServiceController extends AbstractController
         $user->setAdresse($Adresse);
         $user->setPassword($Password);
         $user->setNumero($Numero);
-        $user->setAge($age);
+        $user->setAge((int)$age);
         $user->setRoles(['ROLE_CLIENT']);
         try {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
-            $em->flush();
+          $em->flush();
 
             return new JsonResponse("Account is cretaed", 200);
         } catch (\Exception $ex) {
@@ -65,6 +63,17 @@ class UserServiceController extends AbstractController
         return new JsonResponse($userlogin,200);
     }
 
+    #[Route("user/liste", name: "allclient")]
+
+    public function allclient(UserRepository $userRepository, Request $request, NormalizerInterface $normalizer)
+    {
+       
+        $user = $userRepository->findAll();
+        $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
+      //  $json = json_encode($userlogin);
+        return new JsonResponse($userlogin,200);
+    }
+
 
 
     #[Route("user/signin", name: "app_service_login")]
@@ -78,15 +87,21 @@ class UserServiceController extends AbstractController
         $user = $em->getRepository(User::class)->findOneBy(['Email' => $Email]);
 
         if ($user) {
-            if ($Password == $user->getPassword()) {
-                $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
-                $json = json_encode($userlogin);
-                return new JsonResponse($json);
-            } else {
-                return new Response("password not found", 500);
+            if($user->getRoles()[0] == 'ROLE_ADMIN'){
+                if ($Password == $user->getPassword()) {
+                    $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
+                  //  $json = json_encode($userlogin);
+                    return new JsonResponse($userlogin);
+                } else {
+                    return new JsonResponse("password not found", 500);
+                }
+            }else
+            {
+                return new JsonResponse("No Admin founded", 300);
             }
+          
         } else {
-            return new Response("user not found", 400);
+            return new JsonResponse("user not found", 400);
         }
     }
 }
