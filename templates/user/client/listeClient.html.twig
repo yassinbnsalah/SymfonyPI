@@ -117,10 +117,9 @@ $(document).ready(function(){
                             <img src="/uploads/{{ u.image }}"  alt=""
                               class="rounded-circle avatar-xs mr-2" />
                                {% else %}
-                                                                    <img src="{{asset('assets/images/avatar/avatar.jpg')}}"  alt=""
-                                                                    class="rounded-circle avatar-xs mr-2" />
-                                                                    
-                                                                    {% endif %}
+                                <img src="{{asset('assets/images/avatar/avatar.jpg')}}"  alt=""
+                                   class="rounded-circle avatar-xs mr-2" />
+                               {% endif %}
                               
                          {{ u.Name }}
                           </a>
