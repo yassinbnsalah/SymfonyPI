@@ -43,7 +43,7 @@ class UserServiceController extends AbstractController
         try {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
-          $em->flush();
+            $em->flush();
 
             return new JsonResponse("Account is cretaed", 200);
         } catch (\Exception $ex) {
@@ -59,19 +59,19 @@ class UserServiceController extends AbstractController
         $id = $request->query->get("id");
         $user = $userRepository->find($id);
         $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
-      //  $json = json_encode($userlogin);
-        return new JsonResponse($userlogin,200);
+        //  $json = json_encode($userlogin);
+        return new JsonResponse($userlogin, 200);
     }
 
     #[Route("user/liste", name: "allclient")]
 
     public function allclient(UserRepository $userRepository, Request $request, NormalizerInterface $normalizer)
     {
-       
+
         $user = $userRepository->findAll();
         $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
-      //  $json = json_encode($userlogin);
-        return new JsonResponse($userlogin,200);
+        //  $json = json_encode($userlogin);
+        return new JsonResponse($userlogin, 200);
     }
 
 
@@ -87,21 +87,20 @@ class UserServiceController extends AbstractController
         $user = $em->getRepository(User::class)->findOneBy(['Email' => $Email]);
 
         if ($user) {
-            if($user->getRoles()[0] == 'ROLE_ADMIN'){
-                if ($Password == $user->getPassword()) {
+
+            if ($Password == $user->getPassword()) {
+                if ($user->getRoles()[0] == 'ROLE_ADMIN') {
                     $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
-                  //  $json = json_encode($userlogin);
-                    return new JsonResponse($userlogin);
                 } else {
-                    return new JsonResponse("password not found", 500);
+                    $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
                 }
-            }else
-            {
-                return new JsonResponse("No Admin founded", 300);
+                //  $json = json_encode($userlogin);
+               return new JsonResponse($userlogin,200);
+            } else {
+                return new JsonResponse("password not found", 500);
             }
-          
         } else {
-            return new JsonResponse("user not found", 400);
+            return new JsonResponse("No User founded", 300);
         }
     }
 }

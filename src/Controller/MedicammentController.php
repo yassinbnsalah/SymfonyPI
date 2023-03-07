@@ -17,6 +17,7 @@ class MedicammentController extends AbstractController
     #[Route('/medicamment', name: 'app_medicamment')]
     public function index(): Response
     {
+        
         return $this->render('medicamment/index.html.twig', [
             'controller_name' => 'MedicammentController',
         ]);

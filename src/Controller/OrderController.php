@@ -14,6 +14,7 @@ use App\Repository\NotificationRepository;
 use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\UserRepository;
 use App\Services\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +42,8 @@ class OrderController extends AbstractController
         NormalizerInterface $normalizer,
         PayementManger $payementManager,
         HubInterface $hub,
-        RealTimeManager $realTimeManager
+        RealTimeManager $realTimeManager,
+        UserRepository $userRepository
     ): Response {
         $data = null;
         #Panier recuperation here 
@@ -60,8 +62,8 @@ class OrderController extends AbstractController
         $notifications = $notificationRepository->findBy(array('toUser' => $this->getUser()));
         #Creation Order here 
         $order = new Order();
-
-        $form = $this->createForm(OrderType::class, $order);
+        $admin =
+            $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         $user = $this->getUser();
         if ($request->getMethod() === "POST") {
@@ -112,34 +114,43 @@ class OrderController extends AbstractController
             $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');
             $mailer = new Mailer($transport);
             $mailer->send($email);
+
+            // Notification to User side 
             $notification = new Notification();
             $notification->setDateNotification(new \DateTime());
-            $notification->setMessage('you order with reference'.  $order->getReference()."has been approved successfully");
+            $notification->setMessage('you order with reference' .  $order->getReference() . "has been approved successfully");
             $notification->setToUser($user);
             $notification->setPath("order");
             $notification->setSeen(false);
+
+           
+            //save to notifications
+           
             $notificationRepository->save($notification);
             $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
             $json = json_encode($notificationJSON);
             /*real TIME IS HERE BOYS */
             $realTimeManager->Walker($json, $hub);
 
+          
             return $this->redirectToRoute('ListeOrder');
         } else {
             $order->setPrice($total);
             $intentSecret = $payementManager->intentSecret($order);
             return $this->render(
                 'order/addOrder.html.twig',
-                compact('dataPanier', 'total', 'user', 'data', 'intentSecret','notifications')
+                compact('dataPanier', 'total', 'user', 'data', 'intentSecret', 'notifications')
             );
         }
     }
 
     #[Route('/order/liste', name: 'ListeOrder')]
-    public function ListeOrder(OrderRepository $orderRepo, NotificationRepository $notificationRepository): Response
-    {
+    public function ListeOrder(
+        OrderRepository $orderRepo,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $this->getUser();
-              $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         $order = $orderRepo->findBy(array('client' => $user));
         return $this->render(
             'user/client/clientOrderList.html.twig',
@@ -170,9 +181,16 @@ class OrderController extends AbstractController
     }
 
     #[Route('/dashboard/order/liste', name: 'listeOrderDashboard')]
-    public function listeOrderDashboard(Request $request, OrderRepository $orderRepo, PaginatorInterface $paginator): Response
-    {
+    public function listeOrderDashboard(
+        Request $request,
+        OrderRepository $orderRepo,
+        PaginatorInterface $paginator,
+        NotificationRepository $notificationRepository
+    ): Response {
+
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
+
         $data = $orderRepo->findAll();
         $orders = $paginator->paginate(
             $data, // Requête contenant les données à paginer (ici nos articles)
@@ -182,6 +200,7 @@ class OrderController extends AbstractController
         return $this->render(
             'order/index.html.twig',
             [
+                'notifications' => $notifications,
                 'user' => $user,
                 'orders' => $orders
             ]
@@ -189,9 +208,11 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/{id}', name: 'OrderByID')]
-    public function OrderByID($id, OrderRepository $orderRepo,NotificationRepository $notificationRepository
-    ): Response
-    {
+    public function OrderByID(
+        $id,
+        OrderRepository $orderRepo,
+        NotificationRepository $notificationRepository
+    ): Response {
 
         $user = $this->getUser();
         $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
@@ -207,14 +228,19 @@ class OrderController extends AbstractController
     }
 
     #[Route('/dashboard/order/{id}', name: 'OrderByIDDashboard')]
-    public function OrderByIDDashboard($id, OrderRepository $orderRepo): Response
-    {
+    public function OrderByIDDashboard(
+        $id,
+        OrderRepository $orderRepo,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         $order = $orderRepo->find($id);
         return $this->render(
             'order/orderdetailsDashboard.html.twig',
             [
                 'user' => $user,
+                'notifications' => $notifications,
                 'order' => $order
             ]
         );
@@ -234,28 +260,30 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('listeOrderDashboard');
     }
     #[Route('/dashboard/order/update/{id}/{state}', name: 'UpdateStateOrder')]
-    public function UpdateStateOrder($id, $state, OrderRepository $orderRepo,HubInterface $hub,
-    RealTimeManager $realTimeManager, NotificationRepository $notificationRepository,NormalizerInterface $normalizer ): Response
-    {
-
-
-
+    public function UpdateStateOrder(
+        $id,
+        $state,
+        OrderRepository $orderRepo,
+        HubInterface $hub,
+        RealTimeManager $realTimeManager,
+        NotificationRepository $notificationRepository,
+        NormalizerInterface $normalizer
+    ): Response {
         $order = $orderRepo->find($id);
         $order->setState($state);
         $orderRepo->save($order);
         $user = $this->getUser();
-        $notification = new Notification() ; 
-        $notification->setDateNotification(new \DateTime()); 
-        $notification->setMessage('your order state has been updated to '.$state) ; 
-        $notification->setToUser($order->getClient()) ;
-        $notification->setPath("order") ;
+        $notification = new Notification();
+        $notification->setDateNotification(new \DateTime());
+        $notification->setMessage('your order state has been updated to ' . $state);
+        $notification->setToUser($order->getClient());
+        $notification->setPath("order");
         $notification->setSeen(false);
-        $notificationRepository->save($notification); 
-        $notificationJSON = $normalizer->normalize($notification  , 'json', ['groups' => "notification"]);
-        $json = json_encode($notificationJSON);
-        $realTimeManager->Walker($json,$hub);
-
+        $notificationRepository->save($notification);
         
+        $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
+        $json = json_encode($notificationJSON);
+        $realTimeManager->Walker($json, $hub);
         if ($user->getRoles()[0] == 'ROLE_ADMIN') {
             return $this->redirectToRoute('listeOrderDashboard');
         } else {

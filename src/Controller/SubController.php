@@ -15,7 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class SubController extends AbstractController
 {
     #[Route('/subscribers', name: 'all_sub')]
-    public function index(SubscriptionRepository $repo, PaginatorInterface $paginator,Request $request): Response
+    public function index(SubscriptionRepository $repo, PaginatorInterface $paginator,Request $request
+    ,NotificationRepository $notificationRepository): Response
     {
         $data = $repo->findBy(array(), array('dateSub' => 'DESC'));
         $allsub = $paginator->paginate(
@@ -23,10 +24,15 @@ class SubController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             12 // Nombre de résultats par page
         );
-    
+        $user = $this->getUser(); 
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
+
         return $this->render('sub/index.html.twig', [
             'controller_name' => 'SubController',
-            'Subscriptions' => $allsub
+            'Subscriptions' => $allsub,
+            'user' => $user ,
+            'notifications' => $notifications,
+
         ]);
     }
 

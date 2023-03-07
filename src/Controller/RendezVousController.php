@@ -24,6 +24,7 @@ class RendezVousController extends AbstractController
     #[Route('/rendez/vous', name: 'app_rendez_vous')]
     public function index(): Response
     {
+        
         return $this->render('rendez_vous/index.html.twig', [
             'controller_name' => 'RendezVousController',
         ]);

@@ -66,6 +66,7 @@
        
                   <ul class="navbar-nav navbar-right-wrap ml-auto d-none d-lg-block">
                      <li class="dropdown d-inline-block stopevent">
+                        <span class="badge badge-danger" hidden id="newNotif"> New Notification </span>
                         <a
                            class="btn btn-light btn-icon rounded-circle text-muted indicator indicator-primary"
                            href="#!"
@@ -138,7 +139,7 @@
                               </ul>
                               <div class="border-top px-3 pt-3 pb-0">
                                  <a
-                                    href="../pages/notification-history.html"
+                                 href="{{ path('notificationHistoryClient' ) }}"
                                     class="text-muted"
                                     >See all Notifications</a
                                     >
@@ -341,6 +342,7 @@
           // Will be called every time an update is published by the server
           var user = "{{ user.id }}";
           console.log(user);
+          document.getElementById('newNotif').removeAttribute("hidden");
           console.log(JSON.parse(event.data));
           console.log(JSON.parse(JSON.parse(event.data)[0]));
           let newData = JSON.parse(JSON.parse(event.data)[0])

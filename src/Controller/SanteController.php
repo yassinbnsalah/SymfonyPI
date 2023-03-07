@@ -36,7 +36,7 @@ class SanteController extends AbstractController
         ]);
     }
     #[Route('/rendezvous/liste', name: 'rendezVousListe')]
-    public function rendezVousListe(RendezVousRepository $repo ,NotificationRepository $notificationRepository): Response
+    public function rendezVousListe(RendezVousRepository $repo, NotificationRepository $notificationRepository): Response
     {
         $usercurrent = $this->getUser();
         $rendezvous = $repo->findAll();
@@ -52,17 +52,20 @@ class SanteController extends AbstractController
     // HNEEE YE AMIRA AHAYAY
     #[Route('/sante/rendezvous/add/{id}', name: 'addRendezVous')]
 
-    public function addRendezVous(Request $request, $id, ManagerRegistry $em, RealTimeManager $realTimeManager,
-    NotificationRepository $notificationRepository,
-    NormalizerInterface $normalizer, HubInterface $hub
-    ): Response
-    {
+    public function addRendezVous(
+        Request $request,
+        $id,
+        ManagerRegistry $em,
+        RealTimeManager $realTimeManager,
+        NotificationRepository $notificationRepository,
+        NormalizerInterface $normalizer,
+        HubInterface $hub
+    ): Response {
         $DoctorByID = $em->getRepository(User::class)->find($id);
-        
         if ($DoctorByID->getRoles()[0] == 'ROLE_MEDCIN') {
             $rendezvous = new RendezVous();
             $user = $this->getUser();
-            $notifications = $notificationRepository->findBy(array('toUser' => $user));
+            $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
             $data = null;
             $form = $this->createForm(RendezVousType::class, $rendezvous);
             $form->handleRequest($request);
@@ -79,23 +82,23 @@ class SanteController extends AbstractController
                     $em = $em->getManager();
                     $em->persist($rendezvous);
                     $em->flush();
-                    $notification = new Notification() ; 
-                    $notification->setDateNotification(new \DateTime()); 
-                    $notification->setMessage('your rendez vous with'.$DoctorByID->getName()) ; 
-                    $notification->setToUser($user) ;
-                    $notification->setPath("rdv") ;
+                    $notification = new Notification();
+                    $notification->setDateNotification(new \DateTime());
+                    $notification->setMessage('your rendez vous with' . $DoctorByID->getName());
+                    $notification->setToUser($user);
+                    $notification->setPath("rdv");
                     $notification->setSeen(false);
-                    $notificationRepository->save($notification); 
-                    $notificationJSON = $normalizer->normalize($notification  , 'json', ['groups' => "notification"]);
+                    $notificationRepository->save($notification);
+                    $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
                     $json = json_encode($notificationJSON);
-                    $realTimeManager->Walker($json,$hub);
+                    $realTimeManager->Walker($json, $hub);
                     return $this->redirectToRoute('rendezVousListe');
                 } else {
                     $data = "please pick a date with doctor";
                     return $this->render('sante/addrendezvous.html.twig', [
                         'form' => $form->createView(),
                         'data' => $data,
-                        'user' => $user ,
+                        'user' => $user,
                         'notifications' => $notifications,
                         'doctor' => $DoctorByID,
                     ]);
@@ -104,7 +107,7 @@ class SanteController extends AbstractController
             return $this->render('sante/addrendezvous.html.twig', [
                 'form' => $form->createView(),
                 'data' => $data,
-                'user' => $user ,
+                'user' => $user,
                 'notifications' => $notifications,
                 'doctor' => $DoctorByID,
             ]);
@@ -115,22 +118,26 @@ class SanteController extends AbstractController
 
 
     #[Route('/dashboard/doctor/rendez-vous', name: 'listeRendezVousForDoctor')]
-    public function ListeRendezVous(RendezVousRepository $repo): Response
+    public function ListeRendezVous(RendezVousRepository $repo , NotificationRepository $notificationRepository): Response
     {
 
         $usercurrent = $this->getUser();
         $rendezvous = $repo->findAll();
+
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($usercurrent->getRoles()[0] == 'ROLE_ADMIN') {
             return $this->render('sante/rendezvous/listerendezvous.html.twig', [
                 'controller_name' => 'SanteController',
                 'user' => $usercurrent,
+                'notifications' => $notifications , 
                 'rendezvous' => $rendezvous
             ]);
         } else {
             return $this->render('user/doctor/Dashboarddoctor.html.twig', [
                 'controller_name' => 'SanteController',
                 'user' => $usercurrent,
-                'rendezvous' => $rendezvous
+                'rendezvous' => $rendezvous,
+                'notifications' => $notifications 
             ]);
         }
     }

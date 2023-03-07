@@ -37,8 +37,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class UserController extends AbstractController
 {
     #[Route('/admin', name: 'admindash')]
-    public function index(UserRepository $userRepository, SubscriptionRepository $subscriptionRepository)
-    {
+    public function index(
+        UserRepository $userRepository,
+        SubscriptionRepository $subscriptionRepository,
+        NotificationRepository $notificationRepository
+    ) {
         $env = $_ENV['APP_ENV'];
         $User_admin = $userRepository->findByRole('["ROLE_ADMIN"]');
         $countSubscriptions = $subscriptionRepository->countSubscriptions();
@@ -46,8 +49,10 @@ class UserController extends AbstractController
         $Count_medcin = $userRepository->countUserByRole('ROLE_MEDCIN');
         $Count_client = $userRepository->countUserByRole('ROLE_CLIENT');
         $Count_coach = $userRepository->countUserByRole('ROLE_COACH');
-        $lastSubscription = $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC'));
+        $lastSubscription = $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC'))[5];
         $countSubscribers = $subscriptionRepository->countSubscribers();
+        $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         return $this->render('user/admin.html.twig', [
             'controller_name' => 'UserController',
             'User_admin' => $User_admin,
@@ -57,33 +62,44 @@ class UserController extends AbstractController
             'Count_coach' => $Count_coach,
             'countSubscribers' => $countSubscribers,
             'countSubscriptions' => $countSubscriptions,
-            'env' => $env
+            'env' => $env,
+            'user' => $user,
+            'notifications' => $notifications
         ]);
     }
     #[Route('/allticket', name: 'allticket')]
-    public function allticket(TicketRepository $repo, PaginatorInterface $paginator, Request $request): Response
-    {
+    public function allticket(
+        TicketRepository $repo,
+        PaginatorInterface $paginator,
+        NotificationRepository $notificationRepository,
+        Request $request
+    ): Response {
         $allticket = $repo->findAll();
         $tickets = $paginator->paginate(
             $allticket, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             6 // Nombre de résultats par page
         );
+        $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         return $this->render('user/client/listticket.html.twig', [
             'controller_name' => 'UserController',
-            'allticket' => $tickets
+            'allticket' => $tickets,
+            'notifications' => $notifications,
+            'user' => $user
         ]);
     }
     #[Route('/client/showClient', name: 'showClient')]
-    public function showClient(UserRepository $userRepository)
+    public function showClient(UserRepository $userRepository, NotificationRepository $notificationRepository)
     {
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
-
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/client/showClient.html.twig', [
             'controller_name' => 'UserController',
             'User_client' => $User_client,
-            'user' => $user
+            'user' => $user,
+            'notification' => $notifications
         ]);
     }
     #[Route('/coach/showCoach', name: 'showCoach')]
@@ -115,14 +131,16 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/pharmacien/showPharmacien', name: 'showPharmacien')]
-    public function showPharmacien(UserRepository $userRepository)
+    public function showPharmacien(UserRepository $userRepository, NotificationRepository $notificationRepository)
     {
         $User_pharmacien = $userRepository->findByRole('["ROLE_PHARMACIEN"]');
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/pharmacien/showPharmacien.html.twig', [
             'controller_name' => 'UserController',
             'User_pharmacien' => $User_pharmacien,
-            'user' => $user
+            'user' => $user,
+            'notifications' => $notifications
         ]);
     }
     private $passwordEncoder;
@@ -132,9 +150,16 @@ class UserController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
     #[Route('/client/liste', name: 'listeClient')]
-    public function listeClient(UserRepository $userRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
-    {
+    public function listeClient(
+        UserRepository $userRepository,
+        NotificationRepository $notificationRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        EntityManagerInterface $manager
+    ) {
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         $user = new User();
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
@@ -161,6 +186,8 @@ class UserController extends AbstractController
                     'controller_name' => 'UserController',
                     'data' => $response->getContent(),
                     'User_client' => $clients,
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -168,6 +195,8 @@ class UserController extends AbstractController
         return $this->render('user/client/listeClient.html.twig', [
             'controller_name' => 'UserController',
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'User_client' => $clients,
             'form' => $form->createView()
         ]);
@@ -261,9 +290,12 @@ class UserController extends AbstractController
 
 
     #[Route('/doctor/update/{id}', name: 'UpdateDoctorData')]
-    public function UpdateDoctorData($id, ManagerRegistry $doctrine, Request  $request): Response
-
-    {
+    public function UpdateDoctorData(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
@@ -289,18 +321,24 @@ class UserController extends AbstractController
                 $em->flush();
             }
         }
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $admin));
         return $this->render('user/doctor/doctorUpdateProfile.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'data' => "",
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/coach/update/{id}', name: 'UpdateCoachData')]
-    public function UpdateCoachData($id, ManagerRegistry $doctrine, Request  $request): Response
-
-    {
+    public function UpdateCoachData(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
@@ -325,18 +363,23 @@ class UserController extends AbstractController
                 $em->flush();
             }
         }
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/coach/coachUpdateProfile.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'data' => "",
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/pharmacien/update/{id}', name: 'UpdatePharmacienData')]
-    public function UpdatePharmacienData($id, ManagerRegistry $doctrine, Request  $request): Response
-
-    {
+    public function UpdatePharmacienData(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
@@ -361,10 +404,12 @@ class UserController extends AbstractController
                 $em->flush();
             }
         }
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/pharmacien/pharmacienUpdateProfile.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'data' => "",
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
@@ -378,6 +423,7 @@ class UserController extends AbstractController
         NormalizerInterface $normalizer,
         RealTimeManager $realTimeManager
     ): Response {
+        $user = $this->getUser();
         $ClientByID = $em->getRepository(User::class)->find($id);
         $sb = new Subscription();
         $sb->setDateSub(new \DateTime());
@@ -420,26 +466,39 @@ class UserController extends AbstractController
                 $realTimeManager->Walker($json, $hub);
             } else {
                 $data = "Failed to add new Sub to this client please click in ";
+                $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
                 // $response = new JsonResponse($data);
                 return $this->render('user/client/clientdetails.html.twig', [
                     'controller_name' => 'UserController',
                     'client' => $ClientByID,
                     'data' =>  $data,
+                    'user' => $user,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
         }
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         return $this->render('user/client/clientdetails.html.twig', [
             'controller_name' => 'UserController',
             'client' => $ClientByID,
             'data' => $data,
+            'user' => $user,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/doctor/liste', name: 'listeDoctor')]
-    public function listeDoctor(UserRepository $userRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
-    {
+    public function listeDoctor(
+        UserRepository $userRepository,
+        NotificationRepository $notificationRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        EntityManagerInterface $manager
+    ) {
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         $User_medcin = $userRepository->findByRole('["ROLE_MEDCIN"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
@@ -463,18 +522,24 @@ class UserController extends AbstractController
             } else {
                 $data = "Failed to add new Doctor  please click in ";
                 $response = new JsonResponse($data);
+
                 return $this->render('user/doctor/listeDoctor.html.twig', [
                     'controller_name' => 'UserController',
                     'User_medcin' => $doctors,
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
             }
         }
+
         return $this->render('user/doctor/listeDoctor.html.twig', [
             'controller_name' => 'UserController',
             'User_medcin' => $doctors,
+            'notifications' => $notifications,
             'data' => "",
+            'user' => $admin,
             'form' => $form->createView()
         ]);
     }
@@ -482,15 +547,20 @@ class UserController extends AbstractController
 
 
     #[Route('/doctor/{id}', name: 'DoctorDetails')]
-    public function DoctorDetails($id, UserRepository $userRepository, Request $req, ManagerRegistry $em)
-    {
+    public function DoctorDetails(
+        $id,
+        UserRepository $userRepository,
+        NotificationRepository $notificationRepository,
+        Request $req,
+        ManagerRegistry $em
+    ) {
         $Doctor = $userRepository->find($id);
         $dispo = new Disponibility();
         $dispo->setDateDispo(new \DateTime());
         $form = $this->createForm(DisponibilityType::class, $dispo);
         $form->handleRequest($req);
         $data = null;
-
+        $user =  $this->getUser();
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -504,25 +574,36 @@ class UserController extends AbstractController
             } else {
                 $data = "Failed to add new Disponibility Slote to this Doctor please click in ";
                 // $response = new JsonResponse($data);
+                $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
                 return $this->render('user/doctor/DoctorDetailsDashboard.html.twig', [
                     'controller_name' => 'UserController',
                     'doctor' => $Doctor,
                     'data' =>  $data,
+                    'user' => $user,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
         }
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/doctor/DoctorDetailsDashboard.html.twig', [
             'controller_name' => 'UserController',
             'doctor' => $Doctor,
             'data' =>  $data,
+            'user' => $user,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/pharmacien/liste', name: 'listePharmaciens')]
-    public function listePharmaciens(UserRepository $userRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
-    {
+    public function listePharmaciens(
+        UserRepository $userRepository,
+        PaginatorInterface $paginator,
+        NotificationRepository $notificationRepository,
+        Request $request,
+        EntityManagerInterface $manager
+    ) {
         $User_pharmacien = $userRepository->findByRole('["ROLE_PHARMACIEN"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
@@ -532,6 +613,8 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             6 // Nombre de résultats par page
         );
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user->setRoles(['ROLE_PHARMACIEN']);
@@ -549,6 +632,8 @@ class UserController extends AbstractController
                 return $this->render('user/pharmacien/listePharmacien.html.twig', [
                     'controller_name' => 'UserController',
                     'User_pharmacien' => $pharmaciens,
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
@@ -558,16 +643,23 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
             'User_pharmacien' => $pharmaciens,
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
 
-
+    /////////////////////////---------///////////////////////////////////////
 
     #[Route('/coach/liste', name: 'listecoachs')]
-    public function listecoachs(UserRepository $userRepository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $manager)
-    {
+    public function listecoachs(
+        UserRepository $userRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        NotificationRepository $notificationRepository,
+        EntityManagerInterface $manager
+    ) {
         $User_coach = $userRepository->findByRole('["ROLE_COACH"]');
         $user = new User();
         $form = $this->createForm(addType::class, $user);
@@ -577,6 +669,8 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             6 // Nombre de résultats par page
         );
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $user->setRoles(['ROLE_COACH']);
@@ -594,6 +688,8 @@ class UserController extends AbstractController
                 return $this->render('user/coach/listeCoach.html.twig', [
                     'controller_name' => 'UserController',
                     'User_coach' => $coachs,
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
                 ]);
@@ -602,6 +698,8 @@ class UserController extends AbstractController
         return $this->render('user/coach/listeCoach.html.twig', [
             'controller_name' => 'UserController',
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'User_coach' => $coachs,
             'form' => $form->createView()
         ]);
@@ -673,11 +771,17 @@ class UserController extends AbstractController
         return $this->redirectToRoute('listePharmaciens');
     }
     #[Route('/dashboard/client/update/{id}', name: 'UpdateClientDashboard')]
-    public function UpdateClientDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
-    {
+    public function UpdateClientDashboard(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $doctrine->getManager();
@@ -689,23 +793,32 @@ class UserController extends AbstractController
                 return $this->render('user/client/clientUpdateDash.html.twig', [
                     'controller_name' => 'UserController',
                     'data' => $response->getContent(),
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
         }
         return $this->render('user/client/clientUpdateDash.html.twig', [
             'controller_name' => 'UserController',
-            'data' => "",
+            'data' => "", 'user' => $admin,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/dashboard/coach/update/{id}', name: 'UpdateCoachDashboard')]
-    public function UpdateCoachDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
-    {
+    public function UpdateCoachDashboard(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $doctrine->getManager();
@@ -717,6 +830,8 @@ class UserController extends AbstractController
                 return $this->render('user/coach/coachUpdateDash.html.twig', [
                     'controller_name' => 'UserController',
                     'data' => $response->getContent(),
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -724,16 +839,24 @@ class UserController extends AbstractController
         return $this->render('user/coach/coachUpdateDash.html.twig', [
             'controller_name' => 'UserController',
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/dashboard/doctor/update/{id}', name: 'UpdateDoctorDashboard')]
-    public function UpdateDoctorDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
-    {
+    public function UpdateDoctorDashboard(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $doctrine->getManager();
@@ -745,6 +868,8 @@ class UserController extends AbstractController
                 return $this->render('user/doctor/doctorUpdateDash.html.twig', [
                     'controller_name' => 'UserController',
                     'data' => $response->getContent(),
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -752,20 +877,29 @@ class UserController extends AbstractController
         return $this->render('user/doctor/doctorUpdateDash.html.twig', [
             'controller_name' => 'UserController',
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/dashboard/pharmacien/update/{id}', name: 'UpdatePharmacienDashboard')]
-    public function UpdatePharmacienDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
-    {
+    public function UpdatePharmacienDashboard(
+        $id,
+        ManagerRegistry $doctrine,
+        Request  $request,
+        NotificationRepository $notificationRepository
+    ): Response {
         $user = $doctrine->getRepository(User::class)->find($id);
         $form = $this->createForm(addType::class, $user);
         $form->handleRequest($request);
+        $admin = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $doctrine->getManager();
                 $em->flush();
+
                 return $this->redirectToRoute('listePharmaciens');
             } else {
                 $data = "Failed to Update Pharmacien";
@@ -773,6 +907,8 @@ class UserController extends AbstractController
                 return $this->render('user/pharmacien/pharmacienUpdateDash.html.twig', [
                     'controller_name' => 'UserController',
                     'data' => $response->getContent(),
+                    'user' => $admin,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -780,12 +916,20 @@ class UserController extends AbstractController
         return $this->render('user/pharmacien/pharmacienUpdateDash.html.twig', [
             'controller_name' => 'UserController',
             'data' => "",
+            'user' => $admin,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
     #[Route('/dashboard/client/ticket', name: 'ticketAdd')]
-    public function ticketAdd(Request $req, ManagerRegistry $em, NotificationRepository $notificationRepository): Response
-    {
+    public function ticketAdd(
+        Request $req,
+        ManagerRegistry $em,
+        NotificationRepository $notificationRepository,
+        NormalizerInterface $normalizer,
+        HubInterface $hub,
+        RealTimeManager $realTimeManager
+    ): Response {
         $ticket = new Ticket();
         $ticket->setDateTicket(new \DateTime());
         $form = $this->createForm(TicketType::class, $ticket);
@@ -800,6 +944,16 @@ class UserController extends AbstractController
                 $em = $em->getManager();
                 $em->persist($ticket);
                 $em->flush();
+                $notification = new Notification();
+                $notification->setDateNotification(new \DateTime());
+                $notification->setMessage('your ticket has been sended to admin successfully');
+                $notification->setToUser($user);
+                $notification->setPath("-");
+                $notification->setSeen(false);
+                $notificationRepository->save($notification);
+                $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
+                $json = json_encode($notificationJSON);
+                $realTimeManager->Walker($json, $hub);
                 return $this->redirectToRoute('ticketAdd');
             } else {
                 $data = "Failed to add new Ticket ";
@@ -864,6 +1018,7 @@ class UserController extends AbstractController
         $em = $em->getManager();
         $em->persist($ConfirmedTicket);
         $em->flush();
+        
         return $this->redirectToRoute('allticket');
     }
 }
