@@ -8,18 +8,9 @@
       <div class="col-lg-12 col-md-12 col-12">
         <div class="border-bottom pb-4 mb-4 d-lg-flex justify-content-between align-items-center">
           <div>
-            <h1 class="mb-0 h2 font-weight-bold">Dashboard Mode : {{ env }}</h1>
+            <h1 class="mb-0 h2 font-weight-bold">Dashboard</h1>
           </div>
-          <div class="d-flex">
-            <div class="input-group mr-3">
-              <input class="form-control flatpickr" type="text" placeholder="Select Date"
-                aria-describedby="basic-addon2">
-              <div class="input-group-append input-button">
-                <span class="input-group-text text-muted" id="basic-addon2"><i class="fe fe-calendar"></i></span>
-              </div>
-            </div>
-            <a href="#!" class="btn btn-primary">Setting</a>
-          </div>
+       
         </div>
       </div>
     </div>
@@ -67,7 +58,7 @@
               {{countSubscriptions}}
             </h2>
             <span class="text-danger font-weight-semi-bold">{{countSubscribers}}</span>
-            <span class="ml-1 font-weight-medium">this Month</span>
+            <span class="ml-1 font-weight-medium">in this Month</span>
           </div>
         </div>
         
@@ -127,31 +118,30 @@
           <!-- Card header -->
           <div class="card-header d-flex align-items-center
                         justify-content-between card-header-height">
-            <h4 class="mb-0">Last Five Client</h4>
-            <a href="#!" class="btn btn-outline-white btn-sm">View all</a>
+            <h4 class="mb-0">Five Client</h4>
+            <a href="{{ path('listeClient') }}" class="btn btn-outline-white btn-sm">View all</a>
           </div>
           <!-- Card body -->
           <div class="card-body">
             <!-- List group -->
+            
             <ul class="list-group list-group-flush">
+                   {% for clients in client %}
               <li class="list-group-item px-0 pt-0 ">
                 <div class="row">
+         
                   <div class="col-auto">
-                    <div class="avatar avatar-md avatar-indicators avatar-offline">
-                      <img alt="avatar" src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle">
+                    <div class="avatar avatar-md ">
+                     <img src="/uploads/{{ clients.image }}"  alt="" class="rounded-circle avatar-xs mr-2" />
                     </div>
-                  </div>
+                  </div> 
                   <div class="col ml-n3">
-                    <h4 class="mb-0 h5">Rob Percival</h4>
+                      <a href="{{ path('clientDetails',{'id':clients.id}) }}" > <h4 class="mb-0 h5">{{ clients.name }}</h4></a>
                     <span class="mr-2 font-size-xs">
-                      <span class="text-dark  mr-1 font-weight-semi-bold">42</span>Courses</span>
-                    <span class="mr-2 font-size-xs">
-                      <span class="text-dark  mr-1 font-weight-semi-bold">1,10,124</span>Students</span>
-                    <span class="font-size-xs">
-                      <span class="text-dark  mr-1 font-weight-semi-bold">32,000</span>
-                      Reviews
-                    </span>
+                     {{ clients.Email }}</span>
+                 
                   </div>
+
                   <div class="col-auto">
                     <span class="dropdown dropleft">
                       <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown7"
@@ -160,15 +150,15 @@
                       </a>
                       <span class="dropdown-menu" aria-labelledby="courseDropdown7">
                         <span class="dropdown-header">Settings</span>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon "></i>Edit</a>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-trash dropdown-item-icon "></i>Remove</a>
+                        <a class="dropdown-item" href="{{ path('UpdateClientDashboard',{'id':clients.id}) }}"><i class="fe fe-edit dropdown-item-icon "></i>Edit</a>
+                     
                       </span>
                     </span>
                   </div>
                 </div>
 
               </li>
-
+                  {% endfor %}
             </ul>
           </div>
         </div>
@@ -180,50 +170,38 @@
           <div class="card-header d-flex align-items-center
                         justify-content-between card-header-height">
             <h4 class="mb-0">Last Subscribers</h4>
-            <a href="#!" class="btn btn-outline-white btn-sm">View all</a>
+            <a href="{{ path('all_sub') }}" class="btn btn-outline-white btn-sm">View all</a>
           </div>
           <!-- Card body -->
           <div class="card-body">
             <!-- List group flush -->
             <ul class="list-group list-group-flush">
+              {% for subs in sub %}
               <li class="list-group-item px-0 pt-0">
                 <div class="row">
                   <!-- Col -->
                   <div class="col-auto">
                     <a href="#!">
-                      <img src="../assets/images/course/course-laravel.jpg" alt=""
+                      <img src="data:image/png;base64,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" alt=""
                         class="img-fluid rounded img-4by3-lg" /></a>
                   </div>
                   <!-- Col -->
                   <div class="col pl-0">
-                    <a href="#!">
+                    <a href="{{ path('clientDetails' , {'id' : subs.getUser().getId()  }) }}" class="text-inherit">
                       <h5 class="text-primary-hover">
-                        Revolutionize how you build the web...
+                       {{ subs.user.name }}
                       </h5>
                     </a>
                     <div class="d-flex align-items-center">
-                      <img src="../assets/images/avatar/avatar-7.jpg" alt="" class="rounded-circle avatar-xs mr-2" />
-                      <span class="font-size-xs">Brooklyn Simmons</span>
+                    
+                       {{ subs.state }}
                     </div>
                   </div>
                   <!-- Col auto -->
-                  <div class="col-auto">
-                    <span class="dropdown dropleft">
-                      <a class="text-muted text-decoration-none" href="#!" role="button" id="courseDropdown3"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fe fe-more-vertical"></i>
-                      </a>
-                      <span class="dropdown-menu" aria-labelledby="courseDropdown3">
-                        <span class="dropdown-header">Settings</span>
-                        <a class="dropdown-item" href="#!"><i class="fe fe-edit dropdown-item-icon "></i>Edit</a>
-                        <a class="dropdown-item" href="#!"><i
-                            class="fe fe-trash dropdown-item-icon "></i>Remove</a>
-                      </span>
-                    </span>
-                  </div>
+           
                 </div>
               </li>
-           
+           {% endfor %}
             </ul>
           </div>
         </div>
@@ -232,74 +210,33 @@
         <!-- Card -->
         <div class="card h-100">
           <!-- Card header -->
-          <div class="card-header card-header-height d-flex align-items-center">
-            <h4 class="mb-0">Activity
+          <div class="card-header d-flex align-items-center
+                        justify-content-between card-header-height">
+            <h4 class="mb-0">Order
             </h4>
+            <a href="{{ path('listeOrderDashboard') }}" class="btn btn-outline-white btn-sm">View all</a>
           </div>
           <!-- Card body -->
           <div class="card-body">
             <!-- List group -->
             <ul class="list-group list-group-flush list-timeline-activity">
+              {% for ords in ord %}
               <li class="list-group-item px-0 pt-0 border-0 mb-2">
                 <div class="row">
                   <div class="col-auto">
-                    <div class="avatar avatar-md avatar-indicators avatar-online">
-                      <img alt="avatar" src="../assets/images/avatar/avatar-6.jpg" class="rounded-circle">
+                    <div class="avatar avatar-md ">
+                       <img src="/uploads/{{ ords.client.image }}"  alt="" class="rounded-circle avatar-xs mr-2" />
                     </div>
                   </div>
                   <div class="col ml-n3">
-                    <h4 class="mb-0 h5">Dianna Smiley</h4>
-                    <p class="mb-1">Just buy the courses”Build React Application Tutorial”</p>
-                    <span class="font-size-xs">2m ago</span>
+                    <h4 class="mb-0 h5">{{ords.client.name}}</h4>
+                    <a href="{{ path('OrderByIDDashboard' , {'id' : ords.id  } ) }}" class="text-inherit"><p class="mb-1">{{ords.reference}}</p></a>
+                    <span class="font-size-xs">{{ords.state}}</span>
                   </div>
                 </div>
               </li>
-              <!-- List group -->
-              <li class="list-group-item px-0 pt-0  border-0 mb-2">
-                <div class="row">
-                  <div class="col-auto">
-                    <div class="avatar avatar-md avatar-indicators avatar-offline">
-                      <img alt="avatar" src="../assets/images/avatar/avatar-7.jpg" class="rounded-circle">
-                    </div>
-                  </div>
-                  <div class="col ml-n3">
-                    <h4 class="mb-0 h5">
-                      Irene Hargrove
-                    </h4>
-                    <p class="mb-1">Comment on “Bootstrap Tutorial” Says “Hi,I m irene...</p>
-                    <span class="font-size-xs">1 hour ago</span>
-                  </div>
-                </div>
-              </li>
-              <!-- List group -->
-              <li class="list-group-item px-0 pt-0  border-0 mb-2">
-                <div class="row">
-                  <div class="col-auto">
-                    <div class="avatar avatar-md avatar-indicators avatar-busy">
-                      <img alt="avatar" src="../assets/images/avatar/avatar-4.jpg" class="rounded-circle">
-                    </div>
-                  </div>
-                  <div class="col ml-n3">
-                    <h4 class="mb-0 h5">Trevor Bradle</h4>
-                    <p class="mb-1">Just share your article on Social Media..</p>
-                    <span class="font-size-xs">2 month ago</span>
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item px-0 pt-0 border-0">
-                <div class="row">
-                  <div class="col-auto">
-                    <div class="avatar avatar-md avatar-indicators avatar-away">
-                      <img alt="avatar" src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle">
-                    </div>
-                  </div>
-                  <div class="col ml-n3">
-                    <h4 class="mb-0 h5">John Deo</h4>
-                    <p class="mb-1">Just buy the courses”Build React Application Tutorial”</p>
-                    <span class="font-size-xs">2m ago</span>
-                  </div>
-                </div>
-              </li>
+              {% endfor %}
+            
             </ul>
           </div>
         </div>

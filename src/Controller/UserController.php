@@ -15,21 +15,22 @@ use App\Form\SubscriptionType;
 use App\Form\DisponibilityType;
 use App\Manager\RealTimeManager;
 use App\Repository\UserRepository;
+use App\Repository\OrderRepository;
 use App\Repository\TicketRepository;
-use Symfony\Component\Mercure\Update;
 
+use Symfony\Component\Mercure\Update;
 use App\Repository\OrdennanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\NotificationRepository;
-use App\Repository\SubscriptionRepository;
 
+use App\Repository\SubscriptionRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Mercure\HubInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -40,7 +41,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     #[Route('/admin', name: 'admindash')]
-    public function index(UserRepository $userRepository, SubscriptionRepository $subscriptionRepository)
+    public function index(UserRepository $userRepository,OrderRepository $orderRepo, SubscriptionRepository $subscriptionRepository)
     {
         $env = $_ENV['APP_ENV'];
         $User_admin = $userRepository->findByRole('["ROLE_ADMIN"]');
@@ -51,6 +52,15 @@ class UserController extends AbstractController
         $Count_coach = $userRepository->countUserByRole('ROLE_COACH');
         $lastSubscription = $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC'));
         $countSubscribers = $subscriptionRepository->countSubscribers();
+        $sub = $subscriptionRepository->findBy([], [], 5);
+        $ord = $orderRepo->findBy([], [], 5);
+        $queryBuilder = $userRepository->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_CLIENT"%')
+            ->setMaxResults(5);
+
+        $client = $queryBuilder->getQuery()->getResult();
+
         return $this->render('user/admin.html.twig', [
             'controller_name' => 'UserController',
             'User_admin' => $User_admin,
@@ -58,6 +68,9 @@ class UserController extends AbstractController
             'Count_medcin' => $Count_medcin,
             'Count_client' => $Count_client,
             'Count_coach' => $Count_coach,
+            'client' =>$client,
+            'sub' =>$sub,
+            'ord' =>$ord,
             'countSubscribers' => $countSubscribers,
             'countSubscriptions' => $countSubscriptions,
             'env' => $env
