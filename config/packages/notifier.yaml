@@ -1,5 +1,7 @@
 framework:
     notifier:
+        texter_transports:
+           twilio: '%env(TWILIO_DSN)%'
         #chatter_transports:
         #    slack: '%env(SLACK_DSN)%'
         #    telegram: '%env(TELEGRAM_DSN)%'

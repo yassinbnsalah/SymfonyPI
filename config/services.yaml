@@ -8,6 +8,10 @@ parameters:
     # images_directory: 'C:\\xampp\\htdocs\\Version-Integre\\public\\uploads'
 
 services:
+    Twilio\Rest\Client:
+        arguments:
+            - '%env(TWILIO_ACCOUNT_SID)%'
+            - '%env(TWILIO_AUTH_TOKEN)%'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
