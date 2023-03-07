@@ -151,6 +151,11 @@
                                     <td class="align-middle border-top-0">
                                         <a class="btn btn-success btn-sm" href="{{ path('UpdateDisponibility', {'id' : dispo.id  }) }}">edit</a>
                                         <a class="btn btn-danger btn-sm"   data-toggle="modal" data-target="#DeleteDISPO{{ dispo.id }}" >remove</a>
+                                        {% if dispo.getState() == 'full' %}
+                                        <a class="btn btn-info btn-sm"   href="{{ path('SetDisponibilityInFull', {'id' : dispo.id  }) }}" >Available</a>
+                                        {% else %}
+                                        <a class="btn btn-info btn-sm"   href="{{ path('SetDisponibilityFull', {'id' : dispo.id  }) }}" >Full</a>
+                                        {% endif %}
                                     </td>
                                     <div class="modal fade" id="DeleteDISPO{{ dispo.id }}" tabindex="-1" role="dialog" aria-labelledby="DeleteDISPOLabel"
                                     aria-hidden="true">

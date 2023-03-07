@@ -62,8 +62,8 @@ class OrderController extends AbstractController
         $notifications = $notificationRepository->findBy(array('toUser' => $this->getUser()));
         #Creation Order here 
         $order = new Order();
-        $admin =
-            $form = $this->createForm(OrderType::class, $order);
+
+        $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
         $user = $this->getUser();
         if ($request->getMethod() === "POST") {
@@ -95,6 +95,9 @@ class OrderController extends AbstractController
                 $orderline = new OrderLine();
                 $orderline->setProduct($product);
                 $orderline->setQuantity($quantite);
+                $qte = $product->getQuantity();
+                $product->setQuantity($qte - $quantite);
+                $productsRepository->save($product);
                 $orderline->setPrice($product->getSellprice() * $quantite);
                 $orderline->setRelatedOrder($order);
                 $orderLineRepository->save($orderline);
@@ -123,16 +126,16 @@ class OrderController extends AbstractController
             $notification->setPath("order");
             $notification->setSeen(false);
 
-           
+
             //save to notifications
-           
+
             $notificationRepository->save($notification);
             $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
             $json = json_encode($notificationJSON);
             /*real TIME IS HERE BOYS */
             $realTimeManager->Walker($json, $hub);
 
-          
+
             return $this->redirectToRoute('ListeOrder');
         } else {
             $order->setPrice($total);
@@ -280,7 +283,7 @@ class OrderController extends AbstractController
         $notification->setPath("order");
         $notification->setSeen(false);
         $notificationRepository->save($notification);
-        
+
         $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
         $json = json_encode($notificationJSON);
         $realTimeManager->Walker($json, $hub);

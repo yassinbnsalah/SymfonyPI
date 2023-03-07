@@ -21,7 +21,7 @@ class DisponibilityRepository extends ServiceEntityRepository
         parent::__construct($registry, Disponibility::class);
     }
 
-    public function save(Disponibility $entity, bool $flush = false): void
+    public function save(Disponibility $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 

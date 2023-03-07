@@ -89,7 +89,7 @@
           <div class="item">
             <!-- Card -->
             <div class="card  mb-4 card-hover">
-              <a href="pages/course-single.html" class="card-img-top"><img src="/uploads/{{ produit.image }}" alt="" width="150px" height="250px"
+              <a href="#" class="card-img-top"><img src="/uploads/{{ produit.image }}" alt="" width="150px" height="250px"
                   class="rounded-top card-img-top"></a>
               <!-- Card Body -->
               <div class="card-body">
@@ -109,12 +109,15 @@
                 <div class="row align-items-center no-gutters">
                
                   <div class="col ml-2">
-                    <span>Fit-health Store</span>
+                    <span>Fit-health Store</span>{% if produit.quantity == 0  %} <span class="badge badge-danger"> sold out</span>{% endif %}
                   </div>
                   <div class="col-auto">
+                    {% if produit.quantity != 0  %}
                          <a href="{{path("cart_add", {id: produit.id})}}" >
                         <i class="fas fa-shopping-cart"></i>
-                    </a>
+                    </a>{% else %} 
+                      <i class="fas fa-shopping-cart"></i>
+                  {% endif %}
                   </div>
                 </div>
               </div>

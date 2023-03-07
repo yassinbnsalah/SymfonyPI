@@ -21,7 +21,7 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-    public function save(Produit $entity, bool $flush = false): void
+    public function save(Produit $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 

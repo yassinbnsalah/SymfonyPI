@@ -126,11 +126,20 @@
                                                 </a>
                                             </h5>
                                         </td>
-                                        <td class="align-middle border-top-0">{{ dispo.dateDispo |date('d-m-Y') }}</td>
+                                        <td class="align-middle border-top-0">{{ dispo.dateDispo |date('d-m-Y') }} 
+                                          {% if dispo.getState == "full" %}
+                                          <span class="badge badge-danger"> full </span>
+                                          {% endif %}
+                                        </td>
                                         <td class="align-middle border-top-0">{{ dispo.heureStart|date('H:i') }}</td>
                                         <td class="align-middle border-top-0">{{ dispo.heureEnd  |date('H:i') }}</td>
-                                        <td class="align-middle border-top-0"><input type="radio" name="radio" value={{dispo.dateDispo |date('d-m-Y')}}> </td>
-                                  
+                                        <td class="align-middle border-top-0">
+                                          {% if dispo.getState == "full" %}
+                                          <input type="radio" name="radio" disabled value={{dispo.dateDispo |date('d-m-Y')}}> 
+                                          {% else %}
+                                          <input type="radio" name="radio" value={{dispo.dateDispo |date('d-m-Y')}}> 
+                                          {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                     </tbody>

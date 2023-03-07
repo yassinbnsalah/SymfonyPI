@@ -34,6 +34,9 @@ class Disponibility
     #[ORM\ManyToOne(inversedBy: 'disponibilities')]
     private ?User $doctor = null;
 
+    #[ORM\Column(length: 125, nullable: true)]
+    private ?string $state = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,6 +98,18 @@ class Disponibility
     public function setDoctor(?User $doctor): self
     {
         $this->doctor = $doctor;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

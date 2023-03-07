@@ -254,6 +254,23 @@ class SanteController extends AbstractController
     }
 
 
+    #[Route('/dashboard/doctor/disponibility/full/{id}', name: 'SetDisponibilityFull')]
+    public function SetDisponibilityFull($id, ManagerRegistry $em, DisponibilityRepository $repo): Response
+    {
+        $dispo = $repo->find($id);
+        $dispo->setState("full"); 
+        $repo->save($dispo); 
+        return $this->redirectToRoute('ListeDisponibility');
+    }
+
+    #[Route('/dashboard/doctor/disponibility/infull/{id}', name: 'SetDisponibilityInFull')]
+    public function SetDisponibilityInFull($id, ManagerRegistry $em, DisponibilityRepository $repo): Response
+    {
+        $dispo = $repo->find($id);
+        $dispo->setState("available"); 
+        $repo->save($dispo); 
+        return $this->redirectToRoute('ListeDisponibility');
+    }
 
     #[Route('/dashboard/pharmacien/ordenance', name: 'ListeOrdenance')]
     public function ListeOrdenance(): Response
