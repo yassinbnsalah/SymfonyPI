@@ -110,14 +110,57 @@ class ServicesController extends AbstractController
         return new JsonResponse($SubNormilizer);
     }
 
-    #[Route('/listesubservice', name: 'listesubservice')]
-    public function listesubservice(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer): Response
+    #[Route('/listeSubByUser', name: 'listeSubByUser')]
+    public function listeSubByUser(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer,
+    UserRepository $userRepository): Response
     {
-       
-        $subscription =  $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC')); 
+        $id = $request->query->get("id"); 
+        $user = $userRepository->find($id) ; 
+
+        $subscription =  $user->getSubscriptions();
         $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
         return new JsonResponse($SubNormilizer);
     }
+
+    #[Route('/listesubservice', name: 'listesubservice')]
+    public function listesubservice(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer): Response
+    {
+
+        $subscription =  $subscriptionRepository->findBy(array(), array('dateSub' => 'DESC'));
+        $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
+        return new JsonResponse($SubNormilizer);
+    }
+    /****************************** */
+    #[Route('/subdetails', name: 'subdetails')]
+    public function subdetails(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer): Response
+    {
+        $id = $request->query->get("id");
+        $subscription =  $subscriptionRepository->find($id);
+        $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
+        return new JsonResponse($SubNormilizer);
+    }
+
+
+    #[Route('/updatestatesubscription', name: 'updatestatesubscription')]
+    public function updatestatesubscription(SubscriptionRepository $subscriptionRepository, Request $request,  NormalizerInterface $normalizer): Response
+    {
+        $id = $request->query->get("id");
+        $subscription =  $subscriptionRepository->find($id);
+        $state = $request->query->get("state");
+        if($state == '1'){
+            $subscription->setState("Confirmed");
+        }else if ($state == '2'){
+            $subscription->setState("Suspended");
+        }else{
+            $subscription->setState("Cancel");
+        }
+        
+        //$subscription->setState($state);
+        $subscriptionRepository->save($subscription);
+        
+        return new JsonResponse("subscription updated with success", 200);
+    }
+    /****************************** */
     #[Route('/addsubscriptionclient', name: 'addSubClient')]
     public function addSubClient(
         SubscriptionRepository $subscriptionRepository,
@@ -133,9 +176,9 @@ class ServicesController extends AbstractController
         $amount = $request->query->get("amount");
 
         $subscription = new Subscription();
-        $subscription->setDateSub(new \DateTime( $dateSub ));
-        $dateSubER = new \DateTime( $dateSub );
-        $date = new \DateTime( $dateSub );
+        $subscription->setDateSub(new \DateTime($dateSub));
+        $dateSubER = new \DateTime($dateSub);
+        $date = new \DateTime($dateSub);
         if ($type == '1') {
             $interval = new DateInterval('P30D');
             $date->add($interval);
@@ -146,18 +189,18 @@ class ServicesController extends AbstractController
             $subscription->setDateExpire($date);
         } else {
             $interval = new DateInterval('P180D');
-             $date->add($interval);
+            $date->add($interval);
             $subscription->setDateExpire($date);
         }
-     //   $subscription->setDateExpire(new \DateTime());
+        //   $subscription->setDateExpire(new \DateTime());
         $subscription->setType($type);
         $subscription->setPaiementType($paiementType);
         $subscription->setAmount((int)$amount);
         $subscription->setUser($user);
         $subscription->setState("confirmed");
-      
-        $subscription->setReference("SUB-". strtoupper($user->getName()) .$dateSubER->format('-Y-m-d'));
-      //$subscriptionRepository->save($subscription);
+
+        $subscription->setReference("SUB-" . strtoupper($user->getName()) . $dateSubER->format('-Y-m-d'));
+        $subscriptionRepository->save($subscription);
 
 
 
@@ -166,23 +209,7 @@ class ServicesController extends AbstractController
         return new JsonResponse($SubNormilizer, 200);
     }
 
-    #[Route('/updatesubstate', name: 'updateSubState')]
-    public function updateSubState(
-        SubscriptionRepository $subscriptionRepository,
-        UserRepository $userRepository,
-        Request $request,
-        NormalizerInterface $normalizer
-    ): Response {
-        $id = $request->query->get("id");
-        $state = $request->query->get("state");
-        $subscription = $subscriptionRepository->find($id);
-        $subscription->setState($state);
-        $subscriptionRepository->save($subscription);
-
-
-        return new JsonResponse("subscription updated with success", 200);
-    }
-
+    
     #[Route('/deletesub', name: 'deletesub')]
     public function deletesub(
         SubscriptionRepository $subscriptionRepository,
@@ -204,6 +231,4 @@ class ServicesController extends AbstractController
         // $json = json_encode($SubNormilizer);
         return new JsonResponse($SubNormilizer);
     }
-
- 
 }

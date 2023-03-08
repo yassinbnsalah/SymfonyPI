@@ -97,7 +97,7 @@ class UserServiceController extends AbstractController
                     $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
                 }
                 //  $json = json_encode($userlogin);
-               return new JsonResponse($userlogin,200);
+                return new JsonResponse($userlogin, 200);
             } else {
                 return new JsonResponse("password not found", 500);
             }
@@ -105,32 +105,30 @@ class UserServiceController extends AbstractController
             return new JsonResponse("No User founded", 300);
         }
     }
-    
-     #[Route("user/deleteUser", name:"delete_User")]
-     #[Method("DELETE")]
-    
-     public function deletePostAction(Request $request) {
+
+    #[Route("user/deleteUser", name: "delete_User")]
+    #[Method("DELETE")]
+
+    public function deletePostAction(Request $request)
+    {
 
         $id = $request->get("id");
 
         $em = $this->getDoctrine()->getManager();
         $Post = $em->getRepository(User::class)->find($id);
-        if($Post!=null ) {
+        if ($Post != null) {
             $em->remove($Post);
             $em->flush();
 
             $serialize = new Serializer([new ObjectNormalizer()]);
             $formatted = $serialize->normalize("utilisateur a ete supprimee avec success.");
             return new JsonResponse($formatted);
-
         }
         return new JsonResponse("id Post invalide.");
-
-
     }
 
 
-     #[Route("user/editUser", name:"app_gestion_profile")]
+    #[Route("user/editUser", name: "app_gestion_profile")]
     public function editUser(Request $request, UserPasswordEncoderInterface $PasswordEncoder)
     {
         $id = $request->query->get("id");
@@ -142,34 +140,46 @@ class UserServiceController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($id);
 
-       // if($request->files->get("photo") != null)
-       // {
-          //  $file = $request->files->get("photo");
-           // $fileName = $file->getClientOriginalName();
-           // $file->move(
-             //   $fileName
-          //  );
-           // $user->setCIN($CIN);
-            $user->setName($Name);
-            //$user->setNumero($Numero);
-            $user->setEmail($Email);
-           // $user->setAdresse($Adresse);
-            $user->setPassword(
+        // if($request->files->get("photo") != null)
+        // {
+        //  $file = $request->files->get("photo");
+        // $fileName = $file->getClientOriginalName();
+        // $file->move(
+        //   $fileName
+        //  );
+        // $user->setCIN($CIN);
+        $user->setName($Name);
+        //$user->setNumero($Numero);
+        $user->setEmail($Email);
+        // $user->setAdresse($Adresse);
+        $user->setPassword(
             $PasswordEncoder->encodePassword(
                 $user,
                 $Password
-            ));
+            )
+        );
 
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em -> persist($user);
-                $em -> flush();
-    
-                return new JsonResponse("success", 200);
-            }catch(\Exception $ex) {
-                return new Response("failed".$ex->getMessage());
-            }
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-        
+            return new JsonResponse("success", 200);
+        } catch (\Exception $ex) {
+            return new Response("failed" . $ex->getMessage());
+        }
+    }
+
+
+    #[Route("user/details", name: "details_User")]
+    public function details_User(Request $request, UserRepository $userRepository, NormalizerInterface $normalizer)
+    {
+        $id = $request->get("id");
+        $user = $userRepository->find($id);
+        if ($user != null) {
+            $userlogin = $normalizer->normalize($user, 'json', ['groups' => "user"]);
+            return new JsonResponse($userlogin, 200);
+        }
+        return new JsonResponse("id Post invalide.");
     }
 }
