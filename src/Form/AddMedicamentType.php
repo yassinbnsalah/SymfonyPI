@@ -14,20 +14,19 @@ class AddMedicamentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', null, [
-                'empty_data' => ''
-            ])
-            ->add('description', null, [
-                'empty_data' => ''
-            ])
-            ->add('quantite', IntegerType::class, [
-                'empty_data' => ' '
-            ])
-            ->add('prix', IntegerType::class, [
-                'empty_data' => ' '
-            ])
-            ->add('save' , SubmitType::class)
-        ;
+        ->add('nom', TextType::class, [
+            'label' => 'Nom du médicament',
+        ])
+        ->add('prix', NumberType::class, [
+            'label' => 'Prix unitaire',
+            'scale' => 2,
+        ])
+        ->add('quantite', NumberType::class, [
+            'label' => 'Quantité disponible',
+            'scale' => 0,
+        ])
+        ->add('save', SubmitType::class)
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -35,5 +34,4 @@ class AddMedicamentType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Medicament::class,
         ]);
-    }
-}
+    }}

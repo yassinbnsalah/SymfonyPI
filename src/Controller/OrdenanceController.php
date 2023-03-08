@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Controller\Medicamment;
 use App\Entity\Ordennance;
 use App\Entity\OrdennanceLigne;
 use App\Form\OrdennanceType;
@@ -94,6 +94,14 @@ class OrdenanceController extends AbstractController
                 'ordenance' => $ordenance
             ]
         );
+    }
+    #[Route('/ordenancepdf/{id}', name: 'ordenancepdf')]
+    public function OrdenancePdf($id, OrdennanceRepository $ordenanceRepo): Response
+    {
+        $ordenance = $ordenanceRepo->find($id);
+        return $this->render('/ordenance/totale.html.twig', [
+            'ordenance' => $ordenance
+        ]);
     }
    
     }
