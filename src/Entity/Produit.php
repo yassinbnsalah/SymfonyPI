@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -18,24 +18,30 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("order")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("order")]
     private ?int $buyprice = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("order")]
     private ?int $sellprice = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("order")]
     private ?int $quantity = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("order")]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'produit')]
+    #[Groups("order")]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderLine::class)]

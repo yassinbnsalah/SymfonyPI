@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SubscriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
@@ -13,24 +14,29 @@ class Subscription
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("subscribers")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message:"Date is required")]
     #[Assert\GreaterThanOrEqual("today",
     message:"Date must be higher than today")]  
+    #[Groups("subscribers")]
     // #[Assert\Date(message :"le date ne doit etre ")]
     private ?\DateTimeInterface $dateSub = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("subscribers")]
     private ?\DateTimeInterface $dateExpire = null;
 
     #[ORM\Column(length: 125)]
     #[Assert\NotBlank(message:"Type is required")]
+    #[Groups("subscribers")]
     private ?string $type = null;
 
     #[ORM\Column(length: 125)]
     #[Assert\NotBlank(message:"Paiment method is required")]
+    #[Groups("subscribers")]
     private ?string $paiementType = null;
 
     #[ORM\Column]
@@ -42,11 +48,16 @@ class Subscription
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
-    
+    #[Groups("subscribers")]
     private ?User $user = null;
 
     #[ORM\Column(length: 125)]
+    #[Groups("subscribers")]
     private ?string $state = null;
+
+    #[ORM\Column(length: 125, nullable: true)]
+    #[Groups("subscribers")]
+    private ?string $reference = null;
 
     public function getId(): ?int
     {
@@ -133,6 +144,18 @@ class Subscription
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

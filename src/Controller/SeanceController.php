@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Seance;
 use App\Form\SeanceType;
+use App\Repository\NotificationRepository;
 use App\Repository\SeanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,9 +23,11 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/dashboard/coach/seance', name: 'listeSeance')]
-    public function seanceListe(SeanceRepository $repo,Request $req,ManagerRegistry $em): Response
+    public function seanceListe(SeanceRepository $repo,Request $req,ManagerRegistry $em,
+    NotificationRepository $notificationRepository): Response
     {
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         $seances = $repo->findAll();
         $seance = new Seance();
         $form = $this->createForm(SeanceType::class,$seance);
@@ -40,12 +43,14 @@ class SeanceController extends AbstractController
             'controller_name' => 'SeanceController',
             'user' => $user,
             'seances' => $seances,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/dashboard/coach/seance/update/{id}', name: 'Update_Seance')]
-    public function UpdateSeance($id , Request $req,ManagerRegistry $em, SeanceRepository $repo): Response
+    public function UpdateSeance($id , Request $req,ManagerRegistry $em,
+    NotificationRepository $notificationRepository , SeanceRepository $repo): Response
     {
         $seance = $repo->find($id) ; 
         $form = $this->createForm(SeanceType::class, $seance);
@@ -53,6 +58,7 @@ class SeanceController extends AbstractController
 
        
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         if($form->isSubmitted()){
           
             $em = $em->getManager(); 
@@ -63,6 +69,7 @@ class SeanceController extends AbstractController
         return $this->render('user/coach/updateSeance.html.twig', [
             'controller_name' => 'SeanceController',
             'user' => $user,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }

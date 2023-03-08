@@ -8,6 +8,7 @@ use App\Form\ProduitType;
 use App\Form\CategoryType;
 use App\Repository\ProduitRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,13 +27,15 @@ class StoreController extends AbstractController
         ]);
     }
     #[Route('/store/category', name: 'categoryListe')]
-    public function categoryListe(CategoryRepository $Rep, Request $request, EntityManagerInterface $manager)
+    public function categoryListe(CategoryRepository $Rep, Request $request,
+    NotificationRepository $notificationRepository, EntityManagerInterface $manager)
     {
         $categoryy = $Rep->findAll();
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted() && $form->isValid()) {
             $category->setNbProduct(0);
             $manager->persist($category);
@@ -42,6 +45,8 @@ class StoreController extends AbstractController
         return $this->render('store/category/listeCategory.html.twig', [
             'controller_name' => 'StoreController',
             'categoryy' => $categoryy,
+            'notifications' => $notifications,
+            'user' => $user, 
             'form' => $form->createView()
         ]);
     }
@@ -57,11 +62,14 @@ class StoreController extends AbstractController
         return $this->redirectToRoute('categoryListe');
     }
     #[Route('/dashboard/category/update/{id}', name: 'UpdateCategoryDashboard')]
-    public function UpdateCategoryDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
+    public function UpdateCategoryDashboard($id, ManagerRegistry $doctrine,
+    NotificationRepository $notificationRepository ,  Request  $request): Response
     {
         $category = $doctrine->getRepository(Category::class)->find($id);
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
+        $user = $this->getUser(); 
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             $em = $doctrine->getManager();
             $em->flush();
@@ -69,30 +77,39 @@ class StoreController extends AbstractController
         }
         return $this->render('store/category/categoryUpdateDash.html.twig', [
             'controller_name' => 'StoreController',
+            'user' => $user , 
+            'notifications' => $notifications , 
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/produit/liste', name: 'produitListeClient')]
-    public function produitListeClient(ProduitRepository $Rep , CategoryRepository $catRepo)
+    public function produitListeClient(ProduitRepository $Rep , CategoryRepository $catRepo,
+    NotificationRepository $notificationRepository)
     {
         $produits = $Rep->findAll();
         $category = $catRepo->findAll() ; 
+        $user = $this->getUser() ; 
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('store/product/productListeClientSide.html.twig', [
             'controller_name' => 'StoreController',
             'products' => $produits,
-            'categorys' => $category
+            'categorys' => $category,
+            'notifications' => $notifications,
+            'user' => $user
            
         ]);
     }
     #[Route('/store/produit', name: 'produitListe')]
-    public function produitListe(ProduitRepository $Rep, Request $request, EntityManagerInterface $manager)
+    public function produitListe(ProduitRepository $Rep, Request $request, EntityManagerInterface $manager, 
+    NotificationRepository $notificationRepository)
     {
         $produitt = $Rep->findAll();
         $product = new Produit();
         $form = $this->createForm(ProduitType::class, $product);
         $form->handleRequest($request);
-
+        $user = $this->getUser() ; 
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
 
@@ -115,6 +132,8 @@ class StoreController extends AbstractController
         return $this->render('store/product/listeProduit.html.twig', [
             'controller_name' => 'StoreController',
             'produitt' => $produitt,
+            'user' => $user , 
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
@@ -130,11 +149,14 @@ class StoreController extends AbstractController
         return $this->redirectToRoute('produitListe');
     }
     #[Route('/dashboard/produit/update/{id}', name: 'UpdateProduitDashboard')]
-    public function UpdateProduitDashboard($id, ManagerRegistry $doctrine, Request  $request): Response
+    public function UpdateProduitDashboard($id, ManagerRegistry $doctrine,
+    NotificationRepository $notificationRepository , Request  $request): Response
     {
         $produitbyID = $doctrine->getRepository(Produit::class)->find($id);
         $form = $this->createForm(ProduitType::class, $produitbyID);
         $form->handleRequest($request);
+        $user = $this->getUser() ; 
+        $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->get('image')->getData()) {
                 /** @var UploadedFile $imageFile */
@@ -162,6 +184,8 @@ class StoreController extends AbstractController
         }
         return $this->render('store/product/produitUpdateDash.html.twig', [
             'controller_name' => 'StoreController',
+            'notifications' => $notifications,
+            'user' => $user , 
             'form' => $form->createView()
         ]);
     }

@@ -1,0 +1,123 @@
+{% extends 'mainbase.html.twig' %}
+
+
+{% block body %}
+
+<div class="pt-5 pb-5">
+    <div class="container">
+        <!-- User info -->
+        <div class="row align-items-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <!-- Bg -->
+                <div class="pt-16 rounded-top" style="
+                            background: url({{asset('assets/images/background/profile-bg.jpg')}}) no-repeat;
+                            background-size: cover;
+                        "></div>
+                <div
+                    class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5">
+                            <img src="/uploads/{{ app.user.image }}" class="avatar-xl rounded-circle border-width-4 border-white"
+                                alt="" />
+                        </div>
+                        <div class="lh-1">
+                            <h2 class="mb-0">
+                                {{ user.name }}
+                                <a href="#!" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="Beginner">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3" y="8" width="2" height="6" rx="1" fill="#754FFE"></rect>
+                                        <rect x="7" y="5" width="2" height="9" rx="1" fill="#DBD8E9"></rect>
+                                        <rect x="11" y="2" width="2" height="12" rx="1" fill="#DBD8E9"></rect>
+                                    </svg>
+                                </a>
+                            </h2>
+                            <p class="mb-0 d-block">{{ user.email }}</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+<!-- Content -->
+
+        <div class="row mt-4">
+       
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <!-- Card -->
+                <div class="container-fluid ">
+                    <div class="row">
+                      <div class="col-lg-12 col-md-12 col-12">
+                        <div class="border-bottom pb-4 mb-4 d-lg-flex justify-content-between align-items-center">
+                          <div>
+                            <h1 class="mb-0 h2">Notification History</h1>
+                            <p class="mb-0">Check your all notification and read it.</p>
+                          </div>
+                          <div>
+                          
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <!-- Card -->
+                        <div class="card rounded-lg">
+                          <!-- Card list -->
+                          <ul class="list-group list-group-flush">
+                            {% for notification in notifications %}
+                            <!-- List group item -->
+                            
+                            <li class="list-group-item bg-transparent py-4">
+                              <div class="row align-items-center">
+                                <div class="col">
+                                  <div class="d-flex align-items-center">
+                                    {% if notification.getToUser.image %}
+                                    <img  src="/uploads/{{ notification.getToUser().image }}" alt="" class="avatar-lg rounded-circle" />
+                                    {% else %}
+                                    <img  src="{{asset('assets/images/avatar/avatar-1.jpg')}}" alt="" class="avatar-lg rounded-circle" />
+                                    {% endif %}
+                                    <div class="ml-3">
+                                      <p class="mb-0">
+                                        <span class="font-weight-bold mb-0 h5">{{notification.getToUser().getName()}}:</span>
+                                        {{notification.message}}
+                                      </p>
+                                      <span class="font-size-xs text-muted">
+                                        <span><span class="fe fe-thumbs-up text-success mr-1"></span>
+                                        {{ notification.getDateNotification()|date('y-m-d')}}</span>
+                                        <span class="ml-1">{{ notification.getDateNotification()|date('H:i')}}</span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  {% if notification.path == "sub" %}
+                                  <a class="stretched-link"  href="{{ path('all_sub' ) }}"></a>
+                                  {% elseif notification.path == "order" %}
+                                  <a class="stretched-link"  href="{{ path('listeOrderDashboard' ) }}"></a>
+                                  {% else %}
+                                  <a class="stretched-link" href="#!"></a>
+                                  {% endif %}
+                                </div>
+                                <div class="col-auto text-center">
+                                  <button class="badge-dot badge-info border-0" data-toggle="tooltip" data-placement="top"
+                                    title="" data-original-title="Mark as read"></button>
+                                  <div>
+                                    <a href="{{ path('DeleteNotification' , {'id' : notification.id  } ) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Remove">
+                                      <i class="fe fe-x text-muted"></i>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          {% endfor %}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

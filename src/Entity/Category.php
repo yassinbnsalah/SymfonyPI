@@ -17,7 +17,8 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("categorys")]
+    #[Groups(["categorys","order"])]
+    
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Produit::class)]

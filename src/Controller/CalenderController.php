@@ -2,50 +2,35 @@
 
 namespace App\Controller;
 
+use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use CalendarBundle\CalendarEvents;
-use CalendarBundle\Event\CalendarEvent;
-use CalendarBundle\Serializer\SerializerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
+
 class CalenderController extends AbstractController
 {
     #[Route('/calender', name: 'app_calender')]
-    public function index(): Response
+    public function index(CalendarRepository $calendar): Response
     {
-        return $this->render('calender/index.html.twig', [
-            'controller_name' => 'CalenderController',
-        ]);
-    }
-    public function loadAction(Request $request): Response
-    {
-        $start = new \DateTime($request->get('start'));
-        $end = new \DateTime($request->get('end'));
-        $filters = $request->get('filters', '{}');
-        $filters = \is_array($filters) ? $filters : json_decode($filters, true);
+        $events = $calendar->findAll();
+        
+        $rdvs =[];
+        foreach($events as $event){
+            $rdvs[]= [
+                'id' =>$event->getId(),
+                'start' =>$event->getStart()->format('Y-m-d H:i:s'),
+                'end' =>$event->getEnd()->format('Y-m-d H:i:s'),
+                'title' =>$event->getTitle(),
+                'description' =>$event->getDescription(),
+                'backColor' =>$event->getBackColor(),
+                'borderColor' =>$event->getBorderColor(),
+                'textColor' =>$event->getTextColor(),
 
-        $event = $this->dispatchWithBC(
-            new CalendarEvent($start, $end, $filters),
-            CalendarEvents::SET_DATA
-        );
-        $content = $this->serializer->serialize($event->getEvents());
-
-        $response = new Response();
-        $response->headers->set('Content-Type', 'application/json');
-        $response->setContent($content);
-        $response->setStatusCode(empty($content) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK);
-
-        return $response;
-    }
-    public function dispatchWithBC($event, ?string $eventName = null)
-    {
-        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
-            return $this->eventDispatcher->dispatch($event, $eventName);
+            ];
         }
+        $data = json_encode($rdvs);
 
-        return $this->eventDispatcher->dispatch($eventName, $event);
-    }
+        return $this->render('calender/index.html.twig', compact('data')); 
+        
+        }
 }

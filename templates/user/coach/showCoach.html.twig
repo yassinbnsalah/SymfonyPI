@@ -111,14 +111,16 @@
                             <span class="navbar-header">Account Settings</span>
                             <ul class="list-unstyled ml-n2 mb-0">
                                     <!-- Nav item -->
-                                <li class="nav-item">
+                                <li class="nav-item" >
                                     <a class="nav-link" href="{{ path('UpdateClientData',{'id':app.user.id}) }}"><i class="fe fe-settings nav-icon"></i>Edit Profile</a>
                                 </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="security.html"><i class="fe fe-user nav-icon"></i>Security</a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{path('ticketAdd')}}"><i class="fe fe-user nav-icon"></i>Ticket</a>
+                              </li>
                                     <!-- Nav item -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="delete-profile.html"><i class="fe fe-trash nav-icon"></i>Delete
@@ -137,57 +139,73 @@
                 <!-- Card -->
                <!-- Card -->
                <div class="card ">
-              
-                <!-- Card Body -->
-                <div class="card-body">
-                 
-                  <hr class="my-5">
-               
-                    <h4 class="mb-2">Liste des Coach</h4>
-                    <p class="mb-4 ">Edit your personal information and address.</p>
-                    <!-- Form -->
-                      <div class="row">
-            <div class="col-lg-12 col-md-12 col-12">
-            <!-- Tab -->
-              <div class="tab-content">
-                <!-- Tab pane -->
-                <div class="tab-pane fade show active" id="tabPaneGrid" role="tabpanel" aria-labelledby="tabPaneGrid">
-                  <div class="mb-4">
-                    <input type="search" class="form-control" placeholder="Search Instructor" />
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-                      <!-- Card -->
-                       {%  for u in  User_coach  %}
-                      <div class="card mb-6">
-                    
-                        <!-- Card body -->
-                        <div class="card-body">
-                          <div class="text-center">
-                            <img src="/uploads/{{u.image}}" class="rounded-circle avatar-xl mb-3" alt="" />
-                            <h4 class="mb-0">Coach.{{u.Name}}</h4>
-                            <p class="mb-0">Age {{u.Age}}</p>
-                          </div>
-                          <div class="d-flex justify-content-between border-bottom py-3 mt-5">
-                            <span>{{u.Email}}</span>
-                      
-                          </div>
-                          <div class="d-flex justify-content-between border-bottom py-2">
-                            <span>Number</span>
-                            <span class="text-warning">
-                              {{u.Numero}} 
-                            </span>
-                          </div>
-                          <div class="d-flex justify-content-between pt-2">
-                            <span>Adresse</span>
-                            <span class="text-dark"> {{u.Adresse}} </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {% endfor %}
-                      </div>
-                    </div>
+                <div class="card-header border-bottom-0">
+                    <h3 class="mb-0">Liste des Coach</h3>
+                </div>
+                <table class="table mb-0 text-nowrap">
+                    <thead>
+                        <tr>
+                                                            
+                                                            <th scope="col" class="border-0">ID</th>
+                                                            <th scope="col" class="border-0">Full name</th>
+                                                            <th scope="col" class="border-0">Adresse</th>
+                                                            <th scope="col" class="border-0">Email</th>
+                                                        
+                                                            <th scope="col" class="border-0">Tel Number </th>
+                                                        </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                        {%  for u in  User_coach %}
+                                                        
+                                                            <!-- Table body -->
+                                                    
+                                                            <tr>
+                                                    
+                                                            <td class="align-middle border-top-0">
+                                                                <h5 class="mb-0">
+                                                                <a href="#!" class="text-inherit">
+                                                                {{ u.id }}
+                                                                </a>
+                                                                </h5>
+                                                            </td>
+                                                         
+                                                            
+                                                            <td class="align-middle border-top-0">
+                                                            <div class="d-flex align-items-center">
+                                                                {% if  u.image %}
+                                                                <img src="/uploads/{{ u.image }}"  alt=""
+                                                                    class="rounded-circle avatar-xs mr-2" />
+                                                                    {% else %}
+                                                                    <img src="{{asset('assets/images/avatar/avatar.jpg')}}"  alt=""
+                                                                    class="rounded-circle avatar-xs mr-2" />
+                                                                    
+                                                                    {% endif %}
+                                                            {{ u.Name }}
+                                                                </div>
+                                                            </td>
+                                                              <td class="align-middle border-top-0">
+                                                                <h5 class="mb-0">
+                                                                {{ u.Adresse }}
+                                                                </a>
+                                                                </h5>
+                                                            </td>
+                                                            <td class="align-middle border-top-0">
+                                                                {{ u.Email }} 
+                                                                </td>
+                                                             <td class="align-middle border-top-0">
+                                                                <h5 class="mb-0">
+                                                                {{ u.Numero }}
+                                                                </a>
+                                                                </h5>
+                                                            </td>
+                                                            
+                                                         
+                                                                    </tr>
+                                                                
+                                                                
+                                                        {% endfor %}
+                                                    </tbody>
+                 </table>
                   </div>
                 </div>
               </div>

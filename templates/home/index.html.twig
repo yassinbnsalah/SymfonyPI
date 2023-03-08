@@ -35,47 +35,28 @@
             <!-- Card body -->
             <div class="card-body p-6">
               <div class="mb-4">  
-                <h1 class="mb-4 lh-1 font-weight-bold h2">Create Free Account</h1>
-                <div class="mt-3 mb-5 d-grid d-md-block">
-                   <!-- btn group -->
-                  <div class="btn-group mb-2 mb-md-0" role="group" aria-label="socialButton">
-                    <button type="button" class="btn btn-outline-white shadow-sm"><i
-                        class="mdi mdi-google mr-2 text-danger"></i>Google</button>
-                  </div>
-                   <!-- btn group -->
-                  <div class="btn-group mb-2 mb-md-0" role="group" aria-label="socialButton">
-                    <button type="button" class="btn btn-outline-white shadow-sm"><i
-                        class="mdi mdi-twitter text-info mr-2"></i>Twitter</button>
-                  </div>
-                   <!-- btn group -->
-                  <div class="btn-group" role="group" aria-label="socialButton">
-                    <button type="button" class="btn btn-outline-white shadow-sm"><i
-                        class="mdi mdi-facebook text-primary mr-2"></i>Facebook</button>
-                  </div>
-                </div>
+                <h1 class="mb-4 lh-1 font-weight-bold h2">Get you Account Access </h1>
+                
               </div>
               <div class="mb-4">
                 <div class="border-bottom"></div>
                 <div class="text-center mt-n2  lh-1">
-                  <span class="bg-white px-2 font-size-xs">OR</span>
+                  <span class="bg-white px-2 font-size-xs">BY </span>
                 </div>
               </div>
               <!-- Form -->
               <form>
                 <!-- Username -->
                 <div class="form-group">
-                  <label for="email" class="form-label sr-only">Email</label>
-                  <input type="email" id="email" class="form-control" name="email" placeholder="Email" disabled
-                    required="">
+                  <a href="{{ path('app_login') }}" class="btn btn-primary btn-block">Sign In</a>
+             
+                
                 </div>
                 <!-- Password -->
                 <div class="form-group">
-                  <label for="password" class="form-label sr-only">Password</label>
-                  <input type="password" id="password" class="form-control" name="password" placeholder="Password" disabled
-                    required="">
+                  <a href="{{ path('app_registration') }}" class="btn btn-primary btn-block">Sign Up</a>
                 </div>
                 <!-- Button -->
-                <button type="submit" class="btn btn-primary btn-block" disabled>Login</button>
               </form>
             </div>
              <!-- Card Footer -->

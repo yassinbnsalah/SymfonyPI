@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderLineRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderLineRepository::class)]
 class OrderLine
@@ -14,15 +15,18 @@ class OrderLine
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
+    #[Groups("order")]
     private ?Produit $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
     private ?Order $relatedOrder = null;
 
     #[ORM\Column]
+    #[Groups("order")]
     private ?int $quantity = null;
 
     #[ORM\Column]
+    #[Groups("order")]
     private ?float $price = null;
 
     public function getId(): ?int

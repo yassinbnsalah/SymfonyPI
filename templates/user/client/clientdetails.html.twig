@@ -136,7 +136,7 @@
                 <tr>
                   <td class="align-middle border-top-0">
                     <h5 class="mb-0">
-                       {{ sub.id }}
+                       {{ sub.id }} {{ sub.reference }}
                     </h5>
                   </td>
                   <td class="align-middle border-top-0">
@@ -189,7 +189,7 @@
                         <a class="btn btn-white btn-sm" href="{{ path('deleteSub' , {'id' : sub.id  }) }}"><i class="fe fe-trash-2 dropdown-item-icon "></i></a>
                         {% endif %}
                        
-                    
+                     
                   </td>
                 </tr>
            {% endfor %}
@@ -229,7 +229,17 @@
                     </td>
                     <td class="align-middle border-top-0">     {{ order.dateOrder|date('d-m-Y') }}</td>
                     <td class="align-middle border-top-0">  {{ order.shippingadress }}</td>
-                    <td class="align-middle border-top-0">    {{ order.state }}</td>
+                    <td class="align-middle border-top-0">    {% if order.getState() == "Confirmed" %}
+                      <span class="badge badge-success"> {{ order.getState() }}</span>
+                       {% elseif order.getState() == "Shipped" %}
+                       <span class="badge badge-info"> {{ order.getState() }}</span>
+                       {% elseif  order.getState() == "Cancel"%}
+                       <span class="badge badge-danger"> {{ order.getState() }}</span>
+                       {% elseif  order.getState() == "ready To Ship"%}
+                       <span class="badge badge-warning">  {{ order.getState() }}</span>
+                       {% elseif order.getState() == "inconfirmed" %}
+                       <span class="badge badge-secondary"> {{ order.getState() }}</span>
+                       {% endif %}</td>
                  
                 </tr>
         

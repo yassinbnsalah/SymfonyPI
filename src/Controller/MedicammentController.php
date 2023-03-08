@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Medicament;
 use App\Form\AddMedicamentType;
+use App\Form\MedicamentType;
+use App\Form\SearchType;
 use App\Repository\MedicamentRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,12 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MedicammentController extends AbstractController
 {
     #[Route('/medicamment', name: 'app_medicamment')]
     public function index(): Response
     {
+        
         return $this->render('medicamment/index.html.twig', [
             'controller_name' => 'MedicammentController',
         ]);
@@ -94,4 +99,7 @@ class MedicammentController extends AbstractController
 
         return $this->redirectToRoute('ListeMedicament');
     }
+   
+
+
 }

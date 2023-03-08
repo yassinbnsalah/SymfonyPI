@@ -17,7 +17,7 @@
                 </li>
                 
                 <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ path('listeClient') }}">Orders</a>
+                    <a href="">Orders</a>
                 </li>
               </ol>
             </nav>
@@ -50,7 +50,8 @@
                <span class="position-absolute pl-3 search-icon">
                 <i class="fe fe-search"></i>
               </span>
-              <input type="search" class="form-control pl-6" placeholder="Search Client" />
+              <input type="search" id="myInput" class="form-control pl-6" placeholder="Search Order" />
+              
             </form>
           </div>
           <div>
@@ -59,7 +60,17 @@
               <div class="tab-pane fade show active" id="all-post" role="tabpanel" aria-labelledby="all-post-tab">
                 <div class="table-responsive border-0">
                   <!-- Table -->
-              
+               <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+              <script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script> 
                   <table class="table mb-0 text-nowrap">
                     <!-- Table Head -->
                     <thead>
@@ -72,12 +83,12 @@
                         <th scope="col" class="border-0">phone</th>
                         <th scope="col" class="border-0">Price </th>
                         <th scope="col" class="border-0">state </th>
-                        <th scope="col" class="border-0">change State</th>
-                        <th scope="col" class="border-0">delete</th>
+                        <th scope="col" class="border-0">Delete</th>
+                        <th scope="col" class="border-0">Action</th>
                       </tr>
                     </thead>
                         {% for order in  orders %}
-                    <tbody>
+                    <tbody id="myTable">
                       <!-- Table body -->
                 
                       <tr>
@@ -164,26 +175,9 @@
           </div>
           <!-- Card Footer -->
           <div class="card-footer">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link mx-1 rounded" href="#!" tabindex="-1" aria-disabled="true"><i
-                      class="mdi mdi-chevron-left"></i></a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link mx-1 rounded" href="#!">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link mx-1 rounded" href="#!"><i class="mdi mdi-chevron-right"></i></a>
-                </li>
-              </ul>
-            </nav>
+         
+            {{    knp_pagination_render(orders, '/order/paginator.html.twig') }}
+          
           </div>
         </div>
       </div>

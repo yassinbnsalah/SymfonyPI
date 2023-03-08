@@ -26,6 +26,9 @@ class Ticket
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateTicket = null;
 
+    #[ORM\Column(length: 125)]
+    private ?string $state = null;
+
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     private ?User $owner = null;
 
@@ -78,6 +81,17 @@ class Ticket
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
