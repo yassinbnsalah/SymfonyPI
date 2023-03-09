@@ -1,0 +1,44 @@
+
+
+{% block bodyBack %}
+<h1 align="center">Liste des produtis</h1><hr>
+
+<table class="table">
+    <table class="table" border="2">
+        <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>NomProduit</th>
+            <th>DescriptionProduit</th>
+            <th>PrixProduit</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <!-- Load Flashy default CSS -->
+            <!-- <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}"> -->
+
+            <!-- Flashy depends on jQuery -->
+            <script src="//code.jquery.com/jquery.js"></script>
+            <!-- Load Flashy default JavaScript -->
+           <!-- <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>-->
+
+            <!-- Include Flashy default partial -->
+        
+            <tr>
+                <td>{{ produit.id}}</td>
+                <td>{{ produit.name}}</td>
+                <td>{{ produit.description}}</td>
+                <td>{{ produit.buyprice}}</td>
+
+
+</tr>
+        {% endfor %}
+
+        </tbody>
+        </div>
+    </table>
+</table>
+    {% endblock %}
