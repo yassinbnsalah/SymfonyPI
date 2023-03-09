@@ -108,14 +108,33 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Activity Liste</h3>
-                        <a href="#" class="badge badge-primary"  data-toggle="modal" data-target="#newCatgory">add activity</a>
+                        <h3 class="mb-0">Activités</h3>
+                        
                         {% if data is not empty %}
                         <div class="alert alert-danger"><strong>{{ data }} <a href="#"  data-toggle="modal" data-target="#newCatgory"> ici </a></strong></div>
                         {% else %}
-                        <span> Activity liste Dashboard is a quick overview of all current
-                            Activity liste.</span>
+                        <span> Liste des activités au programme</span>
                          {% endif %}
+                         <a href="#" class="badge badge-primary"  data-toggle="modal" data-target="#newCatgory">add activity</a>
+
+                        <div class="card-header border-bottom-0">
+                            
+                                {# {{ form_start(searchForm) }}
+                                    {{ form_row(searchForm.search) }}
+                                    {{ form_row(searchForm.submit) }}
+                                {{ form_end(searchForm) }}
+
+                                <ul>
+                                    {% for activity in activities %}
+                                        <li>{{ activity.name }}</li>
+                                    {% else %}
+                                        <li>No activity found</li>
+                                    {% endfor %}
+                                </ul> #}
+                            
+                        </div>
+   
+                        
                     
                     </div>
                     <!-- Table -->

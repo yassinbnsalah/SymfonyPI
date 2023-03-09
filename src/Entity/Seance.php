@@ -18,6 +18,11 @@ class Seance
     #[ORM\Column(length: 125)]
     private ?string $name = null;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
@@ -35,10 +40,16 @@ class Seance
         $this->plannings = new ArrayCollection();
     }
 
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getName(): ?string
     {
@@ -60,6 +71,13 @@ class Seance
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

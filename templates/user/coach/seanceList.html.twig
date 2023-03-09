@@ -117,6 +117,21 @@
                     <div>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">add seance </a>
                     </div>
+                    <div>
+                    
+                    {# {{ form_start(searchForm) }}
+                                    {{ form_row(searchForm.search) }}
+                                    {{ form_row(searchForm.submit) }}
+                    {{ form_end(searchForm) }}
+
+                                <ul>
+                                    {% for seance in seances %}
+                                        <li>{{ seance.name }}</li>
+                                    {% else %}
+                                        <li>No seance found</li>
+                                    {% endfor %} #}
+                                </ul>
+                    </div> 
                     <!-- Table -->
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">

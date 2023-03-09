@@ -6,13 +6,22 @@ use App\Entity\Activity;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
+use App\Entity\Session;
+use App\Repository\SeanceRepository;
+use App\Service\MailerService;
+use MailerService as GlobalMailerService;
+use MailerServices;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 class SportController extends AbstractController
 {
@@ -111,7 +120,7 @@ class SportController extends AbstractController
                 $em->persist($activity);
                 $em->flush() ;
                 return $this->redirectToRoute('activityListe'); 
-            }
+            } 
             else{
                 $data = "can not update this activity check " ;
                 return $this->render('user/coach/updateActivity.html.twig', [
@@ -141,4 +150,85 @@ class SportController extends AbstractController
             return $this->redirectToRoute('activityListe'); 
        
     }
+
+//     #[Route('/dashboard/coach/activity', name: 'findActivity')]
+//     public function rechercherActivite(ActivityRepository $actRepo,Request $request)
+// {
+//     $form = $this->createFormBuilder()
+//         ->add('find', TextType::class)
+//         ->add('Rechercher', SubmitType::class, ['label' => 'Rechercher'])
+//         ->getForm();
+
+//         $form->handleRequest($request);
+    
+//     if ($form->isSubmitted() && $form->isValid()) {
+//         $search = $form->getData()['find'];
+//         // Recherche dans la base de données en utilisant la valeur saisie
+//         $results = $actRepo
+//             ->getRepository(Activity::class)
+//             ->findBy(['name' => $search]);
+        
+//         return $this->render('user/coach/activityList.html.twig', [
+//             $user = $this->getUser(),
+//             'form' => $form->createView(),
+//             'results' => $results
+//         ]);
+//     }
+    
+//     return $this->render('user/coach/activityList.html.twig', [
+//         $user = $this->getUser(),
+//         'form' => $form->createView()
+//     ]);
+// }
+        // public function findByName($name)
+        // {
+        //     return $this->createQueryBuilder('a')
+        //         ->where('a.name LIKE :name')
+        //         ->setParameter('name', '%'.$name.'%')
+        //         ->orderBy('a.name', 'ASC')
+        //         ->getQuery()
+        //         ->getResult();
+        // }
+    
+        #[Route('/dashboard/coach/activity', name: 'findActivity')]
+        public function findActivity(ActivityRepository $activityRepository, Request $request)
+        {
+            $user = $this->getUser();
+            $searchForm = $this->createFormBuilder()
+                ->add('search', TextType::class, ['required' => false])
+                ->add('submit', SubmitType::class, ['label' => 'Search'])
+                ->getForm();
+
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+                $name = $searchForm->get('search')->getData();
+                $activities = $activityRepository->findByName($name);
+            } else {
+                $activities = $activityRepository->findAll();
+            }
+
+            return $this->render('user/coach/activityList.html.twig', [
+                'controller_name' => 'SportController',
+                'user' => $user,
+                'activities' => $activities,
+                'searchForm' => $searchForm->createView()
+            ]);
+        }
+
+        
+
+        #[Route('/dashboard/coach/activity', name: 'emailing')]
+                public function sendEmail(MailerServices $mailerService): Response
+        {
+            $recipientEmail = 'example@example.com';
+            $subject = 'Annulation de séance';
+            $template = 'emails/cancel_seance.html.twig';
+            $from = 'fitHealth@gmail.com';
+            
+
+            // $mailerService->sendEmail($subject, );
+
+            return new Response('Email sent successfully');
+        }
 }
