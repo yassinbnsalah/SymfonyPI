@@ -24,7 +24,7 @@ class RendezVousController extends AbstractController
     #[Route('/rendez/vous', name: 'app_rendez_vous')]
     public function index(): Response
     {
-        
+
         return $this->render('rendez_vous/index.html.twig', [
             'controller_name' => 'RendezVousController',
         ]);
@@ -54,16 +54,16 @@ class RendezVousController extends AbstractController
             $em = $em->getManager();
             $em->persist($rendezvous);
             $em->flush();
-            $notification = new Notification() ; 
-            $notification->setDateNotification(new \DateTime()); 
-            $notification->setMessage('your rendez vous with'.$DoctorByID->getName()) ; 
-            $notification->setToUser($user) ;
-            $notification->setPath("rdv") ;
+            $notification = new Notification();
+            $notification->setDateNotification(new \DateTime());
+            $notification->setMessage('your rendez vous with' . $DoctorByID->getName());
+            $notification->setToUser($user);
+            $notification->setPath("rdv");
             $notification->setSeen(false);
-            $notificationRepository->save($notification); 
-            $notificationJSON = $normalizer->normalize($notification  , 'json', ['groups' => "notification"]);
+            $notificationRepository->save($notification);
+            $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
             $json = json_encode($notificationJSON);
-            $realTimeManager->Walker($json,$hub);
+            $realTimeManager->Walker($json, $hub);
 
             return $this->redirectToRoute('listeRendezVous');
         }
@@ -96,28 +96,61 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/rendez-vous/confirme/{id}', name: 'confirmerendezvous')]
-    public function confirmerendezvous($id, RendezVousRepository $repo, ManagerRegistry $em): Response
-    {
+    public function confirmerendezvous(
+        $id,
+        RendezVousRepository $repo,
+        ManagerRegistry $em,
+        RealTimeManager $realTimeManager,
+        NotificationRepository $notificationRepository,
+        NormalizerInterface $normalizer,
+        HubInterface $hub
+    ): Response {
         $user = $this->getUser();
         $rdvtoconfirm = $repo->find($id);
         $rdvtoconfirm->setState("confirm");
+        $userTo = $rdvtoconfirm->getFromuser();
         $em = $em->getManager();
         $em->persist($rdvtoconfirm);
         $em->flush();
+        $notification = new Notification();
+        $notification->setDateNotification(new \DateTime());
+        $notification->setMessage('Your rendez vous has been Confirmed');
+        $notification->setToUser($userTo);
+        $notification->setPath("rdv");
+        $notification->setSeen(false);
+        $notificationRepository->save($notification);
+        $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
+        $json = json_encode($notificationJSON);
+        $realTimeManager->Walker($json, $hub);
         return $this->redirectToRoute('listeRendezVousForDoctor');
     }
     #[Route('/rendez-vous/cancel/{id}', name: 'cancelrdv')]
-    public function CancelRendezVous($id, RendezVousRepository $repo, ManagerRegistry $em): Response
-    {
+    public function CancelRendezVous(
+        $id,
+        RendezVousRepository $repo,
+        ManagerRegistry $em,
+        RealTimeManager $realTimeManager,
+        NotificationRepository $notificationRepository,
+        NormalizerInterface $normalizer,
+        HubInterface $hub
+    ): Response {
         $rdvtocancel = $repo->find($id);
         $rdvtocancel->setState("Cancel");
         $em = $em->getManager();
         $em->persist($rdvtocancel);
         $em->flush();
+        $userTo = $rdvtocancel->getFromuser();
         $user = $this->getUser();
-        // if($user->getRoles()[0] == 'ROLE_DOCTOR'){
-        //     return $this->redirectToRoute('rendevousListes', array('id' => $rdvtocancel->getTodoctor()->getId())); 
-        // }
+        $notification = new Notification();
+        $notification->setDateNotification(new \DateTime());
+        $notification->setMessage('Your rendez vous has been Canceled');
+        $notification->setToUser($userTo);
+        $notification->setPath("rdv");
+        $notification->setSeen(false);
+        $notificationRepository->save($notification);
+        $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
+        $json = json_encode($notificationJSON);
+        $realTimeManager->Walker($json, $hub);
         if ($user->getRoles()[0] == 'ROLE_MEDCIN') {
             return $this->redirectToRoute('listeRendezVousForDoctor');
         } else {
@@ -126,9 +159,13 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/client/rendez-vous/{id}', name: 'rendezdetails')]
-    public function rendezdetails($id, RendezVousRepository $repo, ManagerRegistry $em, OrdennanceRepository $ordrepo,
-    NotificationRepository $notificationRepository): Response
-    {
+    public function rendezdetails(
+        $id,
+        RendezVousRepository $repo,
+        ManagerRegistry $em,
+        OrdennanceRepository $ordrepo,
+        NotificationRepository $notificationRepository
+    ): Response {
         $rdvdetails = $repo->find($id);
         $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         $user = $this->getUser();
@@ -143,14 +180,19 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/doctor/rendez-vous/{id}', name: 'doctorrendezdetails')]
-    public function doctorrendezdetails(Request $request, $id, OrdennanceRepository $ordrepo, RendezVousRepository $repo, ManagerRegistry $em): Response
-
-    {
+    public function doctorrendezdetails(
+        Request $request,
+        $id,
+        OrdennanceRepository $ordrepo,
+        RendezVousRepository $repo,
+        ManagerRegistry $em,
+        NotificationRepository $notificationRepository
+    ): Response {
 
         $rdvtoupdate = $repo->find($id);
         $data = null;
         $user = $this->getUser();
-
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         $form = $this->createForm(UpdateRendezVousType::class, $rdvtoupdate);
         $form->handleRequest($request);
         $rdvdetails = $repo->find($id);
@@ -164,6 +206,7 @@ class RendezVousController extends AbstractController
                 $em->flush();
                 return $this->render('user/doctor/rendezvousdetails.html.twig', [
                     'user' => $user,
+                    'notifications' => $notifications,
                     'data' => $data,
                     'ordenances' => $ordenances,
                     'form' => $form->createView(),
@@ -174,6 +217,7 @@ class RendezVousController extends AbstractController
                 $rdvdetails1 = $repo->find($id);
                 return $this->render('user/doctor/rendezvousdetails.html.twig', [
                     'user' => $user,
+                    'notifications' => $notifications,
                     'data' => $data,
                     'ordenances' => $ordenances,
                     'form' => $form->createView(),
@@ -183,6 +227,7 @@ class RendezVousController extends AbstractController
         }
         return $this->render('user/doctor/rendezvousdetails.html.twig', [
             'user' => $user,
+            'notifications' => $notifications,
             'data' => $data,
             'ordenances' => $ordenances,
             'form' => $form->createView(),

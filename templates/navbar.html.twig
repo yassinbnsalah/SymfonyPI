@@ -71,183 +71,49 @@
                                     ></a>
                               </div>
                               <ul class="list-group list-group-flush notification-list-scroll">
+                                 <div id="newItem"></div>
+                                 {% for notification in notifications %}
+                                 {% if notification.seen == 0 %}
                                  <li class="list-group-item bg-light">
+                                    {%  else %}
+                                    <li class="list-group-item">
+                                       {% endif %}
                                     <div class="row">
                                        <div class="col">
                                           <div class="d-flex">
                                              <img
-                                                src="../assets/images/avatar/avatar-1.jpg"
+                                                src="{{asset('assets/images/avatar/avatar-1.jpg')}}"
                                                 alt=""
                                                 class="avatar-md rounded-circle"
                                                 />
                                              <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">Kristin Watson:</h5>
+                                                <h5 class="font-weight-bold mb-1">Admin:</h5>
                                                 <p class="mb-3">
-                                                   Krisitn Watsan like your comment on course
-                                                   Javascript Introduction!
+                                                   {{notification.message}}
                                                 </p>
                                                 <span class="font-size-xs text-muted">
                                                 <span
                                                    ><span
                                                    class="fe fe-thumbs-up text-success mr-1"
-                                                   ></span
-                                                   >2 hours ago,</span
                                                    >
-                                                <span class="ml-1">2:19 PM</span>
+                                               
                                                 </span>
+                                                <span class="ml-1">{{ notification.getDateNotification()|date('y-m-d- H:i')}}</span>
                                              </div>
                                           </div>
+                                          {% if notification.path == "sub" %}
+                                          <a class="stretched-link"  href="{{ path('subhistory' ) }}"></a>
+                                          {% else %}
                                           <a class="stretched-link" href="#!"></a>
+                                          {% endif %}
                                        </div>
                                        <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-info"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as read"
-                                             >
-                                          </a>
-                                          <div>
-                                             <a
-                                                href="#!"
-                                                class="bg-transparent"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title=""
-                                                data-original-title="Remove"
-                                                >
-                                             <i class="fe fe-x text-muted"></i>
-                                             </a>
-                                          </div>
+                                        
+                                         
                                        </div>
                                     </div>
                                  </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-2.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">
-                                                   Brooklyn Simmons
-                                                </h5>
-                                                <p class="mb-3">
-                                                   Just launched a new Courses React for Beginner.
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-thumbs-up text-success mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:20 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-3.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">Jenny Wilson</h5>
-                                                <p class="mb-3">
-                                                   Krisitn Watsan like your comment on course
-                                                   Javascript Introduction!
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-thumbs-up text-info mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:56 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
-                                 <li class="list-group-item">
-                                    <div class="row">
-                                       <div class="col">
-                                          <div class="d-flex">
-                                             <img
-                                                src="../assets/images/avatar/avatar-4.jpg"
-                                                alt=""
-                                                class="avatar-md rounded-circle"
-                                                />
-                                             <div class="ml-3">
-                                                <h5 class="font-weight-bold mb-1">Sina Ray</h5>
-                                                <p class="mb-3">
-                                                   You earn new certificate for complete the Javascript
-                                                   Beginner course.
-                                                </p>
-                                                <span class="font-size-xs text-muted">
-                                                <span
-                                                   ><span
-                                                   class="fe fe-award text-warning mr-1"
-                                                   ></span
-                                                   >Oct 9,</span
-                                                   >
-                                                <span class="ml-1">1:56 PM</span>
-                                                </span>
-                                             </div>
-                                          </div>
-                                          <a class="stretched-link" href="#!"></a>
-                                       </div>
-                                       <div class="col-auto text-center">
-                                          <a
-                                             href="#!"
-                                             class="badge-dot badge-secondary"
-                                             data-toggle="tooltip"
-                                             data-placement="top"
-                                             title=""
-                                             data-original-title="Mark as unread"
-                                             >
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </li>
+                                 {% endfor %}
                               </ul>
                               <div class="border-top px-3 pt-3 pb-0">
                                  <a
@@ -419,7 +285,39 @@
     
     <!-- Theme JS -->
     <script src="{{asset('assets/js/theme.min.js')}}"></script>
-
+    <script>
+      const eventSource = new EventSource("{{ mercure('https://walkeryessine.com/walker/1')|escape('js') }}");
+      eventSource.onmessage = event => {  
+         console.log("test");
+          // Will be called every time an update is published by the server
+          var user = "{{ user.id }}";
+          console.log(user);
+          document.getElementById('newNotif').removeAttribute("hidden");
+          console.log(JSON.parse(event.data));
+          console.log(JSON.parse(JSON.parse(event.data)[0]));
+          let newData = JSON.parse(JSON.parse(event.data)[0])
+         if( newData.toUser.id == user ){
+            dateNotif = newData.dateNotification.substr(0, 10) ;
+            heureNotif = newData.dateNotification.substr(11,5);
+            message = newData.message ; 
+            path = newData.path  ;
+            seen = newData.seen ; 
+            console.log('new notification');
+            if(path == 'sub') {
+               document.getElementById("newItem").innerHTML += "<li class='list-group-item bg-light'><div class='row'> <div class='col'> <div class='d-flex'>  <img src='{{asset('assets/images/avatar/avatar-1.jpg')}}' alt='' class='avatar-md rounded-circle'/>   <div class='ml-3'>  <h5 class='font-weight-bold mb-1'>Admin:</h5> <p class='mb-3'>"+newData.message+"</p><span class='font-size-xs text-muted'><span><span class='fe fe-thumbs-up text-success mr-1'> </span> <span class='ml-1'>"+dateNotif+"-"+heureNotif+"</span>  </div> </div><a class='stretched-link'  href='{{ path('subhistory' ) }}'></a>  </div> <div class='col-auto text-center'> </div> </div> </li>";
+            }else if (path == 'order') {
+               document.getElementById("newItem").innerHTML += "<li class='list-group-item bg-light'><div class='row'> <div class='col'> <div class='d-flex'>  <img src='{{asset('assets/images/avatar/avatar-1.jpg')}}' alt='' class='avatar-md rounded-circle'/>   <div class='ml-3'>  <h5 class='font-weight-bold mb-1'>Admin:</h5> <p class='mb-3'>"+newData.message+"</p><span class='font-size-xs text-muted'><span><span class='fe fe-thumbs-up text-success mr-1'> </span> <span class='ml-1'>"+dateNotif+"-"+heureNotif+"</span>  </div> </div><a class='stretched-link'  href='{{ path('ListeOrder' ) }}'></a>  </div> <div class='col-auto text-center'> </div> </div> </li>";
+            }else if (path == 'rdv') {
+               document.getElementById("newItem").innerHTML += "<li class='list-group-item bg-light'><div class='row'> <div class='col'> <div class='d-flex'>  <img src='{{asset('assets/images/avatar/avatar-1.jpg')}}' alt='' class='avatar-md rounded-circle'/>   <div class='ml-3'>  <h5 class='font-weight-bold mb-1'>Admin:</h5> <p class='mb-3'>"+newData.message+"</p><span class='font-size-xs text-muted'><span><span class='fe fe-thumbs-up text-success mr-1'> </span> <span class='ml-1'>"+dateNotif+"-"+heureNotif+"</span>  </div> </div><a class='stretched-link'  href='{{ path('rendezVousListe' ) }}'></a>  </div> <div class='col-auto text-center'> </div> </div> </li>";
+            }
+            
+         //   document.getElementById("newItem").innerHTML += "<li class='list-group-item bg-light'><div class='row'><div class='col'> <div class='d-flex'> new Notifications</div></div></div></li>" ; 
+         }else{
+            console.log("not for yours ")
+         }
+          
+      }
+      </script>
 {% endblock %}
     </body>
 </html>

@@ -252,15 +252,16 @@ class UserController extends AbstractController
         }
     }
     #[Route('/pharmacien/dashboard', name: 'dashPharmacien')]
-    public function dashPharmacien(OrdennanceRepository $repo): Response
+    public function dashPharmacien(OrdennanceRepository $repo, NotificationRepository $notificationRepository): Response
     {
         $usercurrent = $this->getUser();
         $ordonnance = $repo->findAll();
-
+        $notifications = $notificationRepository->findBy(array('toUser' => $usercurrent), array('dateNotification' => 'DESC'));
         return $this->render('user/pharmacien/pharmacienDash.html.twig', [
             'controller_name' => 'UserController',
             'user' => $usercurrent,
-            'ordonnances' => $ordonnance
+            'ordonnances' => $ordonnance,
+            'notifications' => $notifications
         ]);
     }
 

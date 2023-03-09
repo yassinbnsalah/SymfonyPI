@@ -98,8 +98,8 @@ class SanteController extends AbstractController
 
                     $notification = new Notification();
                     $notification->setDateNotification(new \DateTime());
-                    $notification->setMessage('your rendez vous with' . $DoctorByID->getName());
-                    $notification->setToUser($user);
+                    $notification->setMessage('you recieved New Rendez Vous from ' . $user->getName());
+                    $notification->setToUser($DoctorByID);
                     $notification->setPath("rdv");
                     $notification->setSeen(false);
                     $notificationRepository->save($notification);
@@ -157,18 +157,21 @@ class SanteController extends AbstractController
 
 
     #[Route('/dashboard/doctor/clientliste', name: 'ListeClientByDoctor')]
-    public function ListeClientByDoctor(UserRepository $userRepository): Response
+    public function ListeClientByDoctor(UserRepository $userRepository, NotificationRepository $notificationRepository): Response
     {
         $User_client = $userRepository->findByRole('["ROLE_CLIENT"]');
         $user = $this->getUser();
+
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         return $this->render('user/doctor/ListeClientDoctor.html.twig', [
             'controller_name' => 'SanteController',
             'User_client' => $User_client,
-            'user' => $user
+            'user' => $user,
+            'notifications' => $notifications
         ]);
     }
     #[Route('/dashboard/doctor/disponibilityliste', name: 'ListeDisponibility')]
-    public function ListeDisponibility(Request $req, ManagerRegistry $em): Response
+    public function ListeDisponibility(Request $req, ManagerRegistry $em, NotificationRepository $notificationRepository): Response
     {
         $dispo = new Disponibility();
         $dispo->setDateDispo(new \DateTime());
@@ -177,6 +180,9 @@ class SanteController extends AbstractController
 
         $user = $this->getUser();
         $data = null;
+
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
+
         if ($form->isSubmitted()) {
             $dataF = $form->getData();
 
@@ -197,6 +203,7 @@ class SanteController extends AbstractController
                     'controller_name' => 'SanteController',
                     'user' => $user,
                     'data' =>  $data,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -205,19 +212,21 @@ class SanteController extends AbstractController
             'controller_name' => 'SanteController',
             'user' => $user,
             'data' =>  $data,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
 
 
     #[Route('/dashboard/doctor/disponibility/update/{id}', name: 'UpdateDisponibility')]
-    public function UpdateDisponibility($id, Request $req, ManagerRegistry $em, DisponibilityRepository $repo): Response
+    public function UpdateDisponibility($id, Request $req, ManagerRegistry $em, DisponibilityRepository $repo, NotificationRepository $notificationRepository): Response
     {
         $dispo = $repo->find($id);
         $form = $this->createForm(DisponibilityType::class, $dispo);
         $form->handleRequest($req);
 
         $user = $this->getUser();
+        $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
         $data = null;
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -236,6 +245,8 @@ class SanteController extends AbstractController
                     'controller_name' => 'SanteController',
                     'user' => $user,
                     'data' =>  $data,
+                    'dispo' => $dispo,
+                    'notifications' => $notifications,
                     'form' => $form->createView()
                 ]);
             }
@@ -245,6 +256,7 @@ class SanteController extends AbstractController
             'user' => $user,
             'data' =>  $data,
             'dispo' => $dispo,
+            'notifications' => $notifications,
             'form' => $form->createView()
         ]);
     }
@@ -296,7 +308,7 @@ class SanteController extends AbstractController
     }
 
     #[Route('/dashboard/pharmacien/medicament', name: 'ListeMedicament')]
-    public function ListeMedicament(MedicamentRepository $repo, Request $req): Response
+    public function ListeMedicament(MedicamentRepository $repo, Request $req,NotificationRepository $notificationRepository): Response
     {
         $Medicament = $repo->findAll();
         $userConnected = $this->getUser();
@@ -304,6 +316,8 @@ class SanteController extends AbstractController
         $MedicamentToadd = new Medicament();
         $form = $this->createForm(AddMedicamentType::class, $MedicamentToadd);
         $form->handleRequest($req);
+     
+        $notifications = $notificationRepository->findBy(array('toUser' => $userConnected), array('dateNotification' => 'DESC'));
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $repo->save($MedicamentToadd, true);
@@ -315,6 +329,7 @@ class SanteController extends AbstractController
                     'controller_name' => 'HomeController',
                     'user' => $userConnected,
                     'Medicaments' => $Medicament,
+                    'notifications' => $notifications,
                     'data' => $response->getContent(),
                     'form' => $form->createView()
 
@@ -326,6 +341,7 @@ class SanteController extends AbstractController
             'user' => $userConnected,
             'Medicaments' => $Medicament,
             'data' => "",
+            'notifications' => $notifications,
             'form' => $form->createView()
 
         ]);
