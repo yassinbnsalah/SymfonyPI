@@ -16,6 +16,7 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("order")]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -60,7 +61,7 @@ class Order
     // private ?string $stripe_token = null;
 
     // #[ORM\Column(length: 255, nullable: true)]
-    // private ?string $brand_stripe = null;
+    // private ?string $brand_stripe = null;"
 
     // #[ORM\Column(length: 255, nullable: true)]
     // private ?string $last4_stripe = null;

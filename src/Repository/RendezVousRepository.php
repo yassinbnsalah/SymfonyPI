@@ -21,7 +21,7 @@ class RendezVousRepository extends ServiceEntityRepository
         parent::__construct($registry, RendezVous::class);
     }
 
-    public function save(RendezVous $entity, bool $flush = false): void
+    public function save(RendezVous $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
