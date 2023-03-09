@@ -11,6 +11,16 @@
         <div class="mb-2 mb-lg-0">
           <h1 class="mb-1 h2 font-weight-bold">All Product</h1>
           <!-- Breadcrumb -->
+          <!-- Load Flashy default CSS -->
+            <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}"> 
+
+            <!-- Flashy depends on jQuery -->
+            <script src="//code.jquery.com/jquery.js"></script>
+            <!-- Load Flashy default JavaScript -->
+           <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+
+            <!-- Include Flashy default partial -->
+            {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
@@ -25,8 +35,25 @@
             </ol>
           </nav>
         </div>
+        
+          
+					<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+					<script>
+						$(document).ready(function () {
+$("#myInput").on("keyup", function () {
+var value = $(this).val().toLowerCase();
+$("#myTable tr").filter(function () {
+$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+});
+})
+});
+					</script>
+          
         <div>
           <a class="btn btn-primary"   data-toggle="modal" data-target="#newProduit">Add New Product</a>
+          <a class="btn btn-info" href="{{ path('produit_pdf') }}">imprimer</a>
+          <a class="btn btn-info" href="{{ path('statistiques') }}">voir stats</a>
+
         </div>
       </div>
     </div>
@@ -53,7 +80,7 @@
              <span class="position-absolute pl-3 search-icon">
             <i class="fe fe-search"></i>
             </span>
-            <input type="search" class="form-control pl-6" placeholder="Search Product" />
+            <input type="search" id="myInput"class="form-control pl-6" placeholder="Search Product" />
           </form>
         </div>
         <div>
@@ -62,7 +89,7 @@
             <!--Tab pane -->
             <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="courses-tab">
               <div class="table-responsive border-0 overflow-y-hidden">
-                <table class="table mb-0 text-nowrap">
+                <table class="table mb-0 text-nowrap" id="myTable">
                   <thead>
                     <tr>
                       <th scope="col" class="border-0 text-uppercase">
@@ -104,7 +131,7 @@
                       <td class="align-middle border-top-0">
                         <div class="d-flex align-items-center">
                         
-                          <h5 class="mb-0">{{ p.category }}</h5>
+                          <h5 class="mb-0">{{ p.getCategory().getName() }}</h5>
                         </div>
                       </td>
                       <td class="align-middle border-top-0">

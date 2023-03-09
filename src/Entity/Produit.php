@@ -52,6 +52,12 @@ class Produit
         $this->orderLines = new ArrayCollection();
     }
 
+    #[ORM\ManyToOne(inversedBy: 'produit')]
+    private ?Categorie $categorie = null;
+
+
+ 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -167,6 +173,18 @@ class Produit
                 $orderLine->setProduct(null);
             }
         }
+
+        return $this;
+    }
+    
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

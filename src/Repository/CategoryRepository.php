@@ -38,6 +38,7 @@ class CategoryRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
 
 //    /**
 //     * @return Category[] Returns an array of Category objects
