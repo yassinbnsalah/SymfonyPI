@@ -99,10 +99,10 @@ class UserServiceController extends AbstractController
                 //  $json = json_encode($userlogin);
                 return new JsonResponse($userlogin, 200);
             } else {
-                return new JsonResponse("password not found", 500);
+                return new JsonResponse("password not found", 200);
             }
         } else {
-            return new JsonResponse("No User founded", 300);
+            return new JsonResponse("No User founded", 200);
         }
     }
 

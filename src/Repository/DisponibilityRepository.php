@@ -30,7 +30,7 @@ class DisponibilityRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Disponibility $entity, bool $flush = false): void
+    public function remove(Disponibility $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 

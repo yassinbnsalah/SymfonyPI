@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\DisponibilityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: DisponibilityRepository::class)]
 class Disponibility
@@ -12,20 +13,23 @@ class Disponibility
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("disponibilites")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     
     #[Assert\NotBlank(message:"Date is required")]
     #[Assert\GreaterThanOrEqual("today",
-    message:"Date must be higher than today")]     
+    message:"Date must be higher than today")]  
+    #[Groups("disponibilites")]   
     private ?\DateTimeInterface $dateDispo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Groups("disponibilites")]
     private ?\DateTimeInterface $heureStart = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-
+    #[Groups("disponibilites")]
     private ?\DateTimeInterface $heureEnd = null;
 
     #[ORM\Column(length: 255)]
@@ -35,6 +39,7 @@ class Disponibility
     private ?User $doctor = null;
 
     #[ORM\Column(length: 125, nullable: true)]
+    #[Groups("disponibilites")]
     private ?string $state = null;
 
     public function getId(): ?int
