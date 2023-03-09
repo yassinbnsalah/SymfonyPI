@@ -129,4 +129,15 @@ class OrdenanceController extends AbstractController
             'rendezvous' => $rendezvous
         ]);
     }
+
+    #[Route('/ordenancePDF/{id}', name: 'ordenancePDF')]
+    public function ordenancePDF($id, RendezVousRepository $OrdennanceRepo,OrdennanceLigneRepository $OrdennanceLigne ): Response
+    { 
+        $order = $OrdennanceRepo->find($id);
+        $OrdennanceL = $OrdennanceLigne->findAll();
+        return $this->render('/ordenance/ordenancePDF.html.twig', [
+            'order' => $order,
+            'OrdennanceL' => $OrdennanceL
+        ]);
+    }
 }

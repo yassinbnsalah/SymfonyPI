@@ -104,7 +104,11 @@ $(document).ready(function(){
                         <td class="align-middle border-top-0">
                           <h5 class="mb-0">
                             <a href="{{ path('clientDetails' , {'id' : sub.getUser().getId()  }) }}" class="text-inherit">
+                              {% if sub.reference %}
+                              {{ sub.reference }}
+                              {% else %}
                               {{ sub.id }}
+                              {% endif %}
                             </a>
                           </h5>
                         </td>

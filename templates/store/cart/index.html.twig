@@ -101,7 +101,14 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <div> <a href="{{path("AddOrder")}}" class="btn btn-success"> checkout </a></div>
+                        <div> 
+                        {% if dataPanier %}
+                          <a href="{{path("AddOrder")}}" class="btn btn-success"> checkout </a>
+                          {% else %}
+                          <button  class="btn btn-success" disabled> checkout </button>
+                        {% endif %}
+                        
+                        </div>
                     </div>
                   </div>
                 

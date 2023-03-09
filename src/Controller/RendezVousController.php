@@ -157,6 +157,8 @@ class RendezVousController extends AbstractController
         $ordenances =  $ordrepo->findAll();
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+
+                $rdvtoupdate->setHourRV(new \DateTime($request->request->get('HeureStart')));
                 $em = $em->getManager();
                 $em->persist($rdvtoupdate);
                 $em->flush();

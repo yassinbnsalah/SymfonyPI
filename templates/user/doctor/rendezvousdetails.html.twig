@@ -107,11 +107,11 @@
                     <div class="card-header">
                         <h3 class="mb-0">Rendez vous details </h3>
                         <p class="mb-0">
-                            Rendezvous Dashboard is a quick overview of all rendez vous details <a class="badge badge-primary"> imprimer </a>
+                            Rendezvous Dashboard is a quick overview of all rendez vous details <a  href="{{ path('ordenancePDF',{'id':rendezVous.id}) }}" class="badge badge-primary"> imprimer </a>
                         </p>
                      
                         {% if  rendezVous.getOrdennance() %}
-                        <a class="btn btn-primary btn-sm" href="{{ path('UpdateOrdenance',{'id':rendezVous.id}) }}"> Update Ordenance </a>
+                        <p> </p>
                         {% else %}
                         <a class="btn btn-primary btn-sm" href="{{ path('GenerateOrdenance',{'id':rendezVous.id}) }}"> Generate Ordenance </a>
                         {% endif %}
@@ -231,15 +231,8 @@
             </div>
             <div class="form-group">
               <label for="message-text" class="col-form-label">Heure Rendez Vous:</label>
-              {%  if data is  empty %} 
-              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr ', 'placeholder':'HourRV'}})}}
-              <small>Field must contain a unique value</small>
-              {% elseif form_errors(form.HourRV ) %} 
-              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr is-invalid' , 'placeholder':'HourRV'}})}}
-              {% else %}
-              {{ form_widget(form.HourRV , {'attr' : {'class' : 'form-control flatpickr  is-valid' , 'placeholder':'HourRV'}})}}
-              {% endif %}
-              <small>  {{ form_errors(form.HourRV )}} </small>
+              <input class="form-control" name="HeureStart" value={{ rendezVous.getHourRV()|date('H:i')}} data-inputmask-alias="datetime" placeholder="" type="text" data-inputmask-inputformat="HH:MM" inputmode="numeric" id="date">
+              
             
             </div>
             <div class="form-group">

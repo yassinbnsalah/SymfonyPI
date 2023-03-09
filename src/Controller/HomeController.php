@@ -70,4 +70,12 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/tempalate', name: 'tempalate')]
+    public function tempalate(): Response
+    { 
+        return $this->render('email/SubEmail.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }

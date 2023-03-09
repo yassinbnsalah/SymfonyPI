@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Twilio\Rest\Client;
 
 class SanteController extends AbstractController
 {
@@ -55,6 +56,7 @@ class SanteController extends AbstractController
     public function addRendezVous(
         Request $request,
         $id,
+        Client $twilioClient,
         ManagerRegistry $em,
         RealTimeManager $realTimeManager,
         NotificationRepository $notificationRepository,
@@ -82,6 +84,18 @@ class SanteController extends AbstractController
                     $em = $em->getManager();
                     $em->persist($rendezvous);
                     $em->flush();
+                    $fromNumber = '+15673343714';
+                    $toNumber = '+21693293311';
+
+                    // Create the message
+                    $message = $twilioClient->messages->create(
+                        $toNumber, // The phone number to send the SMS to
+                        [
+                            'from' => $fromNumber, // The Twilio phone number to send the SMS from
+                            'body' => 'hello your rendez vous has been approved successfully !', // The message body
+                        ]
+                    );
+
                     $notification = new Notification();
                     $notification->setDateNotification(new \DateTime());
                     $notification->setMessage('your rendez vous with' . $DoctorByID->getName());
@@ -116,20 +130,19 @@ class SanteController extends AbstractController
         }
     }
 
-
     #[Route('/dashboard/doctor/rendez-vous', name: 'listeRendezVousForDoctor')]
-    public function ListeRendezVous(RendezVousRepository $repo , NotificationRepository $notificationRepository): Response
+    public function ListeRendezVous(RendezVousRepository $repo, NotificationRepository $notificationRepository): Response
     {
 
         $usercurrent = $this->getUser();
-        $rendezvous = $repo->findAll();
+        $rendezvous = $repo->findBy(array(), array('DateRV' => 'DESC'));
 
         $notifications = $notificationRepository->findBy(array(), array('dateNotification' => 'DESC'));
         if ($usercurrent->getRoles()[0] == 'ROLE_ADMIN') {
             return $this->render('sante/rendezvous/listerendezvous.html.twig', [
                 'controller_name' => 'SanteController',
                 'user' => $usercurrent,
-                'notifications' => $notifications , 
+                'notifications' => $notifications,
                 'rendezvous' => $rendezvous
             ]);
         } else {
@@ -137,7 +150,7 @@ class SanteController extends AbstractController
                 'controller_name' => 'SanteController',
                 'user' => $usercurrent,
                 'rendezvous' => $rendezvous,
-                'notifications' => $notifications 
+                'notifications' => $notifications
             ]);
         }
     }
@@ -258,8 +271,8 @@ class SanteController extends AbstractController
     public function SetDisponibilityFull($id, ManagerRegistry $em, DisponibilityRepository $repo): Response
     {
         $dispo = $repo->find($id);
-        $dispo->setState("full"); 
-        $repo->save($dispo); 
+        $dispo->setState("full");
+        $repo->save($dispo);
         return $this->redirectToRoute('ListeDisponibility');
     }
 
@@ -267,8 +280,8 @@ class SanteController extends AbstractController
     public function SetDisponibilityInFull($id, ManagerRegistry $em, DisponibilityRepository $repo): Response
     {
         $dispo = $repo->find($id);
-        $dispo->setState("available"); 
-        $repo->save($dispo); 
+        $dispo->setState("available");
+        $repo->save($dispo);
         return $this->redirectToRoute('ListeDisponibility');
     }
 

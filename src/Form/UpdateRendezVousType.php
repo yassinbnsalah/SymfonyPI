@@ -18,7 +18,7 @@ class UpdateRendezVousType extends AbstractType
             ->add('DateRV', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('HourRV')
+           // ->add('HourRV')
             
             
             ->add('note')

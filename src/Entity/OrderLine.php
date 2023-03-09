@@ -12,21 +12,22 @@ class OrderLine
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["order","orderlignes"])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
-    #[Groups("order")]
+    #[Groups(["order","orderlignes"])]
     private ?Produit $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderLines')]
     private ?Order $relatedOrder = null;
 
     #[ORM\Column]
-    #[Groups("order")]
+    #[Groups(["order","orderlignes"])]
     private ?int $quantity = null;
 
     #[ORM\Column]
-    #[Groups("order")]
+    #[Groups(["order","orderlignes"])]
     private ?float $price = null;
 
     public function getId(): ?int

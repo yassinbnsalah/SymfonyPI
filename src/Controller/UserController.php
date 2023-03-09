@@ -37,6 +37,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Twilio\Rest\Client;
 
 class UserController extends AbstractController
 {
@@ -1016,18 +1017,29 @@ class UserController extends AbstractController
     }
 
     #[Route('/ticket/progress/{id}', name: 'progressTicket')]
-    public function progressTicket($id, TicketRepository $repo, ManagerRegistry $em): Response
+    public function progressTicket($id, TicketRepository $repo, ManagerRegistry $em,Client $twilioClient): Response
     {
         $progressTicket = $repo->find($id);
         $progressTicket->setState("In progress");
         $em = $em->getManager();
         $em->persist($progressTicket);
         $em->flush();
+        $fromNumber = '+15673343714';
+        $toNumber = '+21693293311';
+
+        // Create the message
+        $message = $twilioClient->messages->create(
+            $toNumber, // The phone number to send the SMS to
+            [
+                'from' => $fromNumber, // The Twilio phone number to send the SMS from
+                'body' => 'Hello, your ticket in progress!', // The message body
+            ]
+        );
         return $this->redirectToRoute('allticket');
     }
 
     #[Route('/ticket/confirmed/{id}', name: 'ConfirmedTicket')]
-    public function ConfirmedTicket($id, TicketRepository $repo, ManagerRegistry $em): Response
+    public function ConfirmedTicket($id, TicketRepository $repo, ManagerRegistry $em,Client $twilioClient): Response
     {
 
         $ConfirmedTicket = $repo->find($id);
@@ -1035,7 +1047,17 @@ class UserController extends AbstractController
         $em = $em->getManager();
         $em->persist($ConfirmedTicket);
         $em->flush();
-        
+        $fromNumber = '+15673343714';
+        $toNumber = '+21693293311';
+
+        // Create the message
+        $message = $twilioClient->messages->create(
+            $toNumber, // The phone number to send the SMS to
+            [
+                'from' => $fromNumber, // The Twilio phone number to send the SMS from
+                'body' => 'Hello, your ticket confirmed!', // The message body
+            ]
+        );
         return $this->redirectToRoute('allticket');
     }
 }

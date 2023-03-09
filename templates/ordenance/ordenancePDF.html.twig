@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	
+
+		<!-- Favicon -->
+		<link rel="icon" href="./images/favicon.png" type="image/x-icon" />
+
+		<!-- Invoice styling -->
+		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{asset('invoiceStyle.css')}}" media="print">
+	
+	</head>
+
+	<body>
+		<h1>Ordenance</h1>
+		<h3> ID Rendez Vous : #{{order.getOrdennance().id}}.</h3>
+		<br /><br />
+		
+		
+		<br /><br />
+
+		<div class="invoice-box">
+			<table>
+				<tr class="top">
+					<td colspan="4">
+						<table>
+							<tr>
+								<td class="title">
+									<img src="{{asset('assets/images/brand/logo/pilogo.png')}}"   style="width: 100%; max-width: 300px" />
+								</td>
+								
+								<td>
+									Invoice #:<strong>{{order.getOrdennance().id}}</strong><br />
+									Created:{{order.getOrdennance().getDateordenance()|date('d-m-Y')}}<br />
+									Doctor:<span class="badge badge-primary">{{order.getTodoctor().name}}</span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="4">
+						<table>
+							<tr>
+								<td>
+									{{order.getFromuser().getName()}}.<br />
+									{{order.getFromuser().getNumero()}}<br />
+									{{order.getFromuser().getEmail()}}
+								</td>
+								
+								<td>
+									<br />
+									
+									{{order.DatePassageRV()|date('d-m-Y')}}<br>
+                                    {{order.HourRV|date('h:m:s')}}
+                                  
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				
+
+			
+
+				<tr class="heading">
+					<td>Item</td>
+					<td>quantity</td>
+					<td class="check">Price</td>
+				</tr> 
+				
+
+			
+
+
+				<tr class="total">
+                {% for ordl in OrdennanceL %}
+                    {% if ordl.getOrdennance().id == order.getOrdennance().id  %}
+                        
+                   
+           
+						<td>{{ordl.getMedicament().nom}}</td>
+					<td>{{ordl.getQunatite()}}</td>
+                     {% endif %}
+                         {% endfor %}
+					<td class="check">Total: {{order.getOrdennance().amount}}<sup> DT</sup></td>
+				</tr>
+
+				
+			</table>
+		
+		</div>
+
+		<a  onClick="imprimer()" id="btn"  role="button">click here to print this invoice  </a>
+	</body>
+	<script>
+	function imprimer() {
+	 document.getElementById('btn').hidden =true ; 
+	 window.print();     
+	 }
+  </script>
+</html>

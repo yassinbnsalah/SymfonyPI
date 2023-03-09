@@ -203,6 +203,21 @@ class ServicesController extends AbstractController
         $subscriptionRepository->save($subscription);
 
 
+        $loader = new FilesystemLoader('../templates');
+        $twig = new Environment($loader);
+        $html = $twig->render('email/SubEmail.html.twig', [
+            'user' => 'yessine',
+            'subscription' => $subscription,
+        ]);
+        $email = (new Email())
+            ->from('contact.fithealth23@gmail.com')
+            ->to($subscription->getUser()->getEmail())
+            ->subject('Sub renew')
+            ->html($html);
+        $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');
+        $mailer = new Mailer($transport);
+        $mailer->send($email);
+
 
         $subscription =  $user->getSubscriptions();
         $SubNormilizer = $normalizer->normalize($subscription, 'json', ['groups' => "subscribers"]);
