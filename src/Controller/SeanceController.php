@@ -8,6 +8,8 @@ use App\Repository\NotificationRepository;
 use App\Repository\SeanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,4 +85,29 @@ class SeanceController extends AbstractController
             $em->flush() ; 
             return $this->redirectToRoute('listeSeance');
     }
+
+    #[Route('/dashboard/coach/seance', name: 'findseance')]
+        public function findSeance(SeanceRepository $seanceRepository, Request $request)
+        {
+            $user = $this->getUser();
+            $searchForm = $this->createFormBuilder()
+                ->add('search', TextType::class, ['required' => false])
+                ->add('submit', SubmitType::class, ['label' => 'Search'])
+                ->getForm();
+
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+                $name = $searchForm->get('search')->getData();
+                $seances = $seanceRepository->findByName($name);
+            } else {
+                $seances = $seanceRepository->findAll();
+            }
+
+            return $this->render('user/coach/seanceList.html.twig', [
+                'user' => $user,
+                'searchForm' => $searchForm->createView(),
+                'seances' => $seances,
+            ]);
+        }
 }

@@ -117,7 +117,40 @@
                     <div>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newCatgory">add seance </a>
                     </div>
+                    <div>
+                    
+                    {# {{ form_start(searchForm) }}
+                                    {{ form_row(searchForm.search) }}
+                                    {{ form_row(searchForm.submit) }}
+                    {{ form_end(searchForm) }}
+
+                                <ul>
+                                    {% for seance in seances %}
+                                        <li>{{ seance.name }}</li>
+                                    {% else %}
+                                        <li>No seance found</li>
+                                    {% endfor %} #}
+                                </ul>
+                    </div> 
                     <!-- Table -->
+                    <form class="d-flex align-items-center col-12 col-md-8 col-lg-3">
+                        <span class="position-absolute pl-3 search-icon">
+                         <i class="fe fe-search"></i>
+                       </span>
+         <input type="search" id="myInput" class="form-control pl-6" placeholder="Search activity" />
+                   
+                     </form>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+                    <script>
+      $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+      </script> 
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
                             <thead>
@@ -131,7 +164,7 @@
                                   
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="myTable">
                                 {% for seance in seances %}
                                 <tr>
                                     <td class="align-middle border-top-0">

@@ -125,8 +125,10 @@
                                           </div>
                                           {% if notification.path == "sub" %}
                                           <a class="stretched-link"  href="{{ path('subhistory' ) }}"></a>
-                                          {% else %}
-                                          <a class="stretched-link" href="#!"></a>
+                                          {% elseif notification.path == "order"%}
+                                          <a class="stretched-link"  href="{{ path('ListeOrder' ) }}"></a>
+                                          {% elseif notification.path == "rdv"%}
+                                          <a class="stretched-link"  href="{{ path('rendezVousListe' ) }}"></a>
                                           {% endif %}
                                        </div>
                                        <div class="col-auto text-center">

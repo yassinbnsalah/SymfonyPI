@@ -109,40 +109,33 @@
                 <div class="card mb-4">
                     <!-- Card header -->
                     <div class="card-header border-bottom-0">
-                        <h3 class="mb-0">Planning Liste</h3>
-                        <span> Planning liste Dashboard is a quick overview of all current
-                            Planning liste.</span>
+                        <h3 class="mb-0">Planning</h3>
+                        <span>Voici une synthèse des activités et séances de votre programme</span>
                     </div>
                     <!-- Table -->
                     <div class="table-responsive border-0">
                         <table class="table mb-0 text-nowrap">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="border-0">Reference</th>
-                                    <th scope="col" class="border-0">Name</th>
-                                    <th scope="col" class="border-0">description</th>
-                                    <th scope="col" class="border-0">Type</th>
-                                    <th scope="col" class="border-0">Action</th>
-                                  
+                                    <th scope="col" class="border-0">Activité</th>
+                                    <th scope="col" class="border-0">Durée</th>
+                                    <th scope="col" class="border-0">Niveau</th>
+                                    <th scope="col" class="border-0">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                                    {% for act in activites %} {% for sea in seances %} 
                                 <tr>
-                                    <td class="align-middle border-top-0">
-                                        <h5 class="mb-0">
-                                            <a href="#!" class="text-inherit"  data-toggle="modal" data-target="#newCatgory">
-                                             #IDPLANNING
-                                            </a>
-                                        </h5>
-                                    </td>
-                                    <td class="align-middle border-top-0">PPL</td>
-                                    <td class="align-middle border-top-0">description</td>
-                                    <td class="align-middle border-top-0">Beginner</td>
-                                    <td class="align-middle border-top-0"><a href="#" class="btn btn-white btn-sm">edit</a><a href="#" class="btn btn-white btn-sm">remove</a></td>
-                                  
+                                    <td class="align-middle border-top-0">{{ act.nom }}</td>
+                                    <td class="align-middle border-top-0">{{ sea.duree }}</td>
+                                    <td class="align-middle border-top-0">{{ sea.niveau }}</td>
+                                    
+                                    <td class="align-middle border-top-0">{{ sea.date|date('d/m/Y')}}</td>
+                               
                                 </tr>
-                            
+                                    {% endfor %}
+                                    {% endfor %}
+                                    
                             </tbody>
                         </table>
                     </div>

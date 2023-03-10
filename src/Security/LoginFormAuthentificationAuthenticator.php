@@ -68,7 +68,7 @@ class LoginFormAuthentificationAuthenticator extends AbstractLoginFormAuthentica
             ]);
             $email = (new Email())
                 ->from('contact.fithealth23@gmail.com')
-                ->to('haelkyll@gmail.com')
+                ->to('yacinbnsalh@gmail.com')
                 ->subject('Email Confirmation')
                 ->html($html);
             $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');

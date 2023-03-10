@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Ticket;
+use Twilio\Rest\Client;
 use App\Repository\UserRepository;
+use App\Repository\TicketRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,16 +102,14 @@ class UserServiceController extends AbstractController
                 //  $json = json_encode($userlogin);
                 return new JsonResponse($userlogin, 200);
             } else {
-                return new JsonResponse("password not found", 200);
+                return new JsonResponse("password not found", 500);
             }
         } else {
-            return new JsonResponse("No User founded", 200);
+            return new JsonResponse("No User founded", 300);
         }
     }
 
     #[Route("user/deleteUser", name: "delete_User")]
-    #[Method("DELETE")]
-
     public function deletePostAction(Request $request)
     {
 
@@ -182,4 +183,48 @@ class UserServiceController extends AbstractController
         }
         return new JsonResponse("id Post invalide.");
     }
+    #[Route('/ticket/listTicket', name: 'listTicket')]
+    public function listTicket(TicketRepository $ticketRepository, NormalizerInterface $normalizer): Response
+    {
+        $sub = $ticketRepository->findAll();
+        $SubNormilizer = $normalizer->normalize($sub, 'json', ['groups' => "ticket"]);
+        $json = json_encode($SubNormilizer);
+
+        return new Response($json);
+    }
+    #[Route("/ticket/addTicket", name: "app_service_ajouterTicket")]
+    public function ajouterTicket(Request $request,Client $twilioClient)
+    {
+        $titre = $request->query->get("titre");
+        $message = $request->query->get("message");
+   
+
+
+        $ticket = new Ticket();
+        $ticket->setTitre($titre);
+        $ticket->setMessage($message);
+ 
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($ticket);
+            $em->flush();
+            $fromNumber = '+15673343714';
+            $toNumber = '+21693293311';
+    
+            // Create the message
+            $message = $twilioClient->messages->create(
+                $toNumber, // The phone number to send the SMS to
+                [
+                    'from' => $fromNumber, // The Twilio phone number to send the SMS from
+                    'body' => 'Hello, Your Ticket are saved!', // The message body
+                ]
+            );
+            return new JsonResponse("Ticket is cretaed", 200);
+        } catch (\Exception $ex) {
+            return new Response("exception :" . $ex->getMessage());
+        }
+    }
+
+
+
 }

@@ -47,6 +47,7 @@
         "symfony/security-bundle": "5.4.*",
         "symfony/serializer": "5.4.*",
         "symfony/string": "5.4.*",
+        "symfony/swiftmailer-bundle": "^3.5",
         "symfony/translation": "5.4.*",
         "symfony/twig-bridge": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
@@ -57,6 +58,7 @@
         "symfonycasts/reset-password-bundle": "1.13",
         "symfonycasts/verify-email-bundle": "^1.13",
         "twig/cssinliner-extra": "*",
+        "tattali/calendar-bundle": "^1.2",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
         "twilio/sdk": "^6.44"

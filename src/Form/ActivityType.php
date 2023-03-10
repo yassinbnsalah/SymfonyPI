@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Activity;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -38,4 +39,5 @@ class ActivityType extends AbstractType
             'data_class' => Activity::class,
         ]);
     }
+
 }

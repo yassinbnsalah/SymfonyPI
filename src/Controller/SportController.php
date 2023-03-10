@@ -7,6 +7,7 @@ use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,15 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
+use App\Entity\Session;
+use App\Repository\SeanceRepository;
+use App\Service\MailerService;
+use MailerService as GlobalMailerService;
+use MailerServices;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 class SportController extends AbstractController
 {

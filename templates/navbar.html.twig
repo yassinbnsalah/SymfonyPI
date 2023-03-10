@@ -45,6 +45,7 @@
           
                   <ul class="navbar-nav navbar-right-wrap ml-auto d-none d-lg-block">
                      <li class="dropdown d-inline-block stopevent">
+                        <span class="badge badge-danger" hidden id="newNotif"> New Notification </span>
                         <a
                            class="btn btn-light btn-icon rounded-circle text-muted indicator indicator-primary"
                            href="#!"
@@ -103,8 +104,10 @@
                                           </div>
                                           {% if notification.path == "sub" %}
                                           <a class="stretched-link"  href="{{ path('subhistory' ) }}"></a>
-                                          {% else %}
-                                          <a class="stretched-link" href="#!"></a>
+                                          {% elseif notification.path == "order"%}
+                                          <a class="stretched-link"  href="{{ path('ListeOrder' ) }}"></a>
+                                          {% elseif notification.path == "rdv"%}
+                                          <a class="stretched-link"  href="{{ path('rendezVousListe' ) }}"></a>
                                           {% endif %}
                                        </div>
                                        <div class="col-auto text-center">
@@ -117,7 +120,7 @@
                               </ul>
                               <div class="border-top px-3 pt-3 pb-0">
                                  <a
-                                    href="../pages/notification-history.html"
+                                 href="{{ path('notificationHistoryClient' ) }}"
                                     class="text-muted"
                                     >See all Notifications</a
                                     >
