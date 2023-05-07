@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Twilio\Rest\Client;
 
 class DisponibilityServiceController extends AbstractController
 {
@@ -59,7 +60,7 @@ class DisponibilityServiceController extends AbstractController
         Request $request,
         NormalizerInterface $normalizer,
         UserRepository $userRepository,
-        DisponibilityRepository $disponibilityRepository
+        DisponibilityRepository $disponibilityRepository,Client $twilioClient
     ): Response {
         $id = $request->query->get("id");
         $heureStart = new \DateTime($request->query->get('HeureStart'));
@@ -74,7 +75,19 @@ class DisponibilityServiceController extends AbstractController
         $dispo->setState("Available");
         $dispo->setDoctor($user);
         $disponibilityRepository->save($dispo);
-      
+
+
+        $fromNumber = '+15673343714';
+        $toNumber = '+21693293311';
+
+        // Create the message
+        $message = $twilioClient->messages->create(
+            $toNumber, // The phone number to send the SMS to
+            [
+                'from' => $fromNumber, // The Twilio phone number to send the SMS from
+                'body' => $request->query->get('Datedispo').'you will start you shift at!'.$request->query->get('HeureStart'), // The message body
+            ]
+        );
 
         return new JsonResponse("Disponnibility created successfully");
     }

@@ -50,10 +50,14 @@ class Produit
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     #[ORM\ManyToOne(inversedBy: 'produit')]
     private ?Categorie $categorie = null;
+
+    #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: Rating::class)]
+    private Collection $ratings;
 
 
  
@@ -185,6 +189,36 @@ class Produit
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getProduit() === $this) {
+                $rating->setProduit(null);
+            }
+        }
 
         return $this;
     }

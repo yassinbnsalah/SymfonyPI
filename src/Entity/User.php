@@ -133,6 +133,9 @@ class User implements UserInterface
      #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Notification::class)]
      private Collection $notifications;
 
+     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class)]
+     private Collection $ratings;
+
      public function __construct()
      {
          $this->subscriptions = new ArrayCollection();
@@ -143,6 +146,7 @@ class User implements UserInterface
          $this->orders = new ArrayCollection();
          $this->tickets = new ArrayCollection();
          $this->notifications = new ArrayCollection();
+         $this->ratings = new ArrayCollection();
      }
 
     public function __toString()
@@ -578,6 +582,36 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
+            }
+        }
 
         return $this;
     }
