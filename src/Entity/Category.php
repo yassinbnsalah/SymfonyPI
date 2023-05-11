@@ -14,10 +14,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["categorys","order",'post:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["categorys","order"])]
+    #[Groups(["categorys","order",'post:read'])]
     
     private ?string $name = null;
 
@@ -25,10 +26,11 @@ class Category
     private Collection $produit;
 
     #[ORM\Column(nullable: true)]
-    #[Groups("categorys")]
+    #[Groups(["categorys","order",'post:read'])]
     private ?int $nbProduct = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(["categorys","order",'post:read'])]
     private ?string $slug = null;
 
     public function __construct()

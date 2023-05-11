@@ -15,33 +15,36 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["order","orderlignes"])]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(["order","orderlignes"])]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?int $buyprice = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(["order","orderlignes"])]
+    
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?int $sellprice = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(["order","orderlignes"])]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?int $quantity = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["order","orderlignes"])]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'produit')]
-    #[Groups("order")]
+    #[Groups(["order","orderlignes",'post:read'])]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderLine::class)]
@@ -58,6 +61,9 @@ class Produit
 
     #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: Rating::class)]
     private Collection $ratings;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $rate = null;
 
 
  
@@ -219,6 +225,18 @@ class Produit
                 $rating->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): self
+    {
+        $this->rate = $rate;
 
         return $this;
     }

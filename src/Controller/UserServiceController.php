@@ -192,17 +192,24 @@ class UserServiceController extends AbstractController
 
         return new Response($json);
     }
+
+    
     #[Route("/ticket/addTicket", name: "app_service_ajouterTicket")]
     public function ajouterTicket(Request $request,Client $twilioClient)
     {
         $titre = $request->query->get("titre");
         $message = $request->query->get("message");
-   
+        $owner_id = $request->query->get("owner_id");
+
 
 
         $ticket = new Ticket();
+        $ticket->setDateTicket(new \DateTime());
         $ticket->setTitre($titre);
         $ticket->setMessage($message);
+        $owner = $this->getDoctrine()->getRepository(User::class)->find($owner_id);
+        $ticket->setOwner($owner);
+        $ticket->setState("Pending");
  
         try {
             $em = $this->getDoctrine()->getManager();
@@ -210,7 +217,7 @@ class UserServiceController extends AbstractController
             $em->flush();
             $fromNumber = '+15673343714';
             $toNumber = '+21693293311';
-    
+
             // Create the message
             $message = $twilioClient->messages->create(
                 $toNumber, // The phone number to send the SMS to

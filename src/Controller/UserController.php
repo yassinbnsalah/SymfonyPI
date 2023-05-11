@@ -92,7 +92,7 @@ class UserController extends AbstractController
         NotificationRepository $notificationRepository,
         Request $request
     ): Response {
-        $allticket = $repo->findAll();
+        $allticket = $repo->findBy(array(), array('dateTicket' => 'DESC'));
         $tickets = $paginator->paginate(
             $allticket, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
@@ -107,6 +107,7 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
+    
     #[Route('/client/showClient', name: 'showClient')]
     public function showClient(UserRepository $userRepository, NotificationRepository $notificationRepository)
     {

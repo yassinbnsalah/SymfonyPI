@@ -111,7 +111,7 @@ class OrderController extends AbstractController
             ]);
             $email = (new Email())
                 ->from('contact.fithealth23@gmail.com')
-                ->to('yacinbnsalh@gmail.com')
+                ->to($user->getEmail())
                 ->subject('Order Confirmation')
                 ->html($html);
             $transport = new GmailSmtpTransport('contact.fithealth23@gmail.com', 'qavkrnciihzjmtkp');
@@ -154,7 +154,7 @@ class OrderController extends AbstractController
     ): Response {
         $user = $this->getUser();
         $notifications = $notificationRepository->findBy(array('toUser' => $user), array('dateNotification' => 'DESC'));
-        $order = $orderRepo->findBy(array('client' => $user));
+        $order = $orderRepo->findBy(array('client' => $user), array('dateOrder' => 'DESC'));
         return $this->render(
             'user/client/clientOrderList.html.twig',
             [

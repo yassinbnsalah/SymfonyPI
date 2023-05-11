@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
+use App\Manager\RealTimeManager;
+use App\Repository\NotificationRepository;
 use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SubscriptionRepository;
@@ -10,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -77,5 +81,50 @@ class OrderServicesController extends AbstractController
         $orderlignes = $orderLineRepository->findBy(array('relatedOrder' => $order));
         $ORLDNormilizer = $normalizer->normalize($orderlignes, 'json', ['groups' => "orderlignes"]);
         return new JsonResponse($ORLDNormilizer);
+    }
+
+
+    #[Route('/updateorderstate', name: 'updateorderstate')]
+    public function Updateorderstate(
+        Request $request,
+        NormalizerInterface $normalizer,
+        OrderRepository $orderRepo ,
+        HubInterface $hub,
+        NotificationRepository $notificationRepository,
+        RealTimeManager $realTimeManager
+    ): Response {
+        $id = $request->query->get("id");
+        $order = $orderRepo->find($id);
+      
+        $state = $request->query->get("state");
+       
+        if($state == '1'){
+            $message = "Shipped" ;
+            $order->setState("Shipped");
+        }else if ($state == '2'){
+            $message = "Confirmed" ;
+            $order->setState("Confirmed");
+        }else if ($state == '3'){
+            $message = "Cancel" ;
+            $order->setState("Cancel");
+        }else if ($state == '4'){
+            $message = "ready To Ship" ;
+            $order->setState("ready To Ship");
+        }
+        $orderRepo->save($order);
+        $SubNormilizer = $normalizer->normalize($order, 'json', ['groups' => "order"]);
+        $notification = new Notification();
+        $notification->setDateNotification(new \DateTime());
+        $notification->setMessage('your order state has been updated to ' . $message);
+        $notification->setToUser($order->getClient());
+        $notification->setPath("order");
+        $notification->setSeen(false);
+        $notificationRepository->save($notification);
+
+        $notificationJSON = $normalizer->normalize($notification, 'json', ['groups' => "notification"]);
+        $json = json_encode($notificationJSON);
+        $realTimeManager->Walker($json, $hub);
+        return new JsonResponse($SubNormilizer);
+        
     }
 }

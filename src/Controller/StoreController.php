@@ -20,6 +20,8 @@ use Knp\Component\Pager\PaginatorInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class StoreController extends AbstractController
 {
@@ -289,4 +291,131 @@ class StoreController extends AbstractController
             'produitCount' => json_encode($produitCount),
         ]);
     }
+
+
+     /* Mobile APIS */
+
+     #[Route('/api/productApi', name: 'productApi')]
+     public function productApi(Request $request, NormalizerInterface $normalizer): Response
+     {
+ 
+         $em = $this->getDoctrine()->getManager()->getRepository(Produit::class); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $produits = $em->findAll(); // Select * from produit;
+         $jsonContent = $normalizer->normalize($produits, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+          
+          
+     }
+ 
+ 
+     #[Route('/api/addProduitApi', name: 'addProduitApi')]
+     public function addProduitApi(NormalizerInterface $Normalizer, Request $request, EntityManagerInterface $entityManager): Response
+     {
+ 
+         $produit = new Produit();
+         $em = $this->getDoctrine()->getManager();
+         $cat = $em->getRepository(Category::class)->find($request->get('cat'));
+         $produit->setName($request->get('name'));
+         $produit->setDescription($request->get('description'));
+         $produit->setBuyprice($request->get('buyprice'));
+         $produit->setSellprice($request->get('sellprice'));
+         $produit->setQuantity($request->get('quantity'));
+         $produit->setCategory($cat);
+         $em->persist($produit);
+         $em->flush();
+         $jsonContent = $Normalizer->normalize($produit, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+ 
+     #[Route('/api/editProduitApi/{id}', name: 'editProduitApi')]
+     public function editProduitApi($id, Request $request,  NormalizerInterface $normalizer): Response
+     {
+         $em = $this->getDoctrine()->getManager();
+         $produit = $em->getRepository(Produit::class)->find($id);
+         $cat = $em->getRepository(Category::class)->find($request->get('cat'));
+         $produit->setName($request->get('name'));
+         $produit->setDescription($request->get('description'));
+         $produit->setBuyprice($request->get('buyprice'));
+         $produit->setSellprice($request->get('sellprice'));
+         $produit->setQuantity($request->get('quantity'));
+         $produit->setCategory($cat);
+         $em->persist($produit);
+         $em->flush();
+         $jsonContent = $normalizer->normalize($produit, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+     #[Route('/api/deleteProduitApi/{id}', name: 'deleteProduitApi')]
+     public function deleteProduitApi(Request $request, NormalizerInterface $normalizer, $id): Response
+     {
+ 
+         $em = $this->getDoctrine()->getManager(); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $produit = $this->getDoctrine()->getManager()->getRepository(Produit::class)->find($id); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $em->remove($produit);
+         $em->flush();
+         $jsonContent = $normalizer->normalize($produit, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+     /* Categorie apis */
+ 
+     #[Route('/api/categoryApi', name: 'categoryApi')]
+     public function categoryApi(Request $request, NormalizerInterface $normalizer): Response
+     {
+ 
+         $em = $this->getDoctrine()->getManager()->getRepository(Category::class); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $cat = $em->findAll(); // Select * from category;
+         $jsonContent = $normalizer->normalize($cat, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+ 
+     #[Route('/api/addCategoryApi', name: 'addCategoryApi')]
+     public function addCategoryApi(NormalizerInterface $Normalizer, Request $request, EntityManagerInterface $entityManager): Response
+     {
+ 
+         $cat = new Category();
+         $em = $this->getDoctrine()->getManager();
+ 
+         $cat->setName($request->get('name'));
+         $cat->setSlug($request->get('slug'));
+ 
+         $em->persist($cat);
+         $em->flush();
+         $jsonContent = $Normalizer->normalize($cat, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+ 
+     #[Route('/api/editCategoryApi/{id}', name: 'editCategoryApi')]
+     public function editCategoryApi($id, Request $request,  NormalizerInterface $normalizer): Response
+     {
+         $em = $this->getDoctrine()->getManager();
+         $cat = $em->getRepository(Category::class)->find($id);
+         $cat->setName($request->get('name'));
+         $cat->setSlug($request->get('slug'));
+         $em->persist($cat);
+         $em->flush();
+         $jsonContent = $normalizer->normalize($cat, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
+ 
+     #[Route('/api/deleteCategoryApi/{id}', name: 'deleteCategoryApi')]
+     public function deleteCategoryApi(Request $request, NormalizerInterface $normalizer, $id): Response
+     {
+ 
+         $em = $this->getDoctrine()->getManager(); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $cat = $this->getDoctrine()->getManager()->getRepository(Category::class)->find($id); // ENTITY MANAGER ELY FIH FONCTIONS PREDIFINES
+ 
+         $em->remove($cat);
+         $em->flush();
+         $jsonContent = $normalizer->normalize($cat, 'json', ['groups' => 'post:read']);
+         return new JsonResponse($jsonContent);
+     }
 }
